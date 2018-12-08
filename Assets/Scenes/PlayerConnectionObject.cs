@@ -6,6 +6,10 @@ using UnityEngine.Networking;
 public class PlayerConnectionObject : NetworkBehaviour {
 
     public GameObject playerUnitPrefab;
+
+    // syncvars are variables where if their values change on the SERVER, then all clients
+    // are automatically informed of the new value;
+    [SyncVar]
     public string playerName = "Anonymous";
 
     void Start ()
@@ -77,16 +81,16 @@ public class PlayerConnectionObject : NetworkBehaviour {
         playerName = name;
 
         // Tell all the clients what this player's name is now.
-        RpcChangePlayerName(name);
+        //RpcChangePlayerName(name);
     }
 
     ///////////////////COMMANDS
     // RPCs are special functions that ONLY get executed on clients
 
-    [ClientRpc]
-    void RpcChangePlayerName(string name)
-    {
-        Debug.Log("RpcChangePlayerName: We were asked to change the player name on a particula PlayerConnectionObject: " + name);
-        playerName = name;
-    }
+    //[ClientRpc]
+    //void RpcChangePlayerName(string name)
+    //{
+    //    Debug.Log("RpcChangePlayerName: We were asked to change the player name on a particula PlayerConnectionObject: " + name);
+    //    playerName = name;
+    //}
 }
