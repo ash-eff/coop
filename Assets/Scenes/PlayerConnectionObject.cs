@@ -72,7 +72,21 @@ public class PlayerConnectionObject : NetworkBehaviour {
     [Command]
     void CmdChangePlayerName(string name)
     {
+        // verify legal names
         Debug.Log("CmdChangePlayerName: " + name);
+        playerName = name;
+
+        // Tell all the clients what this player's name is now.
+        RpcChangePlayerName(name);
+    }
+
+    ///////////////////COMMANDS
+    // RPCs are special functions that ONLY get executed on clients
+
+    [ClientRpc]
+    void RpcChangePlayerName(string name)
+    {
+        Debug.Log("RpcChangePlayerName: We were asked to change the player name on a particula PlayerConnectionObject: " + name);
         playerName = name;
     }
 }
