@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class PlayerConnectionObject : NetworkBehaviour {
 
     public GameObject playerUnitPrefab;
-    private GameObject myPlayerUnit;
+    public string playerName = "Anonymous";
 
     void Start ()
     {	
@@ -36,8 +36,21 @@ public class PlayerConnectionObject : NetworkBehaviour {
 
 	void Update ()
     {
-		// REMEMBER: Update runs on EVERYONE'S computer, whether or not they own this
+        // REMEMBER: Update runs on EVERYONE'S computer, whether or not they own this
         // particular player object.
+
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            string n = "Prisoner " + Random.Range(647648, 937862);
+
+            Debug.Log("Sending the server a request to change player name to " + n);
+            CmdChangePlayerName(n);
+        }
 	}
 
     ///////////////////COMMANDS
@@ -49,12 +62,17 @@ public class PlayerConnectionObject : NetworkBehaviour {
         // We are guaranteed to be on the server right now.
         GameObject go = Instantiate(playerUnitPrefab);
 
-        myPlayerUnit = go;
-
         //go.GetComponent<NetworkIdentity>().AssignClientAuthority(connectionToClient);
         // Now that the object exists on the server, propagate it to all
         // the clients and also wire up the NetworkIdentity.
 
         NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
+    }
+
+    [Command]
+    void CmdChangePlayerName(string name)
+    {
+        Debug.Log("CmdChangePlayerName: " + name);
+        playerName = name;
     }
 }
