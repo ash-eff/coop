@@ -143,13 +143,6 @@ public class GameConnectionManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
-    //public void RequestASlot()
-    //{
-    //    lobbyManager = FindObjectOfType<LobbyManager>();
-    //    PhotonView pv = PhotonView.Get(lobbyManager);
-    //    pv.RPC("GetNextAvailablePosition", RpcTarget.AllBuffered, null);
-    //}
-
     public void InstantiatePlayer()
     {
         if (playerConnectionPrefab == null)
@@ -174,14 +167,6 @@ public class GameConnectionManager : MonoBehaviourPunCallbacks
             }
         }
     }
-
-    //[PunRPC]
-    //void AssignASlotPosition(Vector2 v)
-    //{
-    //    Vector2 availablePosition = v;
-    //
-    //    InstantiatePlayer(availablePosition);
-    //}
     
     #endregion
 }

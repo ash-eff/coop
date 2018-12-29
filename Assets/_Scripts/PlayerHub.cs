@@ -14,6 +14,8 @@ public class PlayerHub : MonoBehaviourPunCallbacks {
     private PhotonView pView;
     public PlayerConnectionManager playerConnection;
 
+    private LobbyManager lobbyManager;
+
     public GameObject player;
 
     [Tooltip("UI Image for indicating the selection of Player's Hub")]
@@ -30,6 +32,7 @@ public class PlayerHub : MonoBehaviourPunCallbacks {
 
     private void Awake()
     {
+        lobbyManager = FindObjectOfType<LobbyManager>();
         pView = GetComponent<PhotonView>();
         readyButton.colors = notReadyColors;
         transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>(), false);
@@ -38,15 +41,6 @@ public class PlayerHub : MonoBehaviourPunCallbacks {
         {
             OnPlayerInSlot();
         }
-    }
-
-    private void OnDestroy()
-    {
-
-        // TODO causes an error when the player disconnects because it's trying to access the lobby manager after it's destroyed?
-        //PhotonView pv = PhotonView.Get(lm);
-
-        //pv.RPC("RemoveFromPosition", RpcTarget.AllBuffered, (int)pView.ViewID);
     }
 
     public void OnPlayerInSlot()
@@ -68,10 +62,12 @@ public class PlayerHub : MonoBehaviourPunCallbacks {
         if (playerIsReady)
         {
             readyButton.colors = readyColors;
+            lobbyManager.PlayersReady += 1;
         }
         else
         {
             readyButton.colors = notReadyColors;
+            lobbyManager.PlayersReady -= 1;
         }
     }
 }

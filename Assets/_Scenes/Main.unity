@@ -4037,6 +4037,11 @@ Prefab:
       propertyPath: pingText
       value: 
       objectReference: {fileID: 2093230516}
+    - target: {fileID: 114715696986890698, guid: 51e6dc0d1a9fa9941b325de284ebbc12,
+        type: 2}
+      propertyPath: viewIdField
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51e6dc0d1a9fa9941b325de284ebbc12, type: 2}
   m_IsPrefabAsset: 0

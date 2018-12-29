@@ -22,7 +22,7 @@ public class PlayerInput : MonoBehaviourPunCallbacks {
     {
         if (!pView.IsMine)
         {
-            Debug.Log("Not My PhotonView");
+            //Debug.Log("Not My PhotonView");
             return;
         }
 

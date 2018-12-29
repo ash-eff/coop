@@ -49,7 +49,7 @@ public class Launcher : MonoBehaviourPunCallbacks {
         // #Critical
         // This makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same
         // room sync their level automatically
-        PhotonNetwork.AutomaticallySyncScene = false;
+        PhotonNetwork.AutomaticallySyncScene = true;
 
         // set server to US ?
         //PhotonNetwork.ConnectToRegion("us");

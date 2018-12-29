@@ -30,6 +30,11 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
     [SerializeField]
     private GameObject playerGameUIPrefab;
 
+    // TODO make this so that it can be set from the lobby from a drop down menu
+    [Tooltip("The Player's GAME Character Prefab")]
+    [SerializeField]
+    private GameObject playerCharacterPrefab;
+
     [Tooltip("The Player's LOBBY UI GameObject Prefab")]
     [SerializeField]
     private GameObject playerLobbyUIPrefab;
@@ -48,6 +53,17 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
     /// <summary>
     /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
     /// </summary>
+    ///
+    public override void OnEnable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    public override void OnDisable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
     public void Awake()
     {
         // #Important
@@ -61,6 +77,7 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
         // #Critical
         // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
         DontDestroyOnLoad(gameObject);
+        
     }
 
     /// <summary>
@@ -69,19 +86,7 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
     public void Start()
     {
         lm = FindObjectOfType<LobbyManager>();
-        //CameraWork cameraWork = gameObject.GetComponent<CameraWork>();
-        
-        //if (cameraWork != null)
-        //{
-        //    if (photonView.IsMine)
-        //    {
-        //        cameraWork.OnStartFollowing();
-        //    }
-        //}
-        //else
-        //{
-        //    Debug.LogError("<Color=Red><b>Missing</b></Color> CameraWork Component on player Prefab.", this);
-        //}
+
     }
 
     /// <summary>
@@ -94,18 +99,21 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
         // we only process Inputs and check health if we are the local player
         if (photonView.IsMine)
         {
-
             if(gamestate == GameState.Playing)
             {
                 if (!isPlayerGameUILoaded)
                 {
+                    GameObject playerChar = PhotonNetwork.Instantiate(playerCharacterPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
+                    playerChar.gameObject.transform.SetParent(transform, false);
+
                     GameObject GUiGo = PhotonNetwork.Instantiate(playerGameUIPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
-                    Debug.Log("Instantiate Game UI with viewID" + GUiGo.GetPhotonView().ViewID);
-            
+                    GUiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+
+                    //Debug.Log("Instantiate Game UI with viewID" + GUiGo.GetPhotonView().ViewID);
+                    //Debug.Log("Instantiate Player Character with viewID" + playerChar.GetPhotonView().ViewID);
+
                     isPlayerGameUILoaded = true;
                 }
-            
-                ProcessInputs();
             
                 if (Health <= 0f)
                 {
@@ -145,31 +153,51 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
 
     #region Private Methods
 
-    /// <summary>
-    /// Processes the inputs. This MUST ONLY BE USED when the player has authority over this Networked GameObject (photonView.isMine == true)
-    /// </summary>
-    void ProcessInputs()
+    void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode loadingMode)
     {
-        // inputs
+        if (photonView.IsMine)
+        {
+            if (scene.name == "Main")
+            {
+                GetComponent<PlayerInput>().enabled = true;
+                GetComponent<CameraWork>().enabled = true;
+                CameraWork cameraWork = gameObject.GetComponent<CameraWork>();
+
+                if (cameraWork != null)
+                {
+                    if (photonView.IsMine)
+                    {
+                        cameraWork.OnStartFollowing();
+                    }
+                }
+                else
+                {
+                    Debug.LogError("<Color=Red><b>Missing</b></Color> CameraWork Component on player Prefab.", this);
+                }
+
+                gamestate = GameState.Playing;
+            }
+        }    
     }
 
     #endregion
 
+
     #region IPunObservable implementation
 
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if (stream.IsWriting)
-    //    {
-    //        // We own this player: send the others our data
-    //        stream.SendNext(this.Health);
-    //    }
-    //    else
-    //    {
-    //        // Network player, receive data
-    //        this.Health = (float)stream.ReceiveNext();
-    //    }
-    //}
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // We own this player: send the others our data
+            stream.SendNext(this.Health);
+        }
+        else
+        {
+            // Network player, receive data
+            this.Health = (float)stream.ReceiveNext();
+        }
+    }
 
     #endregion
 }

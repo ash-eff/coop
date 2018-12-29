@@ -8,14 +8,18 @@ using Photon.Realtime;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
+    public static int playersReady;
     public GameObject[] lobbySlots;
+    public Button startButton;
+
     private GameConnectionManager gameConnection;
     private PhotonView pView;
-
-    //private void Start()
-    //{
-    //    pView = GetComponent<PhotonView>();
-    //}
+    
+    public int PlayersReady
+    {
+        get { return playersReady; }
+        set { playersReady = value; CheckForReady(); }
+    }
 
     [PunRPC]
     public void CheckForAvailablePosition(int id)
@@ -64,5 +68,27 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             }
 
         }
+    }
+
+    private void CheckForReady()
+    {
+        // FOR TESTING
+         startButton.interactable = true;
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    if(PhotonNetwork.PlayerList.Length >= 2 && playersReady == PhotonNetwork.PlayerList.Length)
+        //    {
+        //        startButton.interactable = true;
+        //    }
+        //    else
+        //    {
+        //        startButton.interactable = false;
+        //    }
+        //}
+    }
+
+    public void LoadMainLevel()
+    {
+        PhotonNetwork.LoadLevel("Main");
     }
 }

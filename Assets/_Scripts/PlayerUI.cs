@@ -7,9 +7,9 @@ public class PlayerUI : MonoBehaviour {
 
     #region Public Fields
 
-    //[Tooltip("Pixel offset from the player target")]
-    //[SerializeField]
-    //private Vector3 screenOffset = new Vector3(0f, 30f, 0f);
+    [Tooltip("Pixel offset from the player target")]
+    [SerializeField]
+    private Vector3 screenOffset = new Vector3(0f, 30f, 0f);
 
     #endregion
 
@@ -18,7 +18,7 @@ public class PlayerUI : MonoBehaviour {
 
     //float yOffset = 2f;
     Vector3 targetPosition;
-    Transform targetTransform;
+    public Transform targetTransform;
 
     [Tooltip("UI Text to display Player's Name")]
     [SerializeField]
@@ -38,61 +38,58 @@ public class PlayerUI : MonoBehaviour {
     private void Awake()
     {
         transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>(), false);
-    //    SetTarget(target);
     }
 
-    //void Update()
-    //{
-    //    // Reflect the Player Health
-    //    if (playerHealthSlider != null)
-    //    {
-    //        playerHealthSlider.value = target.Health;
-    //    }
-    //
-    //    // Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
-    //    if (target == null)
-    //    {
-    //        Destroy(gameObject);
-    //        return;
-    //    }
-    //}
-    //
-    //void LateUpdate()
-    //{
-    //    if(targetPosition != null)
-    //    {
-    //        targetPosition = targetTransform.position;
-    //        targetPosition.y += 1f;
-    //        transform.position = Camera.main.WorldToScreenPoint(targetPosition) + screenOffset;
-    //    }
-    //}
-    //
+    void Update()
+    {
+        // Reflect the Player Health
+        if (playerHealthSlider != null)
+        {
+            playerHealthSlider.value = target.Health;
+        }
+    
+        // Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
+        if (target == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+    
+    void LateUpdate()
+    {
+        if(targetPosition != null)
+        {
+            targetPosition = targetTransform.position;
+            targetPosition.y += 1f;
+            transform.position = Camera.main.WorldToScreenPoint(targetPosition) + screenOffset;
+        }
+    }
+    
     #endregion
-    //
-    //
-    //#region Public Methods
-    //
-    //public void SetTarget(PlayerConnectionManager _target)
-    //{
-    //    if (_target == null)
-    //    {
-    //        Debug.LogError("<Color=Red><a>Missing</a></Color> PlayMakerManager target for PlayerUI.SetTarget.", this);
-    //        return;
-    //    }
-    //    // Cache references for efficiency
-    //    target = _target;
-    //    targetTransform = target.GetComponent<Transform>();
-    //
-    //    // TODO use bounds here for when art changes
-    //    //characterHeight = 1;
-    //
-    //    if (playerNameText != null)
-    //    {
-    //        playerNameText.text = target.photonView.Owner.NickName;
-    //    }
-    //}
-    //
-    //#endregion
-
-
+    
+    
+    #region Public Methods
+    
+    public void SetTarget(PlayerConnectionManager _target)
+    {
+        if (_target == null)
+        {
+            Debug.LogError("<Color=Red><a>Missing</a></Color> PlayMakerManager target for PlayerUI.SetTarget.", this);
+            return;
+        }
+        // Cache references for efficiency
+        target = _target;
+        targetTransform = target.GetComponent<Transform>();
+    
+        // TODO use bounds here for when art changes
+        //characterHeight = 1;
+    
+        if (playerNameText != null)
+        {
+            playerNameText.text = target.photonView.Owner.NickName;
+        }
+    }
+    
+    #endregion
 }
