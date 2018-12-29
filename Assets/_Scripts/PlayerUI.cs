@@ -14,7 +14,7 @@ public class PlayerUI : MonoBehaviour {
     #endregion
 
     #region Private Fields
-    private PlayerConnectionManager target;
+    private PlayerCharacter target;
 
     //float yOffset = 2f;
     Vector3 targetPosition;
@@ -71,7 +71,7 @@ public class PlayerUI : MonoBehaviour {
     
     #region Public Methods
     
-    public void SetTarget(PlayerConnectionManager _target)
+    public void SetTarget(PlayerCharacter _target)
     {
         if (_target == null)
         {

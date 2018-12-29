@@ -16,8 +16,7 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
     [Tooltip("The current Password of our player")]
     public string password = "";
 
-    [Tooltip("The current Health of our player")]
-    public float Health = 1f;
+
 
     [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
     public static GameObject localPlayerInstance;
@@ -99,15 +98,15 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
         // we only process Inputs and check health if we are the local player
         if (photonView.IsMine)
         {
-            if(gamestate == GameState.Playing)
+            if (gamestate == GameState.Playing)
             {
                 if (!isPlayerGameUILoaded)
                 {
                     GameObject playerChar = PhotonNetwork.Instantiate(playerCharacterPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
                     playerChar.gameObject.transform.SetParent(transform, false);
 
-                    GameObject GUiGo = PhotonNetwork.Instantiate(playerGameUIPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
-                    GUiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+                    //GameObject GUiGo = PhotonNetwork.Instantiate(playerGameUIPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
+                    //GUiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
 
                     //Debug.Log("Instantiate Game UI with viewID" + GUiGo.GetPhotonView().ViewID);
                     //Debug.Log("Instantiate Player Character with viewID" + playerChar.GetPhotonView().ViewID);
@@ -115,12 +114,9 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
                     isPlayerGameUILoaded = true;
                 }
             
-                if (Health <= 0f)
-                {
-                    GameConnectionManager.Instance.LeaveRoom();
-                }
+
             }
-            
+
             if (gamestate == GameState.Lobby)
             {
                 if (!isPlayerLobbyUILoaded)
@@ -142,10 +138,11 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
                     pv.RPC("CheckForAvailablePosition", RpcTarget.AllBuffered, viewToSend);
                     Debug.Log("Instantiate Lobby UI with viewID" + LUiGo.GetPhotonView().ViewID);
             
-                    isPlayerLobbyUILoaded = true;        
+                    isPlayerLobbyUILoaded = true;   
+                
                 }
             }
-        }
+        } 
     }
 
     #endregion
@@ -183,21 +180,5 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
     #endregion
 
 
-    #region IPunObservable implementation
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            // We own this player: send the others our data
-            stream.SendNext(this.Health);
-        }
-        else
-        {
-            // Network player, receive data
-            this.Health = (float)stream.ReceiveNext();
-        }
-    }
-
-    #endregion
 }

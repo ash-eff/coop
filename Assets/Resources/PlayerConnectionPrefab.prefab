@@ -67,7 +67,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gamestate: 0
   password: 
-  Health: 1
   playerGameUIPrefab: {fileID: 1176209691683024, guid: 69100b34760ca034c9a6809ac70aa3fd,
     type: 2}
   playerCharacterPrefab: {fileID: 1364686637355020, guid: 65bacb5fffe8d1b4690c9fd6412ccc85,
