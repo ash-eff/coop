@@ -42,4 +42,10 @@ MonoBehaviour:
   - ButtonClick
   - GetNextAvailablePosition
   - AssignASlotPosition
+  - LeftButton
+  - RightButton
+  - JoinButton
+  - ResetHub
+  - UpdateChracterInfo
+  - OnReadyClick
   DisableAutoOpenWizard: 1

@@ -9,7 +9,7 @@ using Photon.Realtime;
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static int playersReady;
-    public GameObject[] lobbySlots;
+    public HubHolder[] hubs;
     public Button startButton;
 
     private GameConnectionManager gameConnection;
@@ -21,52 +21,34 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         set { playersReady = value; CheckForReady(); }
     }
 
-    [PunRPC]
-    public void CheckForAvailablePosition(int id)
-    {
-        foreach (GameObject lobbySlot in lobbySlots)
-        {
-            if (lobbySlot.GetComponent<HubHolder>().occupied)
-            {
-                Debug.Log("Skipping " + lobbySlot.name);
-                continue;
-            }
-            else
-            {
-                lobbySlot.GetComponent<HubHolder>().Occupied = true;
-                lobbySlot.GetComponent<HubHolder>().viewId = id;
-                break;
-            }
-        }
-    }
+    //[PunRPC]
+    //public void CheckForAvailablePosition(int id)
+    //{
+    //    foreach (HubHolder hub in hubs)
+    //    {
+    //        if (lobbySlot.GetComponent<HubHolder>().occupied)
+    //        {
+    //            Debug.Log("Skipping " + lobbySlot.name);
+    //            continue;
+    //        }
+    //        else
+    //        {
+    //            lobbySlot.GetComponent<HubHolder>().Occupied = true;
+    //            lobbySlot.GetComponent<HubHolder>().viewId = id;
+    //            break;
+    //        }
+    //    }
+    //}
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        PlayerConnectionManager[] pcms = FindObjectsOfType<PlayerConnectionManager>();
-        bool numberInList = false;
-        foreach (GameObject lobbySlot in lobbySlots)
+        foreach (HubHolder hub in hubs)
         {
-            foreach (PlayerConnectionManager pcm in pcms)
+            if(hub.photonView.Owner == null)
             {
-                numberInList = false;
-
-                if(lobbySlot.GetComponent<HubHolder>().viewId !=0)
-                {
-                    if (lobbySlot.GetComponent<HubHolder>().viewId == pcm.viewToSend)
-                    {
-                        numberInList = true;
-                        break;
-                    }
-
-                }
+                print("No Owner");
+                hub.photonView.RPC("ResetHub", RpcTarget.AllBuffered, null);
             }
-
-            if (!numberInList)
-            {
-                lobbySlot.GetComponent<HubHolder>().Occupied = false;
-                lobbySlot.GetComponent<HubHolder>().viewId = 0;
-            }
-
         }
     }
 

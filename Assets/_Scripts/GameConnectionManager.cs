@@ -41,6 +41,14 @@ public class GameConnectionManager : MonoBehaviourPunCallbacks
             Destroy(gameObject);
         }
 
+        // in case we started this demo with the wrong scene being active, simply load the menu scene
+        if (!PhotonNetwork.IsConnected)
+        {
+            SceneManager.LoadScene("Launcher");
+
+            return;
+        }
+
         if (PhotonNetwork.IsMasterClient)
         {
             password.Add("pw", PasswordManager.Instance.password.ToString());

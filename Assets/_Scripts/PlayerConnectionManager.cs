@@ -16,8 +16,6 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
     [Tooltip("The current Password of our player")]
     public string password = "";
 
-
-
     [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
     public static GameObject localPlayerInstance;
 
@@ -40,8 +38,8 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
 
     private bool isPlayerGameUILoaded;
     private bool isPlayerLobbyUILoaded;
-    public LobbyManager lm;
-    Vector2 openPos;
+    private LobbyManager lm;
+    private Vector2 openPos;
     public int viewToSend;
 
     #endregion
@@ -49,10 +47,6 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
 
     #region MonoBehaviour CallBacks
 
-    /// <summary>
-    /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
-    /// </summary>
-    ///
     public override void OnEnable()
     {
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
@@ -79,70 +73,62 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
         
     }
 
-    /// <summary>
-    /// MonoBehaviour method called on GameObject by Unity during initialization phase.
-    /// </summary>
     public void Start()
     {
         lm = FindObjectOfType<LobbyManager>();
 
     }
 
-    /// <summary>
-    /// MonoBehaviour method called on GameObject by Unity on every frame.
-    /// Process Inputs if local player.
-    /// Watch for end of game, when local player health is 0.
-    /// </summary>
     public void Update()
     {
         // we only process Inputs and check health if we are the local player
-        if (photonView.IsMine)
-        {
-            if (gamestate == GameState.Playing)
-            {
-                if (!isPlayerGameUILoaded)
-                {
-                    GameObject playerChar = PhotonNetwork.Instantiate(playerCharacterPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
-                    playerChar.gameObject.transform.SetParent(transform, false);
-
-                    //GameObject GUiGo = PhotonNetwork.Instantiate(playerGameUIPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
-                    //GUiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
-
-                    //Debug.Log("Instantiate Game UI with viewID" + GUiGo.GetPhotonView().ViewID);
-                    //Debug.Log("Instantiate Player Character with viewID" + playerChar.GetPhotonView().ViewID);
-
-                    isPlayerGameUILoaded = true;
-                }
-            
-
-            }
-
-            if (gamestate == GameState.Lobby)
-            {
-                if (!isPlayerLobbyUILoaded)
-                {
-                    foreach(GameObject lobbyPosition in lm.lobbySlots)
-                    {
-                        if (!lobbyPosition.GetComponent<HubHolder>().Occupied)
-                        {
-                            openPos = lobbyPosition.GetComponent<RectTransform>().localPosition;
-                            break;
-                        }
-                    }
-            
-                    print("Load Lobby UI");
-            
-                    PhotonView pv = PhotonView.Get(lm);
-                    GameObject LUiGo = PhotonNetwork.Instantiate(playerLobbyUIPrefab.name, openPos, Quaternion.identity, 0);
-                    viewToSend = LUiGo.GetPhotonView().ViewID;
-                    pv.RPC("CheckForAvailablePosition", RpcTarget.AllBuffered, viewToSend);
-                    Debug.Log("Instantiate Lobby UI with viewID" + LUiGo.GetPhotonView().ViewID);
-            
-                    isPlayerLobbyUILoaded = true;   
-                
-                }
-            }
-        } 
+        //if (photonView.IsMine)
+        //{
+        //    if (gamestate == GameState.Playing)
+        //    {
+        //        if (!isPlayerGameUILoaded)
+        //        {
+        //            GameObject playerChar = PhotonNetwork.Instantiate(playerCharacterPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
+        //            playerChar.gameObject.transform.SetParent(transform, false);
+        //
+        //            //GameObject GUiGo = PhotonNetwork.Instantiate(playerGameUIPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
+        //            //GUiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+        //
+        //            //Debug.Log("Instantiate Game UI with viewID" + GUiGo.GetPhotonView().ViewID);
+        //            //Debug.Log("Instantiate Player Character with viewID" + playerChar.GetPhotonView().ViewID);
+        //
+        //            isPlayerGameUILoaded = true;
+        //        }
+        //    
+        //
+        //    }
+        //
+        //    if (gamestate == GameState.Lobby)
+        //    {
+        //        if (!isPlayerLobbyUILoaded)
+        //        {
+        //            foreach(GameObject lobbyPosition in lm.lobbySlots)
+        //            {
+        //                if (!lobbyPosition.GetComponent<HubHolder>().Occupied)
+        //                {
+        //                    openPos = lobbyPosition.GetComponent<RectTransform>().localPosition;
+        //                    break;
+        //                }
+        //            }
+        //    
+        //            print("Load Lobby UI");
+        //    
+        //            PhotonView pv = PhotonView.Get(lm);
+        //            GameObject LUiGo = PhotonNetwork.Instantiate(playerLobbyUIPrefab.name, openPos, Quaternion.identity, 0);
+        //            viewToSend = LUiGo.GetPhotonView().ViewID;
+        //            pv.RPC("CheckForAvailablePosition", RpcTarget.AllBuffered, viewToSend);
+        //            Debug.Log("Instantiate Lobby UI with viewID" + LUiGo.GetPhotonView().ViewID);
+        //    
+        //            isPlayerLobbyUILoaded = true;   
+        //        
+        //        }
+        //    }
+        //} 
     }
 
     #endregion
@@ -178,7 +164,5 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
     }
 
     #endregion
-
-
 
 }
