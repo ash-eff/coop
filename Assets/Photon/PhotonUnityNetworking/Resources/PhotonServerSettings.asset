@@ -48,4 +48,9 @@ MonoBehaviour:
   - ResetHub
   - UpdateChracterInfo
   - OnReadyClick
+  - UpdateCharacterColor
+  - UpdateCharacter
+  - UpdateHubInfo
+  - UpdateHubName
+  - CharacterColor
   DisableAutoOpenWizard: 1

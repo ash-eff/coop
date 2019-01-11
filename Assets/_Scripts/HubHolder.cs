@@ -20,9 +20,13 @@ public class HubHolder : MonoBehaviourPunCallbacks {
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI charName;
     public TextMeshProUGUI charInfo;
+    public Color charColor;
+
+    public PlayerConnectionManager myPCM;
 
     private HubHolder[] hubs;
     private LobbyManager lobbyManager;
+    private PlayerConnectionManager[] pcms;
 
     private int currentCharacterIndex;
     private int maxCharacterIndex;
@@ -55,17 +59,39 @@ public class HubHolder : MonoBehaviourPunCallbacks {
 
     public void JoinSlot()
     {
+        //print("VIEW ID: " + photonView.ViewID);
         foreach(HubHolder hub in hubs)
         {
-            if(hub.GetComponent<PhotonView>().Owner == PhotonNetwork.LocalPlayer)
+            if (hub.GetComponent<PhotonView>().IsMine)
             {
-                hub.photonView.TransferOwnership(0);
-                hub.photonView.RPC("ResetHub", RpcTarget.AllBuffered, null);
+                if(hub.GetComponent<PhotonView>().ViewID == photonView.ViewID)
+                {
+                    Debug.Log("SKIP " + hub.gameObject.name);
+                }
+                else
+                {
+                    Debug.Log("RESET " + hub.gameObject.name);
+                    hub.photonView.RPC("ResetHub", RpcTarget.AllBuffered, null);
+                }
             }
         }
 
+        StartCoroutine(RequestTransfer());
+    }
+
+    IEnumerator RequestTransfer()
+    {
+        this.photonView.RequestOwnership();
+
+        while (photonView.Owner == null)
+        {
+            Debug.Log("Requesting...");
+            yield return new WaitForEndOfFrame();
+        }
+
         OnPlayerInSlot();
-        photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+        AddPlayerConnectionManager();
+        Debug.Log("OWNERSHIP WAS TRANSFERED");
         photonView.RPC("JoinButton", RpcTarget.AllBuffered, null);
     }
 
@@ -99,27 +125,53 @@ public class HubHolder : MonoBehaviourPunCallbacks {
 
     public void ReadyClick()
     {
-
         photonView.RPC("OnReadyClick", RpcTarget.AllBuffered, null);
+    }
+
+    public void AddPlayerConnectionManager()
+    {
+        pcms = FindObjectsOfType<PlayerConnectionManager>();
+        foreach (PlayerConnectionManager pcm in pcms)
+        {
+            if (pcm.GetComponent<PhotonView>().IsMine)
+            {
+                myPCM = pcm;
+            }
+        }
+    }
+
+    private void UpdateCharacterColor()
+    {
+        if(photonView.IsMine)
+        {
+            charColor = characterImages[currentCharacterIndex].GetComponent<Image>().color;
+            myPCM.characterColor = charColor;
+        }
     }
 
     [PunRPC]
     void ResetHub()
     {
+        photonView.TransferOwnership(0);
         joinUI.gameObject.SetActive(true);
         playerUi.gameObject.SetActive(false);
         playerIsReady = false;
         playerInSlot = false;
         nameText.text = "";
+        myPCM = null;
     }
 
     [PunRPC]
     void JoinButton()
-    {
+    {       
         joinUI.gameObject.SetActive(false);
         playerUi.gameObject.SetActive(true);
-        nameText.text = photonView.Owner.NickName;
+
+        photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, null);
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
+        //photonView.RPC("UpdateCharacterColor", RpcTarget.AllBuffered, null);
+        UpdateCharacterColor();
+
     }
 
     [PunRPC]
@@ -129,6 +181,8 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         currentCharacterIndex++;
         characterImages[currentCharacterIndex].gameObject.SetActive(true);
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
+        //photonView.RPC("UpdateCharacterColor", RpcTarget.AllBuffered, null);
+        UpdateCharacterColor();
     }
 
     [PunRPC]
@@ -138,6 +192,21 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         currentCharacterIndex--;
         characterImages[currentCharacterIndex].gameObject.SetActive(true);
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
+        //photonView.RPC("UpdateCharacterColor", RpcTarget.AllBuffered, null);
+        UpdateCharacterColor();
+    }
+
+    [PunRPC]
+    void UpdateHubName()
+    {
+        if(photonView.Owner == null)
+        {
+            Debug.Log(gameObject.name + " has no owner: Owner: " + photonView.Owner + " !");
+        }
+        else
+        {
+            nameText.text = photonView.Owner.NickName;
+        }
     }
 
     [PunRPC]

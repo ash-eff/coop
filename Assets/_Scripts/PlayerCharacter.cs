@@ -10,8 +10,11 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
 
     public GameObject playerUI;
 
+    private SpriteRenderer spr;
+
     private void Awake()
     {
+        spr = GetComponent<SpriteRenderer>();
         GameObject ui = Instantiate(playerUI, Vector2.zero, Quaternion.identity);
         ui.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
     }
@@ -22,6 +25,17 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         {
             GameConnectionManager.Instance.LeaveRoom();
         }
+    }
+
+    [PunRPC]
+    void CharacterColor(Vector3 col)
+    {
+        Color newColor;
+        newColor.r = col.x;
+        newColor.g = col.y;
+        newColor.b = col.z;
+        newColor.a = 1;
+        spr.color = newColor;
     }
 
     #region IPunObservable implementation

@@ -60,11 +60,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1795755134055046}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a64f16467856993419c3733ebcaa36c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterColor: {r: 0, g: 0, b: 0, a: 0}
   gamestate: 0
   password: 
   playerGameUIPrefab: {fileID: 1176209691683024, guid: 69100b34760ca034c9a6809ac70aa3fd,

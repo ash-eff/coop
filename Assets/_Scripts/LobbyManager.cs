@@ -55,7 +55,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void CheckForReady()
     {
         // FOR TESTING
-        // startButton.interactable = true;
+        //startButton.interactable = true;
         if (PhotonNetwork.IsMasterClient)
         {
             if(PhotonNetwork.PlayerList.Length >= 2 && playersReady == PhotonNetwork.PlayerList.Length)
