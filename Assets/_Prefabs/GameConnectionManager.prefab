@@ -1,21 +1,11 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &100100000
-Prefab:
-  m_ObjectHideFlags: 1
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications: []
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1362218061674652}
-  m_IsPrefabAsset: 1
 --- !u!1 &1362218061674652
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4632078771108156}
@@ -30,9 +20,10 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &4632078771108156
 Transform:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1362218061674652}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -41,11 +32,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114847543155555582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362218061674652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0dec2fc58f1ec43afa34a1fef2a860, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storedClientPasswords: []
+  storedMasterPasswords: []
+  playerConnectionPrefab: {fileID: 127, guid: ff483775690427647ae7a7f5cef2ce1d, type: 3}
+  pingText: {fileID: 114564164575008422, guid: 8c2c7e3255aab3f48b51f522b0cb1292, type: 3}
 --- !u!114 &114672820829317746
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1362218061674652}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -59,22 +67,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 0}
-  viewIdField: 0
-  InstantiationId: 0
+  viewIdField: 1
+  InstantiationId: 1
   isRuntimeInstantiated: 0
---- !u!114 &114847543155555582
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1362218061674652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd0dec2fc58f1ec43afa34a1fef2a860, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  storedClientPasswords: []
-  storedMasterPasswords: []
-  playerConnectionPrefab: {fileID: 1795755134055046, guid: ff483775690427647ae7a7f5cef2ce1d,
-    type: 2}
-  pingText: {fileID: 114564164575008422, guid: 8c2c7e3255aab3f48b51f522b0cb1292, type: 2}

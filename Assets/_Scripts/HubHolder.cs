@@ -20,6 +20,7 @@ public class HubHolder : MonoBehaviourPunCallbacks {
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI charName;
     public TextMeshProUGUI charInfo;
+    public TextMeshProUGUI ownerName;
     public Color charColor;
 
     public PlayerConnectionManager myPCM;
@@ -32,9 +33,9 @@ public class HubHolder : MonoBehaviourPunCallbacks {
     private int maxCharacterIndex;
     private bool joined = false;
 
-    private bool playerIsReady;
-    private bool playerInSlot;
-    private bool occupied;
+    public bool playerIsReady;
+    public bool playerInSlot;
+    public bool occupied;
     private int viewId;
 
     public bool Occupied
@@ -46,7 +47,7 @@ public class HubHolder : MonoBehaviourPunCallbacks {
     private void Awake()
     {
         lobbyManager = FindObjectOfType<LobbyManager>();
-        readyButton.colors = notReadyColors;
+        readyButton.colors = notReadyColors;      
     }
 
     private void Start()
@@ -55,6 +56,7 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         currentCharacterIndex = 0;
         characterImages[0].gameObject.SetActive(true);
         maxCharacterIndex = characterImages.Length - 1;
+        //photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, null);
     }
 
     public void JoinSlot()
@@ -81,6 +83,7 @@ public class HubHolder : MonoBehaviourPunCallbacks {
 
     IEnumerator RequestTransfer()
     {
+        //photonView.RPC("RequestOwnershipOfHub", RpcTarget.AllBuffered, null);
         this.photonView.RequestOwnership();
 
         while (photonView.Owner == null)
@@ -92,6 +95,7 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         OnPlayerInSlot();
         AddPlayerConnectionManager();
         Debug.Log("OWNERSHIP WAS TRANSFERED");
+
         photonView.RPC("JoinButton", RpcTarget.AllBuffered, null);
     }
 
@@ -150,6 +154,13 @@ public class HubHolder : MonoBehaviourPunCallbacks {
     }
 
     [PunRPC]
+    void RequestOwnershipOfHub()
+    {
+        Debug.Log("RPC Requesting Ownership Of Hub");
+        
+    }
+
+    [PunRPC]
     void ResetHub()
     {
         photonView.TransferOwnership(0);
@@ -159,6 +170,9 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         playerInSlot = false;
         nameText.text = "";
         myPCM = null;
+        readyButton.colors = notReadyColors;
+        //photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, null);
+        UpdateHubName();
     }
 
     [PunRPC]
@@ -167,7 +181,8 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         joinUI.gameObject.SetActive(false);
         playerUi.gameObject.SetActive(true);
 
-        photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, null);
+        UpdateHubName();
+        //photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, null);
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
         //photonView.RPC("UpdateCharacterColor", RpcTarget.AllBuffered, null);
         UpdateCharacterColor();
@@ -199,13 +214,15 @@ public class HubHolder : MonoBehaviourPunCallbacks {
     [PunRPC]
     void UpdateHubName()
     {
-        if(photonView.Owner == null)
+        if (photonView.Owner == null)
         {
-            Debug.Log(gameObject.name + " has no owner: Owner: " + photonView.Owner + " !");
+            Debug.Log("No owner on " + photonView.name);
+            ownerName.text = "Scene";
         }
-        else
+        else if (photonView.Owner != null && photonView.Owner.NickName != "Scene")
         {
             nameText.text = photonView.Owner.NickName;
+            ownerName.text = photonView.Owner.NickName;
         }
     }
 
