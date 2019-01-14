@@ -167,10 +167,17 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         Debug.Log(playerName + " Is Joining hub: " + photonView.name);
         joinUI.gameObject.SetActive(false);
         playerUi.gameObject.SetActive(true);
-        
+
+        photonView.RPC("PlayerTookOwnership", RpcTarget.AllBuffered, photonView);
         photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, playerName);
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
         UpdateCharacterColor();
+    }
+
+    [PunRPC]
+    void PlayerTookOwnership(PhotonView pView)
+    {
+        photonView.TransferOwnership(pView.Owner);
     }
 
     [PunRPC]
