@@ -828,6 +828,26 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114543109065289156, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114543109065289156, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: viewIdField
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: InstantiationId
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5729646270682833841, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
       propertyPath: m_havePropertiesChanged
