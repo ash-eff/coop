@@ -56,4 +56,5 @@ MonoBehaviour:
   - CharacterColor
   - UpdateOwner
   - RequestOwnershipOfHub
+  - JoinHub
   DisableAutoOpenWizard: 1

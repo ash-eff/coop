@@ -23,7 +23,7 @@ public class HubHolder : MonoBehaviourPunCallbacks {
     public TextMeshProUGUI ownerName;
     public Color charColor;
 
-    public PlayerConnectionManager myPCM;
+    public PlayerConnectionManager hubPCM;
 
     private HubHolder[] hubs;
     private LobbyManager lobbyManager;
@@ -56,44 +56,39 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         currentCharacterIndex = 0;
         characterImages[0].gameObject.SetActive(true);
         maxCharacterIndex = characterImages.Length - 1;
-        //photonView.RPC("UpdateHubName", RpcTarget.All, null);
     }
 
-    public void JoinSlot()
+    public void JoinButtonPressed()
     {
-        //print("VIEW ID: " + photonView.ViewID);
-        foreach(HubHolder hub in hubs)
-        {
-            if (hub.GetComponent<PhotonView>().IsMine)
-            {
-                if(hub.GetComponent<PhotonView>().ViewID == photonView.ViewID)
-                {
-                    //Debug.Log("SKIP " + hub.gameObject.name);
-                }
-                else
-                {
-                    hub.photonView.RPC("ResetHub", RpcTarget.All, null);
-                }
-            }
-        }
+        //foreach(HubHolder hub in hubs)
+        //{
+        //    if (hub.GetComponent<PhotonView>().IsMine)
+        //    {
+        //        if(hub.GetComponent<PhotonView>().ViewID == photonView.ViewID)
+        //        {
+        //            //Debug.Log("SKIP " + hub.gameObject.name);
+        //        }
+        //        else
+        //        {
+        //            hub.photonView.RPC("ResetHub", RpcTarget.All, null);
+        //        }
+        //    }
+        //}
 
         StartCoroutine(RequestTransfer());
     }
 
     IEnumerator RequestTransfer()
     {
-        //photonView.RPC("RequestOwnershipOfHub", RpcTarget.AllBuffered, null);
-        this.photonView.RequestOwnership();
+        photonView.RequestOwnership();
 
         while (photonView.Owner == null)
         {
             yield return new WaitForEndOfFrame();
         }
 
-        OnPlayerInSlot();
+        //OnPlayerInSlot();
         AddPlayerConnectionManager();
-
-        photonView.RPC("JoinButton", RpcTarget.AllBuffered, null);
     }
 
     public void OnPlayerInSlot()
@@ -102,7 +97,7 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         readyButton.interactable = true;
     }
 
-    public void OnButtonRight()
+    public void OnRightButtonPressed()
     {
         if(photonView.IsMine)
         {
@@ -113,7 +108,7 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         }
     }
 
-    public void OnButtonLeft()
+    public void OnLeftButtonPressed()
     {
         if(photonView.IsMine)
         {
@@ -124,7 +119,7 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         }
     }
 
-    public void ReadyClick()
+    public void OnReadyButtonPressed()
     {
         photonView.RPC("OnReadyClick", RpcTarget.AllBuffered, null);
     }
@@ -136,9 +131,11 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         {
             if (pcm.GetComponent<PhotonView>().IsMine)
             {
-                myPCM = pcm;
+                hubPCM = pcm;
             }
         }
+
+        photonView.RPC("JoinHub", RpcTarget.AllBuffered, null);
     }
 
     private void UpdateCharacterColor()
@@ -146,7 +143,7 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         if(photonView.IsMine)
         {
             charColor = characterImages[currentCharacterIndex].GetComponent<Image>().color;
-            myPCM.characterColor = charColor;
+            hubPCM.characterColor = charColor;
         }
     }
 
@@ -159,21 +156,20 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         playerIsReady = false;
         playerInSlot = false;
         nameText.text = "";
-        myPCM = null;
+        hubPCM = null;
         readyButton.colors = notReadyColors;
-        photonView.RPC("UpdateHubName", RpcTarget.All, null);
-        
+        photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, null);
     }
 
     [PunRPC]
-    void JoinButton()
-    {       
+    void JoinHub()
+    {
+        Debug.Log("Joining hub: " + photonView.name);
         joinUI.gameObject.SetActive(false);
         playerUi.gameObject.SetActive(true);
-
-        photonView.RPC("UpdateHubName", RpcTarget.All, null);
+        
+        photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, null);
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
-        //photonView.RPC("UpdateCharacterColor", RpcTarget.AllBuffered, null);
         UpdateCharacterColor();
     }
 
@@ -184,7 +180,6 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         currentCharacterIndex++;
         characterImages[currentCharacterIndex].gameObject.SetActive(true);
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
-        //photonView.RPC("UpdateCharacterColor", RpcTarget.AllBuffered, null);
         UpdateCharacterColor();
     }
 
@@ -195,28 +190,22 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         currentCharacterIndex--;
         characterImages[currentCharacterIndex].gameObject.SetActive(true);
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
-        //photonView.RPC("UpdateCharacterColor", RpcTarget.AllBuffered, null);
         UpdateCharacterColor();
     }
 
     [PunRPC]
     void UpdateHubName()
     {
-        Debug.Log("UPDATING HUB NAMES!");
-        Debug.Log("Owner of " + photonView.name + " is " + photonView.Owner);
-
         //if (photonView.Owner == null)
         //{
         //    nameText.text = "Join";
         //    ownerName.text = "Scene";
         //}
-        if (photonView.Owner != null)
-        {
+        //if (photonView.Owner != null)
+        //{
             nameText.text = photonView.Owner.NickName;
             ownerName.text = photonView.Owner.NickName;
-        }
-
-        
+        //}
     }
 
     [PunRPC]

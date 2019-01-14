@@ -116,7 +116,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114063329075847696}
-        m_MethodName: OnButtonRight
+        m_MethodName: OnRightButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -486,7 +486,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114063329075847696}
-        m_MethodName: JoinSlot
+        m_MethodName: JoinButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1752,7 +1752,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114063329075847696}
-        m_MethodName: OnButtonLeft
+        m_MethodName: OnLeftButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2170,7 +2170,7 @@ MonoBehaviour:
   charInfo: {fileID: 114144312335683224}
   ownerName: {fileID: 5729646270682833841}
   charColor: {r: 0, g: 0, b: 0, a: 0}
-  myPCM: {fileID: 0}
+  hubPCM: {fileID: 0}
   playerIsReady: 0
   playerInSlot: 0
   occupied: 0
@@ -2193,8 +2193,8 @@ MonoBehaviour:
   OwnershipTransfer: 1
   ObservedComponents:
   - {fileID: 114059865096055984}
-  viewIdField: 0
-  InstantiationId: 10
+  viewIdField: 8
+  InstantiationId: 8
   isRuntimeInstantiated: 0
 --- !u!114 &114059865096055984
 MonoBehaviour:
