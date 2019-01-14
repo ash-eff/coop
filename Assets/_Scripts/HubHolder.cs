@@ -75,8 +75,14 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks {
         //    }
         //}
 
-        photonView.RequestOwnership();
+        photonView.RPC("RequestOwnershipOfHub", RpcTarget.AllBuffered, null);
         //StartCoroutine(RequestTransfer());
+    }
+
+    [PunRPC]
+    void RequestOwnershipOfHub()
+    {
+        photonView.RequestOwnership();
     }
 
     IEnumerator RequestTransfer()
