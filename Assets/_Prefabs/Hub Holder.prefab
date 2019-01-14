@@ -2190,11 +2190,11 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 1
+  OwnershipTransfer: 2
   ObservedComponents:
   - {fileID: 114059865096055984}
-  viewIdField: 8
-  InstantiationId: 8
+  viewIdField: 10
+  InstantiationId: 10
   isRuntimeInstantiated: 0
 --- !u!114 &114059865096055984
 MonoBehaviour:

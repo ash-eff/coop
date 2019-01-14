@@ -848,16 +848,6 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
-        type: 3}
-      propertyPath: viewIdField
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
-        type: 3}
-      propertyPath: InstantiationId
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 5729646270682833841, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
       propertyPath: m_havePropertiesChanged

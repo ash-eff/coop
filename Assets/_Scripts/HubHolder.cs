@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 
-public class HubHolder : MonoBehaviourPunCallbacks {
+public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks {
 
     [Tooltip("UI Button for the ready check in the Player's Hub")]
     [SerializeField]
@@ -75,7 +75,8 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         //    }
         //}
 
-        StartCoroutine(RequestTransfer());
+        photonView.RequestOwnership();
+        //StartCoroutine(RequestTransfer());
     }
 
     IEnumerator RequestTransfer()
@@ -135,7 +136,6 @@ public class HubHolder : MonoBehaviourPunCallbacks {
             }
         }
 
-        photonView.RPC("JoinHub", RpcTarget.AllBuffered, photonView.Owner.NickName);
     }
 
     private void UpdateCharacterColor()
@@ -162,22 +162,21 @@ public class HubHolder : MonoBehaviourPunCallbacks {
     }
 
     [PunRPC]
-    void JoinHub(string playerName)
+    void JoinHub()
     {
-        Debug.Log(playerName + " Is Joining hub: " + photonView.name);
         joinUI.gameObject.SetActive(false);
         playerUi.gameObject.SetActive(true);
 
-        photonView.RPC("PlayerTookOwnership", RpcTarget.AllBuffered, photonView);
-        photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, playerName);
+        photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, photonView.Owner.NickName);
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
+        AddPlayerConnectionManager();
         UpdateCharacterColor();
     }
 
     [PunRPC]
-    void PlayerTookOwnership(PhotonView pView)
+    void OwnershipTransfer()
     {
-        photonView.TransferOwnership(pView.Owner);
+        photonView.RequestOwnership();
     }
 
     [PunRPC]
@@ -201,7 +200,7 @@ public class HubHolder : MonoBehaviourPunCallbacks {
     }
 
     [PunRPC]
-    void UpdateHubName(string nameOfPlayer)
+    void UpdateHubName(string name)
     {
         if (photonView.Owner == null)
         {
@@ -210,8 +209,8 @@ public class HubHolder : MonoBehaviourPunCallbacks {
         }
         if (photonView.Owner != null)
         {
-            nameText.text = nameOfPlayer;
-            ownerName.text = nameOfPlayer;
+            nameText.text = name;
+            ownerName.text = name;
         }
     }
 
@@ -238,5 +237,18 @@ public class HubHolder : MonoBehaviourPunCallbacks {
             readyButton.colors = notReadyColors;
             lobbyManager.PlayersReady -= 1;
         }
+    }
+
+    public void OnOwnershipRequest(PhotonView targetView, Photon.Realtime.Player requestingPlayer)
+    {
+        Debug.Log("OnOwnershipRequest(): Player " + requestingPlayer + " requests ownership of: " + targetView + ".");
+        targetView.TransferOwnership(requestingPlayer);
+    }
+
+    public void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
+    {
+        Debug.Log("targetview: " + targetView);
+        
+        targetView.RPC("JoinHub", RpcTarget.AllBuffered, null);
     }
 }
