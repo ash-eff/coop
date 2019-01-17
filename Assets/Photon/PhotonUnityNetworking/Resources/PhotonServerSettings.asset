@@ -59,4 +59,6 @@ MonoBehaviour:
   - JoinHub
   - PlayerTookOwnership
   - OwnershipTransfer
+  - OwnershipRequest
+  - StateOwnership
   DisableAutoOpenWizard: 1

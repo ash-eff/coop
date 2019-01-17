@@ -250,6 +250,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
       propertyPath: viewIdField
       value: 4
       objectReference: {fileID: 0}
@@ -261,7 +266,12 @@ PrefabInstance:
     - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
       propertyPath: OwnershipTransfer
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: ObservedComponents.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114272284905742944, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
@@ -282,6 +292,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114976675360288468, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1013477855}
+    - target: {fileID: 114976675360288468, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: JoinButtonPressed
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 648ebe6122923864fb60eb1d3645fbb2, type: 3}
@@ -1472,6 +1492,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
       propertyPath: viewIdField
       value: 6
       objectReference: {fileID: 0}
@@ -1483,7 +1508,12 @@ PrefabInstance:
     - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
       propertyPath: OwnershipTransfer
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: ObservedComponents.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114272284905742944, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
@@ -1504,6 +1534,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114976675360288468, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1650962101}
+    - target: {fileID: 114976675360288468, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: JoinButtonPressed
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 648ebe6122923864fb60eb1d3645fbb2, type: 3}
@@ -1560,6 +1600,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224091698993028574, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224091698993028574, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224091698993028574, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224091698993028574, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -125
       objectReference: {fileID: 0}
@@ -1608,31 +1663,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 224091698993028574, guid: 648ebe6122923864fb60eb1d3645fbb2,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.9999968
-      objectReference: {fileID: 0}
-    - target: {fileID: 224091698993028574, guid: 648ebe6122923864fb60eb1d3645fbb2,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.9999968
-      objectReference: {fileID: 0}
-    - target: {fileID: 224091698993028574, guid: 648ebe6122923864fb60eb1d3645fbb2,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.9999968
-      objectReference: {fileID: 0}
-    - target: {fileID: 114144312335683224, guid: 648ebe6122923864fb60eb1d3645fbb2,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114144312335683224, guid: 648ebe6122923864fb60eb1d3645fbb2,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114543109065289156, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -1642,6 +1672,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: OwnershipTransfer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
@@ -1655,18 +1695,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
-      propertyPath: OwnershipTransfer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114272284905742944, guid: 648ebe6122923864fb60eb1d3645fbb2,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114272284905742944, guid: 648ebe6122923864fb60eb1d3645fbb2,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
+      propertyPath: ObservedComponents.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5729646270682833841, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
@@ -1677,6 +1707,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114976675360288468, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 263601704}
+    - target: {fileID: 114976675360288468, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: JoinButtonPressed
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 648ebe6122923864fb60eb1d3645fbb2, type: 3}

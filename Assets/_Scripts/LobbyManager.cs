@@ -21,24 +21,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         set { playersReady = value; CheckForReady(); }
     }
 
-    //[PunRPC]
-    //public void CheckForAvailablePosition(int id)
-    //{
-    //    foreach (HubHolder hub in hubs)
-    //    {
-    //        if (lobbySlot.GetComponent<HubHolder>().occupied)
-    //        {
-    //            Debug.Log("Skipping " + lobbySlot.name);
-    //            continue;
-    //        }
-    //        else
-    //        {
-    //            lobbySlot.GetComponent<HubHolder>().Occupied = true;
-    //            lobbySlot.GetComponent<HubHolder>().viewId = id;
-    //            break;
-    //        }
-    //    }
-    //}
+
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
@@ -73,4 +56,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LoadLevel("Main");
     }
+
+
 }
