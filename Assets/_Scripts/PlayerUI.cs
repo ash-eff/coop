@@ -58,12 +58,12 @@ public class PlayerUI : MonoBehaviour {
     
     void LateUpdate()
     {
-        if(targetPosition != null)
-        {
+        //if(targetPosition != null)
+        //{
             targetPosition = targetTransform.position;
             targetPosition.y += 1f;
             transform.position = Camera.main.WorldToScreenPoint(targetPosition) + screenOffset;
-        }
+        //}
     }
     
     #endregion

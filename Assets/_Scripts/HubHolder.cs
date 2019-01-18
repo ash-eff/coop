@@ -16,13 +16,13 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public ColorBlock notReadyColors;
 
     public GameObject joinUI;
-    public GameObject playerUi;
-    public Image[] characterImages;   
+    public GameObject playerUi; 
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI charName;
     public TextMeshProUGUI charInfo;
-    public TextMeshProUGUI ownerName;
-    public Color charColor;
+    public Image characterImage;
+
+    public GameObject currentChar;
 
     public PlayerConnectionManager hubPCM;
 
@@ -30,9 +30,8 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     private LobbyManager lobbyManager;
     private PlayerConnectionManager[] pcms;
 
-    private int currentCharacterIndex;
+    public int currentCharacterIndex;
     private int maxCharacterIndex;
-    private bool joined = false;
     private bool requesting = false;
 
     public bool playerIsReady;
@@ -50,56 +49,42 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         hubs = FindObjectsOfType<HubHolder>();
         currentCharacterIndex = 0;
-        characterImages[0].gameObject.SetActive(true);
-        maxCharacterIndex = characterImages.Length - 1;
+        //characterImages[0].gameObject.SetActive(true);
+        maxCharacterIndex = lobbyManager.characters.Length - 1;
     }
 
+    // Join button was pressed, start the process for joingin a hub
     public void JoinButtonPressed()
     {
-        //foreach(HubHolder hub in hubs)
-        //{
-        //    if (hub.GetComponent<PhotonView>().IsMine)
-        //    {
-        //        if(hub.GetComponent<PhotonView>().ViewID == photonView.ViewID)
-        //        {
-        //            //Debug.Log("SKIP " + hub.gameObject.name);
-        //        }
-        //        else
-        //        {
-        //            hub.photonView.RPC("ResetHub", RpcTarget.All, null);
-        //        }
-        //    }
-        //}
+        Debug.Log("JoinButtonPressed(): Join button pressed on" + photonView.name);
+        foreach (HubHolder hub in hubs)
+        {
+            if (hub.photonView.Owner != null && hub.photonView.IsMine)
+            {
+                // we have access to the hubs we own
+                // if the hub I own is the same as the one I clicked the join but on, then skip it
+                if(hub.photonView.ViewID == photonView.ViewID)
+                {
+                   // SKIP!
+                }
+                // if it's not the same, then it's my previous hub and needs to be reset
+                else
+                {
+                    Debug.Log("JoinButtonPressed(): " + hub.name + " was my previous hub and is being reset.");
+                    hub.photonView.RPC("ResetHub", RpcTarget.All, null);
+                }
+            }
+        }
 
+        // you are now requesting to join a hub
         requesting = true;
-
         photonView.RequestOwnership();
-        Debug.Log("join button pressed on" + photonView.name);
-        //StartCoroutine(RequestTransfer());
     }
 
-    //IEnumerator RequestTransfer()
-    //{
-    //    photonView.RequestOwnership();
-    //
-    //    while (photonView.Owner == null)
-    //    {
-    //        yield return new WaitForEndOfFrame();
-    //    }
-    //
-    //    //OnPlayerInSlot();
-    //    AddPlayerConnectionManager();
-    //}
-
-    public void OnPlayerInSlot()
-    {
-        playerInSlot = true;
-        readyButton.interactable = true;
-    }
-
+    // right arrow button clicked
     public void OnRightButtonPressed()
     {
-        if(photonView.IsMine)
+        if(photonView.IsMine && !playerIsReady)
         {
             if (currentCharacterIndex < maxCharacterIndex)
             {
@@ -108,9 +93,10 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
     }
 
+    // left arrow button clicked
     public void OnLeftButtonPressed()
     {
-        if(photonView.IsMine)
+        if(photonView.IsMine && !playerIsReady)
         {
             if (currentCharacterIndex > 0)
             {
@@ -119,11 +105,16 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
     }
 
+    // ready check button clicked
     public void OnReadyButtonPressed()
     {
-        photonView.RPC("OnReadyClick", RpcTarget.AllBuffered, null);
+        if (photonView.IsMine)
+        {
+            photonView.RPC("OnReadyClick", RpcTarget.AllBuffered, null);
+        }
     }
 
+    // add your PlayerCharacterManager script to the hub 
     public void AddPlayerConnectionManager()
     {
         pcms = FindObjectsOfType<PlayerConnectionManager>();
@@ -134,120 +125,158 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 hubPCM = pcm;
             }
         }
-
-        //photonView.RPC("JoinHub", RpcTarget.AllBuffered, null);
     }
 
-    private void UpdateCharacterColor()
+    // add the chracter on your PlayerCharacterManager script so you can instantiate it later
+    private void UpdateCharacter()
     {
         if (photonView.IsMine)
         {
-            charColor = characterImages[currentCharacterIndex].GetComponent<Image>().color;
-            hubPCM.characterColor = charColor;
+            //charColor = characterImages[currentCharacterIndex].GetComponent<Image>().color;
+            hubPCM.playerCharacterPrefab = currentChar;
         }
     }
 
+    // let other players know when you've left a hub
     [PunRPC]
     void ResetHub()
     {
         photonView.TransferOwnership(0);
         joinUI.gameObject.SetActive(true);
         playerUi.gameObject.SetActive(false);
-        playerIsReady = false;
         playerInSlot = false;
+        readyButton.interactable = false;
         nameText.text = "";
         hubPCM = null;
-        readyButton.colors = notReadyColors;
-        photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, null);
+        readyButton.colors = notReadyColors;    
+        photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, "");
+        if(playerIsReady)
+        {
+            playerIsReady = false;
+            lobbyManager.PlayersReady -= 1;
+        }
     }
 
+    // let other players known when you've joined a hub
     [PunRPC]
     void JoinHub()
     {
         Debug.Log(photonView.Owner + " has been assign to " + photonView.name);
         requesting = false;
+        playerInSlot = true;
+        readyButton.interactable = true;
+        currentChar = lobbyManager.characters[currentCharacterIndex];
         AddPlayerConnectionManager();
-        UpdateCharacterColor();
+        UpdateCharacter();
         joinUI.gameObject.SetActive(false);
         playerUi.gameObject.SetActive(true);
         photonView.RPC("UpdateHubName", RpcTarget.AllBuffered, photonView.Owner.NickName);
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
     }
 
+    // let everyone know when you cycle through characters to the right
     [PunRPC]
     void RightButton()
     {
-        characterImages[currentCharacterIndex].gameObject.SetActive(false);
         currentCharacterIndex++;
-        characterImages[currentCharacterIndex].gameObject.SetActive(true);
+        currentChar = null;
+        currentChar = lobbyManager.characters[currentCharacterIndex];
+        UpdateCharacter();
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
-        UpdateCharacterColor();
     }
 
+    // let everyone know when you cycle through characters to the left
     [PunRPC]
     void LeftButton()
     {
-        characterImages[currentCharacterIndex].gameObject.SetActive(false);
         currentCharacterIndex--;
-        characterImages[currentCharacterIndex].gameObject.SetActive(true);
+        currentChar = null;
+        currentChar = lobbyManager.characters[currentCharacterIndex];
+        UpdateCharacter();
         photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
-        UpdateCharacterColor();
     }
 
+    // tell everyone the name of the owner of the object
     [PunRPC]
-    void UpdateHubName(string playerOwner)
-    {
-        if(photonView.Owner != null)
-        {
-            string theOwnerName = playerOwner;
-            Debug.Log("THE OWNER NAME: " + theOwnerName);
-            nameText.text = theOwnerName;
-            ownerName.text = theOwnerName;
-            Debug.Log(photonView.name + " is owned by " + photonView.Owner.NickName);
-        }
+    void UpdateHubName(string owner)
+    {        
+        nameText.text = owner;
+        //if (photonView.Owner != null)
+        //{
+        //   
+        //}
     }
 
+    // tell others about the chracter you selected
     [PunRPC]
     void UpdateChracterInfo()
     {
-        charName.text = characterImages[currentCharacterIndex].GetComponent<CharacterInfo>().characterName;
-        charInfo.text = characterImages[currentCharacterIndex].GetComponent<CharacterInfo>().characterInfo;
+        characterImage.GetComponent<Image>().sprite = currentChar.GetComponent<SpriteRenderer>().sprite;
+        charName.text = currentChar.GetComponent<CharacterInfo>().characterName;
+        charInfo.text = currentChar.GetComponent<CharacterInfo>().characterInfo;
         Debug.Log("Update character info on " + photonView.name);
     }
 
+    // let others know when you have done a ready check
     [PunRPC]
     void OnReadyClick()
     {
+        // turn the button into a bool switch
         playerIsReady = !playerIsReady;
+        // if ready, then change the button and set player as ready
         if (playerIsReady)
         {
-            print("ready");
             readyButton.colors = readyColors;
+            currentChar.GetComponent<CharacterInfo>().SelectChamp();
             lobbyManager.PlayersReady += 1;
+            photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
         }
+        // if not ready, then change the button and set player as not ready
         else
         {
-            print("not ready");
             readyButton.colors = notReadyColors;
+            currentChar.GetComponent<CharacterInfo>().SelectChamp();
             lobbyManager.PlayersReady -= 1;
+            photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
         }
     }
 
+    // let others know that you were granted ownership over an object
+    [PunRPC]
+    void TransferObjectOwnership(Photon.Realtime.Player requestingPlayer)
+    {
+        // tell everyone that you are taking ownership of this object
+        photonView.TransferOwnership(requestingPlayer);
+    }
+
+    // called when there is a request for ownership transfer
     public void OnOwnershipRequest(PhotonView targetView, Photon.Realtime.Player requestingPlayer)
     {
+        // when a transfer of ownership is requested on this specific hub, the RPC TransferObjectOwnership
         if (requesting)
         {
             Debug.Log(targetView.name + ": Request Ownership Transfer from " + targetView.name + " to " + requestingPlayer);
-            targetView.TransferOwnership(requestingPlayer);
+            photonView.RPC("TransferObjectOwnership", RpcTarget.AllBuffered, requestingPlayer);
         }
     }
 
-    public void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
-    {
-        if(photonView == targetView)
+    // called when ownership is transfered
+    public void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player newOwner)
+    { 
+        // if this hub is the object being transfered 
+        if (photonView == targetView)
         {
-            Debug.Log(targetView.name + ": Ownership Transfered to " + targetView.name + " from " + previousOwner + ". Joining hub now.");
-            photonView.RPC("JoinHub", RpcTarget.AllBuffered, null);
+            // and this hub isn't transfering back to the scene
+            if(newOwner == null)
+            {
+                Debug.Log("OnOwnershipTransfered: " + targetView.name + " was transfered back to the Scene.");
+            }
+            // then tranfer ownership to the player
+            else
+            {
+                Debug.Log("OnOwnershipTransfered: " + targetView.name + " was transfered to " + newOwner + " .");
+                photonView.RPC("JoinHub", RpcTarget.AllBuffered, null);
+            }
         }
     }
 }

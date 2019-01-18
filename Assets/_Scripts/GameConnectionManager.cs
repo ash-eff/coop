@@ -170,7 +170,6 @@ public class GameConnectionManager : MonoBehaviourPunCallbacks
             }
             else
             {
-    
                 Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
             }
         }

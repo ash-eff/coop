@@ -61,4 +61,6 @@ MonoBehaviour:
   - OwnershipTransfer
   - OwnershipRequest
   - StateOwnership
+  - TransferObjectOwnership
+  - SelectChamp
   DisableAutoOpenWizard: 1

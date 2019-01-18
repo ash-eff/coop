@@ -9,11 +9,17 @@ using Photon.Realtime;
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static int playersReady;
-    public HubHolder[] hubs;
-    public Button startButton;
+
+    [Tooltip("UI Button used to start the game after a ready check.")]
+    [SerializeField]
+    private Button startButton;
+
+    [Tooltip("The available characters to choose from.")]
+    public GameObject[] characters;
 
     private GameConnectionManager gameConnection;
     private PhotonView pView;
+
     
     public int PlayersReady
     {
@@ -21,17 +27,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         set { playersReady = value; CheckForReady(); }
     }
 
-
-
-    public override void OnPlayerLeftRoom(Player otherPlayer)
+    private void Awake()
     {
-        foreach (HubHolder hub in hubs)
+        foreach(GameObject character in characters)
         {
-            if(hub.photonView.Owner == null)
-            {
-                print("No Owner");
-                hub.photonView.RPC("ResetHub", RpcTarget.AllBuffered, null);
-            }
+            character.GetComponent<CharacterInfo>().WakeUp();
         }
     }
 

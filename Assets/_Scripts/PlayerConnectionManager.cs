@@ -10,8 +10,6 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
 
     #region Public Fields
 
-    public Color characterColor;
-
     public enum GameState { Lobby, Playing, }
     public GameState gamestate = GameState.Lobby;
 
@@ -31,8 +29,7 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
 
     // TODO make this so that it can be set from the lobby from a drop down menu
     [Tooltip("The Player's GAME Character Prefab")]
-    [SerializeField]
-    private GameObject playerCharacterPrefab;
+    public GameObject playerCharacterPrefab;
 
     [Tooltip("The Player's LOBBY UI GameObject Prefab")]
     [SerializeField]
@@ -40,7 +37,6 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
 
     private bool isPlayerGameUILoaded;
     private bool isPlayerLobbyUILoaded;
-    private LobbyManager lm;
     private Vector2 openPos;
     public int viewToSend;
 
@@ -75,12 +71,6 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
         
     }
 
-    public void Start()
-    {
-        lm = FindObjectOfType<LobbyManager>();
-
-    }
-
     public void Update()
     {  
         // we only process Inputs and check health if we are the local player
@@ -93,7 +83,7 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
                     Debug.Log("INSTANTIATE OBJECT FOR " + photonView.Owner.NickName);
                     GameObject playerChar = PhotonNetwork.Instantiate(playerCharacterPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
                     playerChar.gameObject.transform.SetParent(transform, false);
-                    playerChar.GetPhotonView().RPC("CharacterColor", RpcTarget.AllBuffered, new Vector3(characterColor.r, characterColor.g, characterColor.b));
+                    //playerChar.GetPhotonView().RPC("CharacterColor", RpcTarget.AllBuffered, new Vector3(characterColor.r, characterColor.g, characterColor.b));
 
 
                     //GameObject GUiGo = PhotonNetwork.Instantiate(playerGameUIPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
@@ -169,15 +159,11 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
     }
 
     //[PunRPC]
-    void UpdateCharacterColor(Vector3 col)
+    void UpdateCharacter()
     {
         if (photonView.IsMine)
         {
-            Vector3 _color = col;
-            characterColor.r = col.x;
-            characterColor.g = col.y;
-            characterColor.b = col.z;
-            characterColor.a = 1;
+
         }
     }
 

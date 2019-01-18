@@ -449,6 +449,11 @@ PrefabInstance:
       propertyPath: InstantiationId
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 114847543155555582, guid: 937f45cd2efc1064cbe9fb7486c07723,
+        type: 3}
+      propertyPath: playerConnectionPrefab
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 937f45cd2efc1064cbe9fb7486c07723, type: 3}
 --- !u!1 &98615289
@@ -481,12 +486,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f0906b5479bb9c4b83d51e3083a0e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hubs:
-  - {fileID: 462928083}
-  - {fileID: 263601704}
-  - {fileID: 1650962101}
-  - {fileID: 1013477855}
   startButton: {fileID: 1040620172}
+  characters:
+  - {fileID: 1364686637355020, guid: 19d80afce339d7949a090f3779b1ea8d, type: 3}
+  - {fileID: 1364686637355020, guid: 65bacb5fffe8d1b4690c9fd6412ccc85, type: 3}
+  - {fileID: 1364686637355020, guid: 89029583804cfcf42ae534cf7037fd7c, type: 3}
+  - {fileID: 1364686637355020, guid: 28e3b74cb3f4e8348a878cd2e32ec1be, type: 3}
+  - {fileID: 1364686637355020, guid: 2703cd6feb6ce4a4b9c7af3c00194f6e, type: 3}
+  - {fileID: 1364686637355020, guid: 653c463d14e58a849912cfbd39e15d41, type: 3}
+  - {fileID: 1364686637355020, guid: 771e92a2dedc80d438c8a14ca3202957, type: 3}
 --- !u!4 &98615291
 Transform:
   m_ObjectHideFlags: 0
@@ -712,18 +720,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5927d61f458dba4382286039bf78706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &462928083 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114063329075847696, guid: 648ebe6122923864fb60eb1d3645fbb2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1020360511}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5927d61f458dba4382286039bf78706, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &539158707 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224091698993028574, guid: 648ebe6122923864fb60eb1d3645fbb2,
@@ -868,6 +864,16 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: viewIdField
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114325963987260742, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: InstantiationId
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5729646270682833841, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -877,6 +883,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1199024913304296, guid: 648ebe6122923864fb60eb1d3645fbb2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 648ebe6122923864fb60eb1d3645fbb2, type: 3}
@@ -1663,6 +1673,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114144312335683224, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114144312335683224, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114543109065289156, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -1697,6 +1717,16 @@ PrefabInstance:
         type: 3}
       propertyPath: ObservedComponents.Array.data[1]
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114272284905742944, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114272284905742944, guid: 648ebe6122923864fb60eb1d3645fbb2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5729646270682833841, guid: 648ebe6122923864fb60eb1d3645fbb2,
         type: 3}
