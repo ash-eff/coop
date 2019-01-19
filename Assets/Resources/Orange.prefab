@@ -102,7 +102,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 114780760437559864}
-  viewIdField: 13
+  viewIdField: 0
   InstantiationId: 13
   isRuntimeInstantiated: 0
 --- !u!114 &114780760437559864
@@ -146,10 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90679705a7c37a749936fcce15485073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSprite: {fileID: 21300000, guid: f1162b3d1cb57f845bb8a37fd1ad2dcc, type: 3}
-  selectedSprite: {fileID: 21300000, guid: 6dfe39fee92b8d1488e36f332df49bb7, type: 3}
   characterName: Orange Dude
   characterInfo: Orange Dude has a Orange weapon that does Orange damage. Orange Dude's
     favorite color is not Orange.
   playable: 0
-  isSelectable: 0
+  isSelectable: 1

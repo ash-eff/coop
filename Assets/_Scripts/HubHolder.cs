@@ -86,10 +86,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         if(photonView.IsMine && !playerIsReady)
         {
-            if (currentCharacterIndex < maxCharacterIndex)
-            {
-                photonView.RPC("RightButton", RpcTarget.AllBuffered, null);
-            }
+            photonView.RPC("RightButton", RpcTarget.AllBuffered, null);       
         }
     }
 
@@ -98,10 +95,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         if(photonView.IsMine && !playerIsReady)
         {
-            if (currentCharacterIndex > 0)
-            {
-                photonView.RPC("LeftButton", RpcTarget.AllBuffered, null);
-            }
+            photonView.RPC("LeftButton", RpcTarget.AllBuffered, null);
         }
     }
 
@@ -178,6 +172,28 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     [PunRPC]
     void RightButton()
     {
+        bool checkingRight = true;
+
+        while (checkingRight)
+        {
+            if (currentCharacterIndex + 1 > lobbyManager.characters.Length - 1)
+            {
+                currentCharacterIndex = 0;
+            }
+
+            Debug.Log("Checking..." + lobbyManager.characters[currentCharacterIndex + 1].name);
+
+            if (lobbyManager.characters[currentCharacterIndex + 1].GetComponent<CharacterInfo>().isSelectable)
+            {
+                checkingRight = false;
+            }
+            else
+            {
+                currentCharacterIndex ++;
+                Debug.Log(lobbyManager.characters[currentCharacterIndex].name + " selectable? " + lobbyManager.characters[currentCharacterIndex].GetComponent<CharacterInfo>().isSelectable);
+            }
+        }
+
         currentCharacterIndex++;
         currentChar = null;
         currentChar = lobbyManager.characters[currentCharacterIndex];
@@ -189,6 +205,28 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     [PunRPC]
     void LeftButton()
     {
+        bool checkingLeft = true;
+
+        while (checkingLeft)
+        {
+            if (currentCharacterIndex - 1 <= 0)
+            {
+                currentCharacterIndex = lobbyManager.characters.Length;
+            }
+
+            Debug.Log("Checking..." + lobbyManager.characters[currentCharacterIndex - 1].name);
+
+            if (lobbyManager.characters[currentCharacterIndex - 1].GetComponent<CharacterInfo>().isSelectable)
+            {
+                checkingLeft = false;
+            }
+            else
+            {
+                currentCharacterIndex--;
+                Debug.Log(lobbyManager.characters[currentCharacterIndex].name + " selectable? " + lobbyManager.characters[currentCharacterIndex].GetComponent<CharacterInfo>().isSelectable);
+            }
+        }
+
         currentCharacterIndex--;
         currentChar = null;
         currentChar = lobbyManager.characters[currentCharacterIndex];
@@ -217,6 +255,19 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Debug.Log("Update character info on " + photonView.name);
     }
 
+    //[PunRPC]
+    void CharacterAvailable()
+    {
+        foreach(HubHolder hub in hubs)
+        {
+            if (!hub.playerIsReady && hub.playerInSlot)
+            {
+                Debug.Log(hub.photonView.name + " will switch to the next available chracter.");
+                hub.OnRightButtonPressed();
+            }
+        }
+    }
+
     // let others know when you have done a ready check
     [PunRPC]
     void OnReadyClick()
@@ -230,6 +281,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             currentChar.GetComponent<CharacterInfo>().SelectChamp();
             lobbyManager.PlayersReady += 1;
             photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
+            CharacterAvailable();
         }
         // if not ready, then change the button and set player as not ready
         else

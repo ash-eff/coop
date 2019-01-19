@@ -63,4 +63,5 @@ MonoBehaviour:
   - StateOwnership
   - TransferObjectOwnership
   - SelectChamp
+  - CharacterAvailable
   DisableAutoOpenWizard: 1

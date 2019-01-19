@@ -442,17 +442,12 @@ PrefabInstance:
     - target: {fileID: 114672820829317746, guid: 937f45cd2efc1064cbe9fb7486c07723,
         type: 3}
       propertyPath: viewIdField
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 114672820829317746, guid: 937f45cd2efc1064cbe9fb7486c07723,
         type: 3}
       propertyPath: InstantiationId
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 114847543155555582, guid: 937f45cd2efc1064cbe9fb7486c07723,
-        type: 3}
-      propertyPath: playerConnectionPrefab
-      value: 
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 937f45cd2efc1064cbe9fb7486c07723, type: 3}
