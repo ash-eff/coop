@@ -260,8 +260,10 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         foreach(HubHolder hub in hubs)
         {
+            // TODO the champ select bug starts here
             if (!hub.playerIsReady && hub.playerInSlot)
             {
+                // TODO it looks like the player's champ switches to the next champ even if it's available 
                 Debug.Log(hub.photonView.name + " will switch to the next available chracter.");
                 hub.OnRightButtonPressed();
             }

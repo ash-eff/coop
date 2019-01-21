@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 114780760437559864}
   - component: {fileID: 114109952654455910}
   - component: {fileID: 1929251036371742435}
+  - component: {fileID: 3892921565811137143}
+  - component: {fileID: 1596941297266181266}
   m_Layer: 0
   m_Name: Blue
   m_TagString: Untagged
@@ -103,7 +105,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114780760437559864}
   viewIdField: 0
-  InstantiationId: 14
+  InstantiationId: 11
   isRuntimeInstantiated: 0
 --- !u!114 &114780760437559864
 MonoBehaviour:
@@ -133,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 1
-  playerUI: {fileID: 1176209691683024, guid: 69100b34760ca034c9a6809ac70aa3fd, type: 3}
+  playerUI: {fileID: 282, guid: 69100b34760ca034c9a6809ac70aa3fd, type: 3}
 --- !u!114 &1929251036371742435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,10 +148,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90679705a7c37a749936fcce15485073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSprite: {fileID: 21300000, guid: 33d3106255bfb80418c14ccbceb1c1ac, type: 3}
-  selectedSprite: {fileID: 21300000, guid: 6dfe39fee92b8d1488e36f332df49bb7, type: 3}
-  characterName: Blue
+  characterName: Blue Dude
   characterInfo: Blue Dude has a Blue weapon that does Blue damage. Blue Dude's favorite
     color is not Blue.
   playable: 0
   isSelectable: 1
+--- !u!114 &3892921565811137143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364686637355020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd08475b23aa548b7b9d28397d430b32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 7
+  height: 3
+  heightSmoothLag: 0.3
+  centerOffset: {x: 0, y: 0, z: 0}
+  followOnStart: 0
+--- !u!114 &1596941297266181266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364686637355020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 023be214641997b4ca4eb681f7e5f7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

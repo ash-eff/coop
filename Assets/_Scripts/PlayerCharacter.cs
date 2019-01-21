@@ -8,16 +8,8 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     [Tooltip("The current Health of our player")]
     public float Health = 1f;
 
+    [Tooltip("The UI of our character")]
     public GameObject playerUI;
-
-    private SpriteRenderer spr;
-
-    private void Awake()
-    {
-        spr = GetComponent<SpriteRenderer>();
-        GameObject ui = Instantiate(playerUI, Vector2.zero, Quaternion.identity);
-        ui.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
-    }
 
     private void Update()
     {
@@ -27,15 +19,14 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         }
     }
 
-    [PunRPC]
-    void CharacterColor(Vector3 col)
+    public void InstantiateUI()
     {
-        Color newColor;
-        newColor.r = col.x;
-        newColor.g = col.y;
-        newColor.b = col.z;
-        newColor.a = 1;
-        spr.color = newColor;
+        if (photonView.IsMine)
+        {
+            GameObject ui = Instantiate(playerUI, Vector2.zero, Quaternion.identity);
+            Debug.Log("INSTANTIATE " + ui + " FOR " + photonView.Owner.NickName);
+            ui.SendMessage("SetTarget", gameObject);
+        }
     }
 
     #region IPunObservable implementation
