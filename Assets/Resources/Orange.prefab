@@ -152,7 +152,7 @@ MonoBehaviour:
   characterInfo: Orange Dude has a Orange weapon that does Orange damage. Orange Dude's
     favorite color is not Orange.
   playable: 0
-  isSelectable: 0
+  isSelectable: 1
 --- !u!114 &620
 MonoBehaviour:
   m_ObjectHideFlags: 0

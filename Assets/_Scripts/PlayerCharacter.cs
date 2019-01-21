@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
+public class PlayerCharacter : MonoBehaviourPunCallbacks {
 
     [Tooltip("The current Health of our player")]
+    [Range(0,1)]
     public float Health = 1f;
 
     [Tooltip("The UI of our character")]
@@ -29,21 +30,21 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         }
     }
 
-    #region IPunObservable implementation
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            // We own this player: send the others our data
-            stream.SendNext(this.Health);
-        }
-        else
-        {
-            // Network player, receive data
-            this.Health = (float)stream.ReceiveNext();
-        }
-    }
-
-    #endregion
+    //#region IPunObservable implementation
+    //
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if (stream.IsWriting)
+    //    {
+    //        // We own this player: send the others our data
+    //        stream.SendNext(this.Health);
+    //    }
+    //    else
+    //    {
+    //        // Network player, receive data
+    //        this.Health = (float)stream.ReceiveNext();
+    //    }
+    //}
+    //
+    //#endregion
 }

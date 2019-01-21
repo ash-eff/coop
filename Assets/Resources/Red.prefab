@@ -152,7 +152,7 @@ MonoBehaviour:
   characterInfo: Red Dude has a Red weapon that does Red damage. Red Dude's favorite
     color is not Red.
   playable: 0
-  isSelectable: 0
+  isSelectable: 1
 --- !u!114 &614
 MonoBehaviour:
   m_ObjectHideFlags: 0

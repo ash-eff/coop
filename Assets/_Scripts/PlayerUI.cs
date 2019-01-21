@@ -13,9 +13,13 @@ public class PlayerUI : MonoBehaviour {
     [SerializeField]
     private Text playerNameText;
 
-    [Tooltip("UI Slider to display Player's Health")]
+    [Tooltip("UI Image to display Player's Health")]
     [SerializeField]
     private Image playerHealthSlider;
+
+    [Tooltip("UI Image to display Player's Image")]
+    [SerializeField]
+    private Image playerImage;
 
 
     #endregion
@@ -30,18 +34,18 @@ public class PlayerUI : MonoBehaviour {
 
     void Update()
     {
-       // // Reflect the Player Health
-       // if (playerHealthSlider != null)
-       // {
-       //     playerHealthSlider.fillAmount = target.GetComponent<PlayerCharacter>().Health;
-       // }
-       // 
-       // // Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
-       // if (target == null)
-       // {
-       //     Destroy(gameObject);
-       //     return;
-       // }
+        // Reflect the Player Health
+        if (playerHealthSlider != null)
+        {
+            playerHealthSlider.fillAmount = target.GetComponent<PlayerCharacter>().Health;
+        }
+        
+        // Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
+        if (target == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
     
     #endregion
@@ -56,6 +60,11 @@ public class PlayerUI : MonoBehaviour {
         if (playerNameText != null)
         {
             playerNameText.text = target.GetPhotonView().Owner.NickName;
+        }
+
+        if (playerImage != null)
+        {
+            playerImage.sprite = target.GetComponent<SpriteRenderer>().sprite;
         }
     }
     

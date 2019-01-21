@@ -104,8 +104,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 609}
-  viewIdField: 0
-  InstantiationId: 11
+  viewIdField: 12
+  InstantiationId: 12
   isRuntimeInstantiated: 0
 --- !u!114 &609
 MonoBehaviour:
@@ -152,7 +152,7 @@ MonoBehaviour:
   characterInfo: Yellow Dude has a Yellow weapon that does Yellow damage. Yellow Dude's
     favorite color is not Yellow.
   playable: 0
-  isSelectable: 1
+  isSelectable: 0
 --- !u!114 &616
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -239,10 +239,6 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void UpdateHubName(string owner)
     {        
         nameText.text = owner;
-        //if (photonView.Owner != null)
-        //{
-        //   
-        //}
     }
 
     // tell others about the chracter you selected
@@ -260,12 +256,14 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         foreach(HubHolder hub in hubs)
         {
-            // TODO the champ select bug starts here
             if (!hub.playerIsReady && hub.playerInSlot)
             {
-                // TODO it looks like the player's champ switches to the next champ even if it's available 
-                Debug.Log(hub.photonView.name + " will switch to the next available chracter.");
-                hub.OnRightButtonPressed();
+                Debug.Log("Is " + hub.currentChar + " still selectable? " + hub.currentChar.GetComponent<CharacterInfo>().isSelectable);
+                if (!hub.currentChar.GetComponent<CharacterInfo>().isSelectable)
+                {
+                    Debug.Log(hub.photonView.name + " will switch to the next available chracter.");
+                    hub.OnRightButtonPressed();
+                }
             }
         }
     }
@@ -283,6 +281,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             currentChar.GetComponent<CharacterInfo>().SelectChamp();
             lobbyManager.PlayersReady += 1;
             photonView.RPC("UpdateChracterInfo", RpcTarget.AllBuffered, null);
+            //photonView.RPC("CharacterAvailable", RpcTarget.AllBuffered, null);
             CharacterAvailable();
         }
         // if not ready, then change the button and set player as not ready
