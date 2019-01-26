@@ -105,8 +105,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 632}
-  viewIdField: 0
-  InstantiationId: 13
+  viewIdField: 5
+  InstantiationId: 5
   isRuntimeInstantiated: 0
 --- !u!114 &632
 MonoBehaviour:
@@ -166,11 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 023be214641997b4ca4eb681f7e5f7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camOffset: {x: 0, y: 0, z: 0}
-  radius: 0
   cursor: {fileID: 4272574566800600152}
-  curNum: {fileID: 0}
-  testing: 1
 --- !u!114 &684
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,24 +5,21 @@ using Photon.Pun;
 
 public class PlayerInput : MonoBehaviourPunCallbacks {
 
-    public Vector3 camOffset;
-    public float radius;
+    [Tooltip("The gameobject for the cursor")]
+    [SerializeField]
+    private GameObject cursor;
+
     private Vector3 velocity;
     private float speed = 15f;
-    private Vector3 cursorPos;
-    private Vector2 directionToMouse;
-    public GameObject cursor;
     private float camHeight;
     private float camWidth;
-    //TODO for testing
-    public RadiusTest curNum;
-    public bool testing;
+    private Camera cam;
 
     void Start ()
     {
-        camHeight = Camera.main.orthographicSize;
-        camWidth = camHeight * Camera.main.aspect;
-        curNum = FindObjectOfType<RadiusTest>();
+        cam = Camera.main;
+        camHeight = cam.orthographicSize;
+        camWidth = camHeight * cam.aspect;
     }
 
     void Update ()
@@ -32,36 +29,38 @@ public class PlayerInput : MonoBehaviourPunCallbacks {
             return;
         }
 
-        //TODO for testing
-        if (testing)
-        {
-            radius = curNum.cursorRadius;
-        }
-
-        //clampOffset = new Vector3((camWidth / clampOffsetOffset) - .5f, (camHeight / clampOffsetOffset) - .5f, 0f);
-
         velocity.x = Input.GetAxisRaw("Horizontal");
         velocity.y = Input.GetAxisRaw("Vertical");
 
         transform.Translate(velocity.normalized * speed * Time.deltaTime);
+    }
+
+    private void LateUpdate()
+    {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        // pointing from the character to the cursor
-        Vector3 heading = ray.origin - transform.position;
-        Vector3 newPos = transform.position + heading;
-        Vector3 offset = newPos - transform.position;
+        // direction from the character to the mouse position
+        Vector3 dirToMouse = ray.origin - transform.position;
+        // sets a position for the cursor based on where the character has moved
+        Vector3 cursorPos = transform.position + dirToMouse;
+        Vector3 cursorOffset = cursorPos - transform.position;
 
-        Vector3 constraintSize = new Vector3(camWidth, camHeight, 0f);
+        // these offsets use the distance of the camera to the character to set the "center"
+        // and calculated the offset using this distance + the cam view area
+        float camWidthOffset = Mathf.Abs(cam.transform.position.x - transform.position.x) + camWidth;
+        float camHeightOffset = Mathf.Abs(cam.transform.position.y - transform.position.y) + camHeight;
 
-        //cursor.transform.position = newPos;
-        //cursor.transform.position = transform.position + Vector3.ClampMagnitude(offset, radius);
-        //cursor.transform.position = transform.position + new Vector3(Mathf.Clamp(offset.x, -constraintSize.x, +constraintSize.x),
-                                                                     //Mathf.Clamp(offset.y, -constraintSize.y, +constraintSize.y), 
-                                                                     //0f);
+        // using the characters position as the center
+        // allow cursor to reach the edge of the screen no matter what the limitations on the camera placement are
 
-        //Vector3 clampedPosition = cursor.transform.position - transform.position;
-        cursor.transform.position = new Vector2(transform.position.x, transform.position.y) + Vector2.ClampMagnitude(offset, radius);
+        cursor.transform.position = transform.position + new Vector3(Mathf.Clamp(cursorOffset.x, -camWidthOffset, camWidthOffset),
+                                                                     Mathf.Clamp(cursorOffset.y, -camHeightOffset, camHeightOffset),
+                                                                     0f);
     }
 
     // TODO build custom collsion detection

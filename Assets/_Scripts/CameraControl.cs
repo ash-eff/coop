@@ -41,6 +41,7 @@ public class CameraControl : MonoBehaviourPunCallbacks
         if (testing && photonView.IsMine)
         {
             radius = camNum.cameraRadius;
+            smoothTime = camNum.smoothSpeed;
         }
     }
 

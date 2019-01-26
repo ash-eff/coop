@@ -166,11 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 023be214641997b4ca4eb681f7e5f7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camOffset: {x: 0, y: 0, z: 0}
-  radius: 0
   cursor: {fileID: 3440785872502739995}
-  curNum: {fileID: 0}
-  testing: 1
 --- !u!114 &666
 MonoBehaviour:
   m_ObjectHideFlags: 0
