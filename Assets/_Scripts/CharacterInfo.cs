@@ -16,18 +16,18 @@ public class CharacterInfo : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        CameraWork cameraWork = gameObject.GetComponent<CameraWork>();
-
-        if (cameraWork != null)
+        CameraControl cameraControl = gameObject.GetComponent<CameraControl>();
+        
+        if (cameraControl != null)
         {
             if (photonView.IsMine)
             {
-                cameraWork.OnStartFollowing();
+                cameraControl.OnStartFollowing();
             }
         }
         else
         {
-            Debug.LogError("<Color=Red><b>Missing</b></Color> CameraWork Component on player Prefab.", this);
+            Debug.LogError("<Color=Red><b>Missing</b></Color> CameraControl Component on character Prefab.", this);
         }
     }
 

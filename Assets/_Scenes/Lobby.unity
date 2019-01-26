@@ -724,6 +724,11 @@ PrefabInstance:
       propertyPath: viewIdField
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114847543155555582, guid: 937f45cd2efc1064cbe9fb7486c07723,
+        type: 3}
+      propertyPath: playerConnectionPrefab
+      value: 
+      objectReference: {fileID: 138, guid: ff483775690427647ae7a7f5cef2ce1d, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 937f45cd2efc1064cbe9fb7486c07723, type: 3}
 --- !u!114 &1040620172 stripped
@@ -1567,6 +1572,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Start Button
       objectReference: {fileID: 0}
+    - target: {fileID: 4667307617426893689, guid: 79182888fff0950438f04a294762208e,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4667307617426893689, guid: 79182888fff0950438f04a294762208e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6541832668314687355}
+    - target: {fileID: 4667307617426893689, guid: 79182888fff0950438f04a294762208e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadMainLevel
+      objectReference: {fileID: 0}
     - target: {fileID: 4667307617426893690, guid: 79182888fff0950438f04a294762208e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1671,21 +1691,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4667307617426893689, guid: 79182888fff0950438f04a294762208e,
-        type: 3}
-      propertyPath: m_Interactable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4667307617426893689, guid: 79182888fff0950438f04a294762208e,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 6541832668314687355}
-    - target: {fileID: 4667307617426893689, guid: 79182888fff0950438f04a294762208e,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadMainLevel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79182888fff0950438f04a294762208e, type: 3}

@@ -7,6 +7,8 @@ using Photon.Realtime;
 
 public class Launcher : MonoBehaviourPunCallbacks {
 
+    
+
     #region Private Variables;
 
     private string gameVersion = "1";
@@ -14,6 +16,9 @@ public class Launcher : MonoBehaviourPunCallbacks {
     private bool isConnecting = false;
     private bool isCreating = false;
     private bool lobbyVisibility;
+
+    [SerializeField]
+    private bool isOffline;
 
     [Tooltip("The UI Panel to let the user enter name, connect and play")]
     [SerializeField]
@@ -50,6 +55,7 @@ public class Launcher : MonoBehaviourPunCallbacks {
         // This makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same
         // room sync their level automatically
         PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.OfflineMode = isOffline;
 
         // set server to US ?
         //PhotonNetwork.ConnectToRegion("us");

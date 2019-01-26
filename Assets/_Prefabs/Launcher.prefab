@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3267144041680456254
+--- !u!1 &1242193069088895774
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8433675900613781349}
-  - component: {fileID: 6541832668314687355}
+  - component: {fileID: 1242193069088895772}
+  - component: {fileID: 1242193069088895773}
   m_Layer: 0
-  m_Name: LobbyManager
+  m_Name: Launcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8433675900613781349
+--- !u!4 &1242193069088895772
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3267144041680456254}
+  m_GameObject: {fileID: 1242193069088895774}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,24 +31,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6541832668314687355
+--- !u!114 &1242193069088895773
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3267144041680456254}
+  m_GameObject: {fileID: 1242193069088895774}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f0906b5479bb9c4b83d51e3083a0e34, type: 3}
+  m_Script: {fileID: 11500000, guid: 97203d03731b99242b81f32401a65d56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startButton: {fileID: 0}
-  characters:
-  - {fileID: 1364686637355020, guid: 19d80afce339d7949a090f3779b1ea8d, type: 3}
-  - {fileID: 137, guid: 65bacb5fffe8d1b4690c9fd6412ccc85, type: 3}
-  - {fileID: 140, guid: 89029583804cfcf42ae534cf7037fd7c, type: 3}
-  - {fileID: 138, guid: 28e3b74cb3f4e8348a878cd2e32ec1be, type: 3}
-  - {fileID: 282, guid: 2703cd6feb6ce4a4b9c7af3c00194f6e, type: 3}
-  - {fileID: 1364686637355020, guid: 653c463d14e58a849912cfbd39e15d41, type: 3}
-  - {fileID: 295, guid: 771e92a2dedc80d438c8a14ca3202957, type: 3}
+  isOffline: 1
+  controlPanel: {fileID: 0}
+  feedbackText: {fileID: 0}
+  progressLabel: {fileID: 0}
+  maxPlayersPerRoom: 4
+  roomInput: {fileID: 0}
+  visibilityToggle: {fileID: 0}

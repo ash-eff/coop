@@ -181,7 +181,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 currentCharacterIndex = 0;
             }
 
-            Debug.Log("Checking..." + lobbyManager.characters[currentCharacterIndex + 1].name);
+            //Debug.Log("Checking..." + lobbyManager.characters[currentCharacterIndex + 1].name);
 
             if (lobbyManager.characters[currentCharacterIndex + 1].GetComponent<CharacterInfo>().isSelectable)
             {

@@ -28,6 +28,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        DontDestroyOnLoad(this);
         foreach(GameObject character in characters)
         {
             character.GetComponent<CharacterInfo>().WakeUp();
