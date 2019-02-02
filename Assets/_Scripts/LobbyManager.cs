@@ -10,9 +10,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static int playersReady;
 
-    [Tooltip("UI Button used to start the game after a ready check.")]
-    [SerializeField]
-    private Button startButton;
+    static public LobbyManager Instance;
+    private LobbyManager instance;
+
+    //[Tooltip("UI Button used to start the game after a ready check.")]
+    //[SerializeField]
+    public GameObject startButton;
 
     [Tooltip("The available characters to choose from.")]
     public GameObject[] characters;
@@ -28,8 +31,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
-        foreach(GameObject character in characters)
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        startButton = GameObject.Find("Start Button");
+
+        foreach (GameObject character in characters)
         {
             character.GetComponent<CharacterInfo>().WakeUp();
         }
@@ -38,16 +52,16 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void CheckForReady()
     {
         // FOR TESTING
-        startButton.interactable = true;
+        startButton.GetComponent<Button>().interactable = true;
         //if (PhotonNetwork.IsMasterClient)
         //{
         //    if(PhotonNetwork.PlayerList.Length >= 2 && playersReady == PhotonNetwork.PlayerList.Length)
         //    {
-        //        startButton.interactable = true;
+        //        startButton.GetComponent<Button>().interactable = true;
         //    }
         //    else
         //    {
-        //        startButton.interactable = false;
+        //        startButton.GetComponent<Button>().interactable = false;
         //    }
         //}
     }

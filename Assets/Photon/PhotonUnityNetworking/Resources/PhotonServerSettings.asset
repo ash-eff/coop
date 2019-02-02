@@ -64,4 +64,20 @@ MonoBehaviour:
   - TransferObjectOwnership
   - SelectChamp
   - CharacterAvailable
+  - GetStartPosition
+  - GetSeededStartPosition
+  - SetSeededExit
+  - SetDoor
+  - RPCCheckDoorDirections
+  - SetSprite
+  - CheckDoorDirections
+  - EnterListAdd
+  - ExitListAdd
+  - SetRoomPositionsForOthers
+  - AddToExitList
+  - AddToEntertList
+  - SetEndingRoom
+  - SetExplored
+  - SetStartingRoom
+  - ClearGrid
   DisableAutoOpenWizard: 1

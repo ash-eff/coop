@@ -7,8 +7,6 @@ using Photon.Realtime;
 
 public class Launcher : MonoBehaviourPunCallbacks {
 
-    
-
     #region Private Variables;
 
     private string gameVersion = "1";

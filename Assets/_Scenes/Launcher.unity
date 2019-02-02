@@ -2229,6 +2229,11 @@ PrefabInstance:
       propertyPath: isOffline
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1242193069088895773, guid: d26eae2034269534dbd8d4fa415f0965,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1242193069088895772, guid: d26eae2034269534dbd8d4fa415f0965,
         type: 3}
       propertyPath: m_LocalPosition.x

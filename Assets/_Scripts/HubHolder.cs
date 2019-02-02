@@ -102,6 +102,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     // ready check button clicked
     public void OnReadyButtonPressed()
     {
+        Debug.Log("OnReadyButtonPressed");
         if (photonView.IsMine)
         {
             photonView.RPC("OnReadyClick", RpcTarget.AllBuffered, null);
@@ -272,6 +273,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     [PunRPC]
     void OnReadyClick()
     {
+        Debug.Log("OnReadyClick");
         // turn the button into a bool switch
         playerIsReady = !playerIsReady;
         // if ready, then change the button and set player as ready
