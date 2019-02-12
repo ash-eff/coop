@@ -44,8 +44,11 @@ public class MapManager : MonoBehaviourPunCallbacks
     {
         numberOfRooms = numOfRooms;
         GameObject gridHolder = GameObject.Find("GridHolder");
+        if(grid != null)
+        {
+            photonView.RPC("ClearGrid", RpcTarget.All, null);
+        }
 
-        photonView.RPC("ClearGrid", RpcTarget.All, null);
         Node obj = null;
         for (int i = 0; i < gridWidth; i++)
         {
@@ -69,7 +72,7 @@ public class MapManager : MonoBehaviourPunCallbacks
 
         foreach(Node node in nodes)
         {
-            PhotonNetwork.Destroy(node.gameObject);
+            Destroy(node.gameObject);
             //DestroyImmediate(node.gameObject);
         }
 
@@ -124,7 +127,7 @@ public class MapManager : MonoBehaviourPunCallbacks
     {
         GameObject roomHolder = GameObject.Find("RoomHolder");
         // instantiate rooms if there isn't a room, then count that as part of the room count
-        if (!nodeToAssignTo.hasRoom)
+        if (!nodeToAssignTo.available)
         {
             Debug.Log("Assigning Room at: " + nodeToAssignTo.GetGridPos());
             GameObject theRoom = PhotonNetwork.Instantiate(room.name, new Vector2(nodeToAssignTo.GetGridPos().x, nodeToAssignTo.GetGridPos().y), Quaternion.identity);
@@ -135,7 +138,7 @@ public class MapManager : MonoBehaviourPunCallbacks
             currentRoom.photonView.RPC("AddToEntertList", RpcTarget.All, enteredFrom.x, enteredFrom.y);
             nameNum++;
             currentRoom.transform.parent = roomHolder.transform;
-            nodeToAssignTo.hasRoom = true;
+            nodeToAssignTo.available = true;
             numberOfRooms--;
             if(numberOfRooms == numOfRooms - 1)
             {
@@ -201,7 +204,7 @@ public class MapManager : MonoBehaviourPunCallbacks
             Vector2Int explored = node.GetGridPos() + (direction * nodeSpacing);
             if(grid.TryGetValue(explored, out neighborNode))
             {
-                if (!neighborNode.hasRoom)
+                if (!neighborNode.available)
                 {
                     validExits.Add(explored);
                 }
