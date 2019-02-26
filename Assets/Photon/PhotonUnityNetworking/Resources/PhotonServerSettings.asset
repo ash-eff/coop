@@ -80,4 +80,14 @@ MonoBehaviour:
   - SetExplored
   - SetStartingRoom
   - ClearGrid
+  - Shoot
+  - MovePlayer
+  - ShootBullets
+  - DestroyProjectile
+  - StartMoveSkull
+  - SetSkullActive
+  - SetSkullDeActive
+  - WalkEarth
+  - TakeDamage
+  - Dead
   DisableAutoOpenWizard: 1

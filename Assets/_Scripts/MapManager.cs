@@ -8,7 +8,7 @@ public class MapManager : MonoBehaviourPunCallbacks
 {
     public GameObject generateButton;
 
-    public Node node;
+    public _Node node;
     public Room startingRoom;
     public Room endingRoom;
 
@@ -26,7 +26,7 @@ public class MapManager : MonoBehaviourPunCallbacks
 
     public int nameNum;
 
-    private Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
+    private Dictionary<Vector2Int, _Node> grid = new Dictionary<Vector2Int, _Node>();
     private Dictionary<Vector2Int, Room> roomDict = new Dictionary<Vector2Int, Room>();
 
     private Vector2Int[] directions = { Vector2Int.right, Vector2Int.down, Vector2Int.left, Vector2Int.up };
@@ -49,7 +49,7 @@ public class MapManager : MonoBehaviourPunCallbacks
             photonView.RPC("ClearGrid", RpcTarget.All, null);
         }
 
-        Node obj = null;
+        _Node obj = null;
         for (int i = 0; i < gridWidth; i++)
         {
             for (int j = 0; j < gridHeight; j++)
@@ -67,10 +67,10 @@ public class MapManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ClearGrid()
     {
-        Node[] nodes = FindObjectsOfType<Node>();
+        _Node[] nodes = FindObjectsOfType<_Node>();
         Room[] rooms = FindObjectsOfType<Room>();
 
-        foreach(Node node in nodes)
+        foreach(_Node node in nodes)
         {
             Destroy(node.gameObject);
             //DestroyImmediate(node.gameObject);
@@ -108,10 +108,10 @@ public class MapManager : MonoBehaviourPunCallbacks
     {
         if(numberOfRooms > 0)
         {
-            Node checkingNode;
+            _Node checkingNode;
             //Debug.Log("Checking..." + pos);
             checkingNode = null;
-            foreach (KeyValuePair<Vector2Int, Node> node in grid)
+            foreach (KeyValuePair<Vector2Int, _Node> node in grid)
             {
                 if (node.Key == pos)
                 {
@@ -123,7 +123,7 @@ public class MapManager : MonoBehaviourPunCallbacks
         }
     }
 
-    void AssignRoom(Node nodeToAssignTo, Vector2Int enteredFrom)
+    void AssignRoom(_Node nodeToAssignTo, Vector2Int enteredFrom)
     {
         GameObject roomHolder = GameObject.Find("RoomHolder");
         // instantiate rooms if there isn't a room, then count that as part of the room count
@@ -192,10 +192,10 @@ public class MapManager : MonoBehaviourPunCallbacks
         }
     }
 
-    void ExploreArea(Node node)
+    void ExploreArea(_Node node)
     {
         //Debug.Log("Exploring...");
-        Node neighborNode = null;
+        _Node neighborNode = null;
         List<Vector2Int> validExits= new List<Vector2Int>();
 
         // this will make it so that the path chosen is one where rooms haven't already been added

@@ -103,7 +103,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114780760437559864}
   viewIdField: 0
-  InstantiationId: 15
+  InstantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &114780760437559864
 MonoBehaviour:
@@ -132,8 +132,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9e1176d08967d442ac0e0063eafa3cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 1
+  health: 100
   playerUI: {fileID: 1176209691683024, guid: 69100b34760ca034c9a6809ac70aa3fd, type: 3}
+  skullPrefab: {fileID: 0}
+  whoShotMe: {fileID: 0}
 --- !u!114 &6658226202076761023
 MonoBehaviour:
   m_ObjectHideFlags: 0

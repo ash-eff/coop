@@ -25,24 +25,10 @@ public class CameraControl : MonoBehaviourPunCallbacks
     public Vector3 centerPoint;
     public Vector3 newPosition;
     public Vector3 clampedPosition;
-    //TODO for testing
-    public RadiusTest camNum;
-    public bool testing;
 
     private void Awake()
     {
         cameraTransform = Camera.main.transform;
-        camNum = FindObjectOfType<RadiusTest>();
-    }
-
-    //TODO for testing
-    private void Update()
-    {
-        if (testing && photonView.IsMine)
-        {
-            radius = camNum.cameraRadius;
-            smoothTime = camNum.smoothSpeed;
-        }
     }
 
     private void LateUpdate()

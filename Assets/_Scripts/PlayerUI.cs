@@ -37,7 +37,7 @@ public class PlayerUI : MonoBehaviour {
         // Reflect the Player Health
         if (playerHealthSlider != null)
         {
-            playerHealthSlider.fillAmount = target.GetComponent<PlayerCharacter>().Health;
+            playerHealthSlider.fillAmount = target.GetComponent<PlayerCharacter>().health;
         }
         
         // Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network

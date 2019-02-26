@@ -8,9 +8,9 @@ public class MapManagerNew : MonoBehaviour
 {
     public GameObject generateButton;
 
-    public Node node;
+    public _Node node;
     public GameObject marker;
-    public Node currentNode;
+    public _Node currentNode;
     private Vector2Int currentPosition;
 
     public Room startingRoom;
@@ -29,7 +29,7 @@ public class MapManagerNew : MonoBehaviour
 
     public int nameNum;
 
-    private Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
+    private Dictionary<Vector2Int, _Node> grid = new Dictionary<Vector2Int, _Node>();
     private Dictionary<Vector2Int, Room> roomDict = new Dictionary<Vector2Int, Room>();
 
     private Vector2Int[] directions = { Vector2Int.right, Vector2Int.down, Vector2Int.up };
@@ -67,10 +67,10 @@ public class MapManagerNew : MonoBehaviour
     //[PunRPC]
     public void ClearGrid()
     {
-        Node[] nodes = FindObjectsOfType<Node>();
+        _Node[] nodes = FindObjectsOfType<_Node>();
         Room[] rooms = FindObjectsOfType<Room>();
 
-        foreach (Node node in nodes)
+        foreach (_Node node in nodes)
         {
             Destroy(node.gameObject);
             //DestroyImmediate(node.gameObject);
@@ -108,7 +108,7 @@ public class MapManagerNew : MonoBehaviour
     {
         if (numberOfRooms > 0)
         {
-            foreach (KeyValuePair<Vector2Int, Node> node in grid)
+            foreach (KeyValuePair<Vector2Int, _Node> node in grid)
             {
                 if (node.Key == _currentPosition)
                 {
@@ -199,7 +199,7 @@ public class MapManagerNew : MonoBehaviour
 
     void ExploreArea()
     {
-        Node searchedNode;
+        _Node searchedNode;
         List<Vector2Int> validDirection = new List<Vector2Int>();
 
         // check all available nodes for an available slot first.

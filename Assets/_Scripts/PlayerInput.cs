@@ -3,35 +3,58 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerInput : MonoBehaviourPunCallbacks {
+public class PlayerInput : MonoBehaviourPunCallbacks, IPunObservable {
 
     [Tooltip("The gameobject for the cursor")]
     [SerializeField]
     private GameObject cursor;
-
     private Vector3 velocity;
-    private float speed = 15f;
+    public float speed;
     private float camHeight;
     private float camWidth;
     private Camera cam;
+    Vector3 oldPosition;
+    Vector3 movement;
+    Vector3 remoteMovement;
+    Vector3 remotePosition;
+    Vector3 remoteVelocity;
+    Vector3 remoteOldPosition;
+    float distCovered;
+    float remoteSpeed;
+    float lag;
+    float journeyLength;
+    float fracJourney;
+    float lerpTime;
+    float currentLerpTime;
+
 
     void Start ()
     {
         cam = Camera.main;
         camHeight = cam.orthographicSize;
         camWidth = camHeight * cam.aspect;
+
+        if (!photonView.IsMine)
+        {
+            cursor.gameObject.SetActive(false);
+        }
     }
 
     void Update ()
     {
         if (!photonView.IsMine)
         {
+            transform.position = Vector3.MoveTowards(transform.position, remotePosition, Time.deltaTime * remoteSpeed);
+
             return;
         }
+
+        oldPosition = transform.position;
 
         velocity.x = Input.GetAxisRaw("Horizontal");
         velocity.y = Input.GetAxisRaw("Vertical");
 
+        movement = transform.position - oldPosition;
         transform.Translate(velocity.normalized * speed * Time.deltaTime);
     }
 
@@ -61,6 +84,27 @@ public class PlayerInput : MonoBehaviourPunCallbacks {
         cursor.transform.position = transform.position + new Vector3(Mathf.Clamp(cursorOffset.x, -camWidthOffset, camWidthOffset),
                                                                      Mathf.Clamp(cursorOffset.y, -camHeightOffset, camHeightOffset),
                                                                      0f);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(oldPosition);
+            stream.SendNext(movement);
+            stream.SendNext(transform.position);
+            stream.SendNext(speed);
+        }
+        else
+        {
+            remoteOldPosition = (Vector3)stream.ReceiveNext();
+            remoteMovement = (Vector3)stream.ReceiveNext(); ;
+            remotePosition = (Vector3)stream.ReceiveNext();
+            remoteSpeed = (float)stream.ReceiveNext();
+
+            lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+            remotePosition += (remoteMovement * lag);
+        }
     }
 
     // TODO build custom collsion detection

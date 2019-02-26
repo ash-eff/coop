@@ -640,7 +640,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -1583,7 +1583,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -1701,7 +1701,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114059865096055984}
   viewIdField: 0
-  InstantiationId: 8
+  InstantiationId: 14
   isRuntimeInstantiated: 0
 --- !u!114 &114059865096055984
 MonoBehaviour:
