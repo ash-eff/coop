@@ -90,4 +90,7 @@ MonoBehaviour:
   - WalkEarth
   - TakeDamage
   - Dead
+  - ShotGunParticles
+  - ShootShotGun
+  - SetTarget
   DisableAutoOpenWizard: 1

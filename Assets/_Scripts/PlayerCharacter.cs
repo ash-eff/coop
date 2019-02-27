@@ -58,7 +58,7 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         //skull.SendMessage("StartMoveSkull");
     }
 
-    public void TakeDamage(float dmg)
+    public void TakeZombieDamage(float dmg)
     {
         health -= dmg;
     }

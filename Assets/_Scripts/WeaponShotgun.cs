@@ -12,29 +12,40 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
     public float angle;
     public float ammo = 6f;
     public float damage = 2f;
-   
+    public ParticleSystem gunSmoke;
+    public ParticleSystem gunBlast;
+    public ParticleSystem gunFlare;
+    float zRot;
+
+
     private float nextFireTime;
 
     // Update is called once per frame
     void Update()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - weapon.position;
         difference.Normalize();
 
         if (Input.GetButton("Fire1"))
         {
-            if(Time.time > nextFireTime)
+            if (Time.time > nextFireTime)
             {
+                //photonView.RPC("ShootShotGun", RpcTarget.All, null);
                 //playerHits = new List<Transform>();
                 //ammo--;
                 for (int i = 0; i < rays; i++)
                 {
                     float dividedAngle = angle / 2;
                     float offset = angle / rays * i;
-                    float zRot = (Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg) - dividedAngle;
+                    zRot = (Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg) - dividedAngle;
                     weapon.rotation = Quaternion.Euler(0f, 0f, zRot + offset);
-                    RaycastHit2D hit = Physics2D.Raycast(weapon.transform.position, weapon.transform.right * 8, enemyLayer);
-                    Debug.DrawRay(weapon.transform.position, weapon.transform.right * 8, Color.red, .1f);
+                    RaycastHit2D hit = Physics2D.Raycast(weapon.transform.position, weapon.transform.right * 6, enemyLayer);
+                    Debug.DrawRay(weapon.transform.position, weapon.transform.right * 6, Color.red, .1f);
 
                     if (hit)
                     {
@@ -42,8 +53,17 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
                     }
                 }
 
+                gunBlast.Play();
+                gunFlare.Play();
+                gunSmoke.Play();
                 nextFireTime = Time.time + fireRate;
             }
         }
+    }
+
+    [PunRPC]
+    void ShootShotGun()
+    {
+
     }
 }

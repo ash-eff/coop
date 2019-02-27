@@ -122,7 +122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29ec31b2d9275e4f803949a68947948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players: []
   target: {fileID: 0}
   health: 25
   baseDamage: 2
@@ -169,8 +168,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 1986531656693581341}
-  viewIdField: 3
-  InstantiationId: 3
+  viewIdField: 5
+  InstantiationId: 5
   isRuntimeInstantiated: 0
 --- !u!114 &1986531656693581341
 MonoBehaviour:

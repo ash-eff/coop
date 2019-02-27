@@ -5,9 +5,8 @@ using Photon.Pun;
 
 public class Enemy : MonoBehaviourPunCallbacks
 {
-    public PlayerCharacter[] players;
     int playerIndex;
-    public Transform target;
+    public GameObject target;
 
     float speed;
     int targetIndex;
@@ -31,23 +30,16 @@ public class Enemy : MonoBehaviourPunCallbacks
     private void Awake()
     {
         spr = GetComponent<SpriteRenderer>();
-    }
-
-    public void WalkTheEarth()
-    {
-        photonView.RPC("WalkEarth", RpcTarget.All, null);
-    }
-
-    [PunRPC]
-    void WalkEarth()
-    {
-        players = FindObjectsOfType<PlayerCharacter>();
-        playerIndex = Random.Range(0, players.Length);
         speed = Random.Range(4f, 5f);
         state = State.SPAWNING;
         rb2d = GetComponent<Rigidbody2D>();
         StartCoroutine(Spawning());
         StartCoroutine(ColorLerp());
+    }
+
+    public void SetTheTarget(GameObject _target)
+    {
+        target = _target;
     }
 
     private void Update()
@@ -114,7 +106,6 @@ public class Enemy : MonoBehaviourPunCallbacks
             }
         }
 
-        target = players[playerIndex].gameObject.transform;
         state = State.CHASING;
         StartCoroutine(UpdatePath());
     }
@@ -179,7 +170,7 @@ public class Enemy : MonoBehaviourPunCallbacks
         // play attack animation
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.SendMessage("TakeDamage", baseDamage * Time.deltaTime);
+            collision.gameObject.SendMessage("TakeZombieDamage", baseDamage * Time.deltaTime);
         }
     }
 
@@ -191,11 +182,13 @@ public class Enemy : MonoBehaviourPunCallbacks
         {
             // We own this player: send the others our data
             stream.SendNext(this.health);
+            stream.SendNext(this.target);
         }
         else
         {
             // Network player, receive data
             this.health = (float)stream.ReceiveNext();
+            this.target = (GameObject)stream.ReceiveNext();
         }
     }
 
