@@ -134,8 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   playerUI: {fileID: 1176209691683024, guid: 69100b34760ca034c9a6809ac70aa3fd, type: 3}
-  skullPrefab: {fileID: 0}
-  whoShotMe: {fileID: 0}
+  healthBar: {fileID: 0}
 --- !u!114 &6658226202076761023
 MonoBehaviour:
   m_ObjectHideFlags: 0

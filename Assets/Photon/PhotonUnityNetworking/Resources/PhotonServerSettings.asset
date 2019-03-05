@@ -93,4 +93,24 @@ MonoBehaviour:
   - ShotGunParticles
   - ShootShotGun
   - SetTarget
+  - ShowBlast
+  - TakeZombieDamage
+  - RPCColorLerp
+  - RPCFollowPathStart
+  - RPCFollowPathStop
+  - RPCSpawning
+  - RPCStunned
+  - RPCUpdatePath
+  - SelectTarget
+  - RPCSelectTarget
+  - Die
+  - ShotGunBlast
+  - UpdateDeathCounter
+  - UpdateCounter
+  - SetWaveIndicator
+  - ShotGunCount
+  - ResumeSpeed
+  - Slow
+  - RPCReload
+  - SpendShell
   DisableAutoOpenWizard: 1

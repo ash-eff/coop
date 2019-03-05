@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - Enemy
+  - Border
   layers:
   - Default
   - TransparentFX
@@ -20,8 +21,8 @@ TagManager:
   - Projectile
   - Player
   - Particle
-  - 
-  - 
+  - Border
+  - Minimap
   - 
   - 
   - 

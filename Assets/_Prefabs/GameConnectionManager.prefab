@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   storedClientPasswords: []
   storedMasterPasswords: []
-  playerConnectionPrefab: {fileID: 170, guid: ff483775690427647ae7a7f5cef2ce1d, type: 3}
+  playerConnectionPrefab: {fileID: 171, guid: ff483775690427647ae7a7f5cef2ce1d, type: 3}
   pingText: {fileID: 114564164575008422, guid: 8c2c7e3255aab3f48b51f522b0cb1292, type: 3}
 --- !u!114 &114672820829317746
 MonoBehaviour:

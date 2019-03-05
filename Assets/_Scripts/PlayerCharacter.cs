@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using Photon.Pun;
 
 public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
@@ -12,29 +14,17 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     [Tooltip("The UI of our character")]
     public GameObject playerUI;
 
-    public GameObject skullPrefab;
-    private float skullTimer;
-
-    public GameObject whoShotMe;
+    public Image healthBar;
 
     private Vector3 offset = new Vector3(0f, .65f, 0f);
 
     private void Update()
     {
+        healthBar.fillAmount = health / 100;
+
         if (health <= 0f)
         {
             photonView.RPC("Dead", RpcTarget.All, null);
-        }
-
-        if(skullTimer > 0)
-        {
-            skullTimer -= Time.deltaTime;
-        }
-
-        if(skullTimer < 0)
-        {
-            skullTimer = 0;
-            photonView.RPC("SetSkullDeActive", RpcTarget.All, null);
         }
     }
 
@@ -48,16 +38,7 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         }
     }
 
-    // TODO this needs to translate over the network better. Maybe dont knockback, but make the player blink
-    public void TakeFriendlyDamage()
-    {
-        health -= 1;
-        skullTimer = .5f;
-        photonView.RPC("SetSkullActive", RpcTarget.All, null);
-        //GameObject skull = PhotonNetwork.Instantiate(skullPrefab.name, transform.position + offset, Quaternion.identity);
-        //skull.SendMessage("StartMoveSkull");
-    }
-
+    [PunRPC]
     public void TakeZombieDamage(float dmg)
     {
         health -= dmg;
@@ -69,21 +50,8 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         gameObject.SetActive(false);
     }
 
-    [PunRPC]
-    void SetSkullActive()
-    {
-        skullPrefab.SetActive(true);
-    }
-
-    [PunRPC]
-    void SetSkullDeActive()
-    {
-        skullPrefab.SetActive(false);
-    }
-
-
     #region IPunObservable implementation
-    
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

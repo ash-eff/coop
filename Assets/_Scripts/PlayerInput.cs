@@ -10,6 +10,7 @@ public class PlayerInput : MonoBehaviourPunCallbacks, IPunObservable {
     private GameObject cursor;
     private Vector3 velocity;
     public float speed;
+    private float baseSpeed;
     private float camHeight;
     private float camWidth;
     private Camera cam;
@@ -26,10 +27,13 @@ public class PlayerInput : MonoBehaviourPunCallbacks, IPunObservable {
     float fracJourney;
     float lerpTime;
     float currentLerpTime;
+    Rigidbody2D rb2d;
 
 
     void Start ()
     {
+        baseSpeed = speed;
+        rb2d = GetComponent<Rigidbody2D>();
         cam = Camera.main;
         camHeight = cam.orthographicSize;
         camWidth = camHeight * cam.aspect;
@@ -56,6 +60,15 @@ public class PlayerInput : MonoBehaviourPunCallbacks, IPunObservable {
 
         movement = transform.position - oldPosition;
         transform.Translate(velocity.normalized * speed * Time.deltaTime);
+        Vector2 clampedPos = transform.position;
+        clampedPos.x = Mathf.Clamp(transform.position.x, -19, 19);
+        clampedPos.y = Mathf.Clamp(transform.position.y, -10, 10);
+        transform.position = clampedPos;
+    }
+
+    public float Speed
+    {
+        set { speed = value; }
     }
 
     private void LateUpdate()
@@ -84,6 +97,18 @@ public class PlayerInput : MonoBehaviourPunCallbacks, IPunObservable {
         cursor.transform.position = transform.position + new Vector3(Mathf.Clamp(cursorOffset.x, -camWidthOffset, camWidthOffset),
                                                                      Mathf.Clamp(cursorOffset.y, -camHeightOffset, camHeightOffset),
                                                                      0f);
+    }
+
+    [PunRPC]
+    void Slow()
+    {
+        speed = baseSpeed / 2;
+    }
+
+    [PunRPC]
+    void ResumeSpeed()
+    {
+        speed = baseSpeed;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

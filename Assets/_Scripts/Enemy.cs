@@ -1,18 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using Photon.Pun;
 
-public class Enemy : MonoBehaviourPunCallbacks
+public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
 {
     int playerIndex;
     public GameObject target;
-
+    public Image healthBar;
+    public GameObject healthBarHolder;
     float speed;
     int targetIndex;
     Rigidbody2D rb2d;
     public float health = 25f;
-    public float baseDamage = 2f;
+    public float damage;
     private float deathTimer = 60f;
     private SpriteRenderer spr;
     private Color currentColor = Color.white;
@@ -23,41 +26,47 @@ public class Enemy : MonoBehaviourPunCallbacks
     private Vector3 targetDestination;
     private float stunTimer;
     private bool isStunned;
+    public PlayerCharacter[] players;
+    private EnemySpawner es;
 
     public enum State { CHASING, STUNNED, SPAWNING};
     public State state;
 
     private void Awake()
     {
+        es = FindObjectOfType<EnemySpawner>();
         spr = GetComponent<SpriteRenderer>();
-        speed = Random.Range(4f, 5f);
+        speed = Random.Range(1f, 7f);
         state = State.SPAWNING;
         rb2d = GetComponent<Rigidbody2D>();
         StartCoroutine(Spawning());
         StartCoroutine(ColorLerp());
     }
 
-    public void SetTheTarget(GameObject _target)
-    {
-        target = _target;
-    }
-
     private void Update()
     {
-        deathTimer -= Time.deltaTime;
-        if(deathTimer <= 0)
+        healthBar.fillAmount = health / 25;
+        //deathTimer -= Time.deltaTime;
+        //if(deathTimer <= 0)
+        //{
+        //    EnemySpawner.deathCount += 1;
+        //    photonView.RPC("Die", RpcTarget.All, null);
+        //}
+        if (!photonView.IsMine)
         {
-            PhotonNetwork.Destroy(gameObject);
+            return;
         }
 
         if (state != State.SPAWNING)
         {
+            
             if (health <= 0)
             {
-                PhotonNetwork.Destroy(gameObject);
+                EnemySpawner.deathCount += 1;
+                photonView.RPC("Die", RpcTarget.All, null);              
             }
 
-            if(state == State.STUNNED)
+            if (state == State.STUNNED)
             {
                 isStunned = true;
             }
@@ -77,7 +86,7 @@ public class Enemy : MonoBehaviourPunCallbacks
             //}
         }
     }
-    
+
     IEnumerator ColorLerp()
     {
         float progress = 0; //This float will serve as the 3rd parameter of the lerp function.
@@ -106,6 +115,8 @@ public class Enemy : MonoBehaviourPunCallbacks
             }
         }
 
+        healthBarHolder.SetActive(true);
+        photonView.RPC("RPCSelectTarget", RpcTarget.All, null);
         state = State.CHASING;
         StartCoroutine(UpdatePath());
     }
@@ -152,6 +163,7 @@ public class Enemy : MonoBehaviourPunCallbacks
         StartCoroutine(UpdatePath());
     }
 
+    [PunRPC]
     void TakeDamage(float dmg)
     {
         if(state != State.SPAWNING)
@@ -165,32 +177,44 @@ public class Enemy : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
+    void RPCSelectTarget()
+    {
+        players = FindObjectsOfType<PlayerCharacter>();
+        int randomIndex = Random.Range(0, players.Length);
+        target = players[randomIndex].transform.gameObject;
+    }
+
+    [PunRPC]
+    void Die()
+    {
+        PhotonNetwork.Destroy(gameObject);
+    }
+
     private void OnCollisionStay2D(Collision2D collision)
     {
         // play attack animation
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.SendMessage("TakeZombieDamage", baseDamage * Time.deltaTime);
+            collision.gameObject.GetPhotonView().RPC("TakeZombieDamage", RpcTarget.All, damage * Time.deltaTime);
         }
     }
 
     #region IPunObservable implementation
-
+    
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
             // We own this player: send the others our data
             stream.SendNext(this.health);
-            stream.SendNext(this.target);
         }
         else
         {
             // Network player, receive data
             this.health = (float)stream.ReceiveNext();
-            this.target = (GameObject)stream.ReceiveNext();
         }
     }
-
+    
     #endregion
 }
