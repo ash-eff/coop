@@ -46,9 +46,9 @@ MonoBehaviour:
   startButton: {fileID: 0}
   characters:
   - {fileID: 1364686637355020, guid: 19d80afce339d7949a090f3779b1ea8d, type: 3}
-  - {fileID: 168, guid: 65bacb5fffe8d1b4690c9fd6412ccc85, type: 3}
+  - {fileID: 176, guid: 65bacb5fffe8d1b4690c9fd6412ccc85, type: 3}
   - {fileID: 165, guid: 89029583804cfcf42ae534cf7037fd7c, type: 3}
   - {fileID: 160, guid: 28e3b74cb3f4e8348a878cd2e32ec1be, type: 3}
   - {fileID: 158, guid: 2703cd6feb6ce4a4b9c7af3c00194f6e, type: 3}
   - {fileID: 175, guid: 653c463d14e58a849912cfbd39e15d41, type: 3}
-  - {fileID: 173, guid: 771e92a2dedc80d438c8a14ca3202957, type: 3}
+  - {fileID: 181, guid: 771e92a2dedc80d438c8a14ca3202957, type: 3}

@@ -334,6 +334,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e835fb16db9cda41b09958962ac211d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: {fileID: 583960519951191015, guid: bbab7c33f7b52b9439f585e1eb259572, type: 3}
+  grenade: {fileID: 4817535783781647954, guid: 565f9698dde488f40a8a2cf9836dfd51, type: 3}
 --- !u!114 &432767497948411988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,8 +355,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 3974214271563681133}
-  viewIdField: 21
-  InstantiationId: 21
+  viewIdField: 18
+  InstantiationId: 18
   isRuntimeInstantiated: 0
 --- !u!114 &3974214271563681133
 MonoBehaviour:

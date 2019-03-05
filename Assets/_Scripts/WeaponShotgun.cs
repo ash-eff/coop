@@ -11,18 +11,25 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
     public GameObject reloadIndicator;
     public PlayerInput input;
     public float fireRate;
+    public float grenadeFireRate;
     public float rays;
     public float angle;
     public int ammo = 6;
-    public float damage = 2f;
+    public int grenade = 2;
+    private float damage = 4f;
     public GameObject[] shells;
+    public GameObject[] grenades;
     public ParticleSystem blast;
     public ParticleSystem smoke;
     public ParticleSystem flare;
+    public ParticleSystem grenadeSmoke;
+    public ParticleSystem grenadeFlare;
+    public GameObject grenadeExplosion;
     float zRot;
     public bool reloading;
 
     private float nextFireTime;
+    private float nextGrenadeTime;
 
     private void Start()
     {
@@ -42,7 +49,7 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
                 if (Time.time > nextFireTime)
                 {
                     photonView.RPC("SpendShell", RpcTarget.All, null);
-                    photonView.RPC("ShotGunCount", RpcTarget.All, null);
+                    //photonView.RPC("ShotGunCount", RpcTarget.All, null);
                     for (int i = 0; i < rays; i++)
                     {
                         float dividedAngle = angle / 2;
@@ -66,7 +73,30 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
                 }
             }
 
-            if(ammo == 0)
+            if (Input.GetButton("Fire2") && grenade > 0)
+            {
+                if (Time.time > nextGrenadeTime)
+                {
+                    Vector2 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    photonView.RPC("SpendGrenade", RpcTarget.All, null);
+                    zRot = (Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg);
+                    weapon.rotation = Quaternion.Euler(0f, 0f, zRot);
+                    RaycastHit2D hit = Physics2D.Raycast(weapon.transform.position, weapon.transform.right, 6f, enemyLayer);
+                    Debug.DrawRay(weapon.transform.position, weapon.transform.right * 6, Color.red, .1f);
+
+
+
+                    nextGrenadeTime = Time.time + grenadeFireRate;
+                    photonView.RPC("FireGrenade", RpcTarget.Others, null);
+                    grenadeFlare.Play();
+                    grenadeSmoke.Play();
+
+                    GameObject go = PhotonNetwork.Instantiate(grenadeExplosion.name, clickPos, Quaternion.identity);
+                    go.SendMessage("Activate");
+                }
+            }
+
+            if (ammo == 0)
             {
                 reloadIndicator.SetActive(true);
             }
@@ -100,6 +130,30 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
 
         reloading = false;
         input.Speed = 8f;
+    }
+
+    [PunRPC]
+    public void RPCAddGrenade()
+    {
+        grenade = 2;
+        foreach(GameObject nade in grenades)
+        {
+            nade.SetActive(true);
+        }
+    }
+
+    [PunRPC]
+    public void SpendGrenade()
+    {
+        grenade--;
+        grenades[grenade].SetActive(false);
+    }
+
+    [PunRPC]
+    void FireGrenade()
+    {
+        grenadeFlare.Play();
+        grenadeSmoke.Play();
     }
 
     [PunRPC]

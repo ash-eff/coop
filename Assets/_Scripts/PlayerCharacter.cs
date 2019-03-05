@@ -15,8 +15,17 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     public GameObject playerUI;
 
     public Image healthBar;
-
+    public GameObject youDied;
     private Vector3 offset = new Vector3(0f, .65f, 0f);
+
+    CameraControl cc;
+
+    public bool dead;
+
+    private void Awake()
+    {
+        cc = GetComponent<CameraControl>();
+    }
 
     private void Update()
     {
@@ -39,6 +48,16 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     }
 
     [PunRPC]
+    public void RPCAddHealth(float amount)
+    {
+        health += amount;
+        if (health > 100)
+        {
+            health = 100;
+        }
+    }
+
+    [PunRPC]
     public void TakeZombieDamage(float dmg)
     {
         health -= dmg;
@@ -47,7 +66,32 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     [PunRPC]
     void Dead()
     {
+        cc.targetDead = true;
+        dead = true;
+        StartCoroutine(DeadPhase());
+        // change sprite to dead
+    }
+
+    IEnumerator DeadPhase()
+    {
+        if (photonView.IsMine)
+        {
+            youDied.SetActive(true);
+        }
+
+        float timer = 4f;
+        while(timer > 0)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
         gameObject.SetActive(false);
+
+        if (photonView.IsMine)
+        {
+            youDied.SetActive(false);
+        }
     }
 
     #region IPunObservable implementation

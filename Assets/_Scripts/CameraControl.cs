@@ -25,6 +25,9 @@ public class CameraControl : MonoBehaviourPunCallbacks
     public Vector3 centerPoint;
     public Vector3 newPosition;
     public Vector3 clampedPosition;
+    float lerpTime = 3f;
+    float currentLerpTime;
+    public bool targetDead;
 
     private void Awake()
     {
@@ -42,9 +45,14 @@ public class CameraControl : MonoBehaviourPunCallbacks
                 OnStartFollowing();
             }
             // only follow is explicitly declared
-            if (isFollowing)
+            if (isFollowing && !targetDead)
             {
                 SmoothFollow();
+            }
+
+            if (isFollowing && targetDead)
+            {
+                StartCoroutine(SetToObserve());
             }
         }
     }
@@ -55,6 +63,29 @@ public class CameraControl : MonoBehaviourPunCallbacks
         isFollowing = true;
         // we don't smooth anything, we go straight to the right camera shot
         SmoothFollow();
+    }
+
+    IEnumerator SetToObserve()
+    {
+        isFollowing = false;
+        Vector3 endPos = new Vector3(0f, 0f, -10f);
+        Vector3 startPos = cameraTransform.position;
+        bool inPos = false;
+
+        while (!inPos)
+        {
+            if(cameraTransform.position.x == 0 && cameraTransform.position.y == 0)
+            {
+                inPos = true;
+            }
+
+            currentLerpTime += Time.deltaTime;
+            float perc = currentLerpTime / lerpTime;
+            cameraTransform.position = Vector3.Lerp(startPos, endPos, perc);
+            Camera.main.orthographicSize = Mathf.Lerp(6, 12, perc);
+
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     void SmoothFollow()

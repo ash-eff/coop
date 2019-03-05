@@ -5,6 +5,9 @@ using Photon.Pun;
 
 public class Chopper : MonoBehaviourPunCallbacks
 {
+    public GameObject health;
+    public GameObject grenade;
+
     float lerpTime = 1f;
     float currentLerpTime;
     float waitTime = 2f;
@@ -54,11 +57,29 @@ public class Chopper : MonoBehaviourPunCallbacks
 
         if(waitTime < 0 && !leaving)
         {
-            // drop crate;
+            DropCrate();
             leaving = true;
             startPos = Vector2.zero;
             endPos = transform.position + transform.right * moveDistance;
             currentLerpTime = 0f;
+        }
+    }
+
+    void DropCrate()
+    {
+        int numberOfPlayers = PhotonNetwork.PlayerList.Length;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            for(int i = 0; i < numberOfPlayers; i++)
+            {
+                float randomHealthX = Random.Range(-5, 5);
+                float randomHealthY = Random.Range(-5, 5);
+                float randomNadeX = Random.Range(-5, 5);
+                float randomNadeY = Random.Range(-5, 5);
+
+                PhotonNetwork.Instantiate(health.name, new Vector2(randomHealthX, randomHealthY), Quaternion.identity);
+                PhotonNetwork.Instantiate(grenade.name, new Vector2(randomNadeX, randomNadeY), Quaternion.identity);
+            }
         }
     }
 }

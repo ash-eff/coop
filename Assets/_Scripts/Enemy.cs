@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
     public PlayerCharacter[] players;
     private EnemySpawner es;
 
-    public enum State { CHASING, STUNNED, SPAWNING};
+    public enum State { CHASING, STUNNED, SPAWNING };
     public State state;
 
     private void Awake()
@@ -130,6 +130,11 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
             targetDestination = target.transform.position;
             StopCoroutine(FollowPath());
             StartCoroutine(FollowPath());
+
+            if (!target.activeInHierarchy)
+            {
+                photonView.RPC("RPCSelectTarget", RpcTarget.All, null);
+            }
         }
     }
 

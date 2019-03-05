@@ -113,4 +113,9 @@ MonoBehaviour:
   - Slow
   - RPCReload
   - SpendShell
+  - RPCAddHealth
+  - FireGrenade
+  - RPCAddGrenade
+  - SpendGrenade
+  - Activate
   DisableAutoOpenWizard: 1
