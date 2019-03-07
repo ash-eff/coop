@@ -132,9 +132,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9e1176d08967d442ac0e0063eafa3cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  playerUI: {fileID: 1176209691683024, guid: 69100b34760ca034c9a6809ac70aa3fd, type: 3}
+  healthText: {fileID: 0}
+  redScreen: {fileID: 0}
   healthBar: {fileID: 0}
+  youDiedScreen: {fileID: 0}
 --- !u!114 &6658226202076761023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,5 +150,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: 
   characterInfo: Select a character!
-  playable: 1
+  health: 0
+  speed: 0
+  bonusSpeed: 0
+  speedDebuff: 0
+  damage: 0
+  bonusDamage: 0
+  shotgunFireRate: 0
+  grenadeFireRate: 0
+  reloadSpeed: 0
+  pellets: 0
+  angle: 0
+  ammo: 0
+  grenade: 0
+  maxGrenades: 0
   isSelectable: 0

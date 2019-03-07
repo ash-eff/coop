@@ -7,53 +7,84 @@ using Photon.Pun;
 
 public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
 
-    [Tooltip("The current Health of our player")]
-    [Range(0,1)]
-    public float health = 100f;
+    private float maxHealth;
+    private float health;
 
-    [Tooltip("The UI of our character")]
-    public GameObject playerUI;
+    //[Tooltip("The UI of our character")]
+    //public GameObject playerUI;
 
+    public TextMeshProUGUI healthText;
+    public GameObject redScreen;
     public Image healthBar;
-    public GameObject youDied;
-    private Vector3 offset = new Vector3(0f, .65f, 0f);
+    public GameObject youDiedScreen;
+    float redTimer;
 
+    PlayerInput input;
+    WeaponShotgun shotgun;
     CameraControl cc;
 
-    public bool dead;
+    bool dead;
 
-    private void Awake()
+    private void Start()
     {
+        health = maxHealth;
         cc = GetComponent<CameraControl>();
     }
 
     private void Update()
     {
-        healthBar.fillAmount = health / 100;
+        healthBar.fillAmount = health / maxHealth;
+        healthText.text = Mathf.RoundToInt(health).ToString() + "/" + maxHealth.ToString();
+
+        if (photonView.IsMine)
+        {
+            redTimer -= Time.deltaTime;
+
+            if (redTimer > 0)
+            {
+                redScreen.SetActive(true);
+            }
+            else
+            {
+                redScreen.SetActive(false);
+            }
+        }
 
         if (health <= 0f)
         {
-            photonView.RPC("Dead", RpcTarget.All, null);
+            dead = true;
+            photonView.RPC("RPCDead", RpcTarget.All, null);
         }
     }
 
-    public void InstantiateUI()
+    public float MaxHealth
     {
-        if (photonView.IsMine)
-        {
-            GameObject ui = Instantiate(playerUI, Vector2.zero, Quaternion.identity);
-            Debug.Log("INSTANTIATE " + ui + " FOR " + photonView.Owner.NickName);
-            ui.SendMessage("SetTarget", gameObject);
-        }
+        set { maxHealth = value; }
     }
+
+    public bool Dead
+    {
+        get { return dead; }
+        set { dead = value; }
+    }
+
+    //public void InstantiateUI()
+    //{
+    //    if (photonView.IsMine)
+    //    {
+    //        GameObject ui = Instantiate(playerUI, Vector2.zero, Quaternion.identity);
+    //        Debug.Log("INSTANTIATE " + ui + " FOR " + photonView.Owner.NickName);
+    //        ui.SendMessage("SetTarget", gameObject);
+    //    }
+    //}
 
     [PunRPC]
-    public void RPCAddHealth(float amount)
+    public void RPCAddHealth(int amount)
     {
         health += amount;
-        if (health > 100)
+        if (health > maxHealth)
         {
-            health = 100;
+            health = maxHealth;
         }
     }
 
@@ -61,10 +92,11 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     public void TakeZombieDamage(float dmg)
     {
         health -= dmg;
+        redTimer = .2f;
     }
 
     [PunRPC]
-    void Dead()
+    void RPCDead()
     {
         cc.targetDead = true;
         dead = true;
@@ -76,7 +108,7 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     {
         if (photonView.IsMine)
         {
-            youDied.SetActive(true);
+            youDiedScreen.SetActive(true);
         }
 
         float timer = 4f;
@@ -90,9 +122,25 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
 
         if (photonView.IsMine)
         {
-            youDied.SetActive(false);
+            youDiedScreen.SetActive(false);
         }
     }
+
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    if(collision.tag == "Enemy" && photonView.IsMine)
+    //    {
+    //        red.SetActive(true);
+    //    }
+    //}
+
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.tag == "Enemy" && photonView.IsMine)
+    //    {
+    //        red.SetActive(false);
+    //    }
+    //}
 
     #region IPunObservable implementation
 

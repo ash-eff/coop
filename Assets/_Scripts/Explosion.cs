@@ -6,7 +6,7 @@ using Photon.Pun;
 public class Explosion : MonoBehaviourPunCallbacks
 {
     float timer = 1f;
-    float deathTimer = 3f;
+    float deathTimer = 2f;
     public ParticleSystem ps;
 
     private void Update()
@@ -41,7 +41,7 @@ public class Explosion : MonoBehaviourPunCallbacks
     {
         if(collision.tag == "Enemy")
         {
-            collision.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, 25f);
+            collision.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, 25f);           
         }
     }
 }

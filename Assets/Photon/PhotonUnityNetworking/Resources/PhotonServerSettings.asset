@@ -118,4 +118,10 @@ MonoBehaviour:
   - RPCAddGrenade
   - SpendGrenade
   - Activate
+  - RPCDead
+  - Taunt
+  - ExceleratedSpeed
+  - ResetSpeed
+  - IncreaseDamage
+  - ResetDamage
   DisableAutoOpenWizard: 1

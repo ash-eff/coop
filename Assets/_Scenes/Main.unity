@@ -255,6 +255,7 @@ MonoBehaviour:
   deathCounterText: {fileID: 359157879}
   waveIndicator: {fileID: 1229930002}
   waveText: {fileID: 1229930003}
+  waveNumber: 1
   spawnerState: 2
 --- !u!4 &326427849
 Transform:
@@ -324,6 +325,10 @@ PrefabInstance:
     - target: {fileID: 1940790584522302, guid: 8c2c7e3255aab3f48b51f522b0cb1292, type: 3}
       propertyPath: m_Name
       value: DeathCounter
+      objectReference: {fileID: 0}
+    - target: {fileID: 1790264081674590, guid: 8c2c7e3255aab3f48b51f522b0cb1292, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224840919162489126, guid: 8c2c7e3255aab3f48b51f522b0cb1292,
         type: 3}
@@ -434,10 +439,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_FontData.m_MaxSize
       value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 1790264081674590, guid: 8c2c7e3255aab3f48b51f522b0cb1292, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c2c7e3255aab3f48b51f522b0cb1292, type: 3}

@@ -9,8 +9,11 @@ public class PlayerInput : MonoBehaviourPunCallbacks, IPunObservable {
     [SerializeField]
     private GameObject cursor;
     private Vector3 velocity;
+    private PlayerCharacter pc;
     public float speed;
     private float baseSpeed;
+    private float bonusSpeed;
+    private float speedDebuff;
     private float camHeight;
     private float camWidth;
     private Camera cam;
@@ -32,6 +35,7 @@ public class PlayerInput : MonoBehaviourPunCallbacks, IPunObservable {
 
     void Start ()
     {
+        pc = GetComponent<PlayerCharacter>();
         baseSpeed = speed;
         rb2d = GetComponent<Rigidbody2D>();
         cam = Camera.main;
@@ -53,22 +57,43 @@ public class PlayerInput : MonoBehaviourPunCallbacks, IPunObservable {
             return;
         }
 
-        oldPosition = transform.position;
+        if (!pc.Dead)
+        {
+            oldPosition = transform.position;
 
-        velocity.x = Input.GetAxisRaw("Horizontal");
-        velocity.y = Input.GetAxisRaw("Vertical");
+            velocity.x = Input.GetAxisRaw("Horizontal");
+            velocity.y = Input.GetAxisRaw("Vertical");
 
-        movement = transform.position - oldPosition;
-        transform.Translate(velocity.normalized * speed * Time.deltaTime);
-        Vector2 clampedPos = transform.position;
-        clampedPos.x = Mathf.Clamp(transform.position.x, -19, 19);
-        clampedPos.y = Mathf.Clamp(transform.position.y, -10, 10);
-        transform.position = clampedPos;
+            movement = transform.position - oldPosition;
+            transform.Translate(velocity.normalized * speed * Time.deltaTime);
+            Vector2 clampedPos = transform.position;
+            clampedPos.x = Mathf.Clamp(transform.position.x, -19, 19);
+            clampedPos.y = Mathf.Clamp(transform.position.y, -10, 10);
+            transform.position = clampedPos;
+        }
+
     }
 
     public float Speed
     {
+        get { return speed; }
         set { speed = value; }
+    }
+
+    public float SpeedDebuff
+    {
+        get { return speedDebuff; }
+        set { speedDebuff = value; }
+    }
+
+    public float BaseSpeed
+    {
+        get { return baseSpeed; }
+    }
+
+    public float BonusSpeed
+    {
+        get { return bonusSpeed; }
     }
 
     private void LateUpdate()
@@ -97,18 +122,6 @@ public class PlayerInput : MonoBehaviourPunCallbacks, IPunObservable {
         cursor.transform.position = transform.position + new Vector3(Mathf.Clamp(cursorOffset.x, -camWidthOffset, camWidthOffset),
                                                                      Mathf.Clamp(cursorOffset.y, -camHeightOffset, camHeightOffset),
                                                                      0f);
-    }
-
-    [PunRPC]
-    void Slow()
-    {
-        speed = baseSpeed / 2;
-    }
-
-    [PunRPC]
-    void ResumeSpeed()
-    {
-        speed = baseSpeed;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

@@ -52,18 +52,18 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void CheckForReady()
     {
         // FOR TESTING
-        startButton.GetComponent<Button>().interactable = true;
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    if(PhotonNetwork.PlayerList.Length >= 2 && playersReady == PhotonNetwork.PlayerList.Length)
-        //    {
-        //        startButton.GetComponent<Button>().interactable = true;
-        //    }
-        //    else
-        //    {
-        //        startButton.GetComponent<Button>().interactable = false;
-        //    }
-        //}
+        //startButton.GetComponent<Button>().interactable = true;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if(PhotonNetwork.PlayerList.Length >= 2 && playersReady == PhotonNetwork.PlayerList.Length)
+            {
+                startButton.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                startButton.GetComponent<Button>().interactable = false;
+            }
+        }
     }
 
     public void LoadMainLevel()

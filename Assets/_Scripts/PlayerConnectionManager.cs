@@ -70,7 +70,7 @@ public class PlayerConnectionManager : MonoBehaviourPunCallbacks //, IPunObserva
                 {
                     GameObject playerChar = PhotonNetwork.Instantiate(playerCharacterPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
                     Debug.Log("INSTANTIATE " + playerChar + " FOR " + photonView.Owner.NickName);
-                    playerChar.SendMessage("InstantiateUI");
+                    //playerChar.SendMessage("InstantiateUI");
                     playerLoaded = true;
                 }        
             }

@@ -28,8 +28,9 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
     private bool isStunned;
     public PlayerCharacter[] players;
     private EnemySpawner es;
+    public Collider2D circleCol;
 
-    public enum State { CHASING, STUNNED, SPAWNING };
+    public enum State { CHASING, STUNNED, SPAWNING, TAUNTED };
     public State state;
 
     private void Awake()
@@ -75,6 +76,12 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
                 isStunned = false;
             }
 
+            if (state == State.TAUNTED)
+            {
+                StopAllCoroutines();
+                StartCoroutine(Taunted());
+            }
+
             //if (knockBackTimer > 0)
             //{
             //    knockBackTimer -= Time.deltaTime;
@@ -85,6 +92,29 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
             //    StartCoroutine(UpdatePath());
             //}
         }
+    }
+
+    public float Speed
+    {
+        set { speed = value; }
+    }
+
+    IEnumerator Taunted()
+    {
+        state = State.CHASING;
+        speed = 9f;
+        StartCoroutine(UpdatePath());
+        float frenzyTimer = 4f;
+        while (frenzyTimer > 0)
+        {
+            frenzyTimer -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        StopAllCoroutines();
+        target = null;
+        speed = 9f;
+        photonView.RPC("RPCSelectTarget", RpcTarget.All, null);
+        StartCoroutine(UpdatePath());
     }
 
     IEnumerator ColorLerp()
@@ -118,6 +148,7 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
         healthBarHolder.SetActive(true);
         photonView.RPC("RPCSelectTarget", RpcTarget.All, null);
         state = State.CHASING;
+        circleCol.enabled = true;
         StartCoroutine(UpdatePath());
     }
 
@@ -196,17 +227,25 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
         PhotonNetwork.Destroy(gameObject);
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        // play attack animation
         if (collision.gameObject.tag == "Player")
         {
             collision.gameObject.GetPhotonView().RPC("TakeZombieDamage", RpcTarget.All, damage * Time.deltaTime);
         }
     }
 
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    // play attack animation
+    //    if (collision.gameObject.tag == "Player")
+    //    {
+    //        collision.gameObject.GetPhotonView().RPC("TakeZombieDamage", RpcTarget.All, damage * Time.deltaTime);
+    //    }
+    //}
+
     #region IPunObservable implementation
-    
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

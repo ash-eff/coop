@@ -179,7 +179,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             if (currentCharacterIndex + 1 > lobbyManager.characters.Length - 1)
             {
-                currentCharacterIndex = 0;
+                currentCharacterIndex = -1;
             }
 
             //Debug.Log("Checking..." + lobbyManager.characters[currentCharacterIndex + 1].name);
@@ -210,7 +210,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         while (checkingLeft)
         {
-            if (currentCharacterIndex - 1 <= 0)
+            if (currentCharacterIndex - 1 < 0)
             {
                 currentCharacterIndex = lobbyManager.characters.Length;
             }

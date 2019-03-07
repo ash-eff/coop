@@ -9,14 +9,18 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
     public Transform weapon;
     public LayerMask enemyLayer;
     public GameObject reloadIndicator;
-    public PlayerInput input;
-    public float fireRate;
-    public float grenadeFireRate;
-    public float rays;
-    public float angle;
-    public int ammo = 6;
-    public int grenade = 2;
-    private float damage = 4f;
+    public bool startWithGrenade;
+    private float shotgunFireRate;
+    private float grenadeFireRate;
+    private float reloadSpeed;
+    private float pellets;
+    private float angle;
+    private int ammo;
+    private int maxAmmo;
+    private int grenade;
+    private int maxGrenades;
+    private float damage;
+    private float bonusDamage;
     public GameObject[] shells;
     public GameObject[] grenades;
     public ParticleSystem blast;
@@ -26,20 +30,29 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
     public ParticleSystem grenadeFlare;
     public GameObject grenadeExplosion;
     float zRot;
-    public bool reloading;
+    private bool reloading;
 
     private float nextFireTime;
     private float nextGrenadeTime;
 
+    PlayerCharacter pc;
+    PlayerInput input;
+
     private void Start()
     {
+        maxAmmo = ammo;
         input = GetComponent<PlayerInput>();
+        pc = GetComponent<PlayerCharacter>();
+        if (startWithGrenade)
+        {
+            photonView.RPC("RPCAddGrenade", RpcTarget.All, null);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (photonView.IsMine)
+        if (photonView.IsMine && !pc.Dead)
         {
             Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - weapon.position;
             difference.Normalize();
@@ -50,10 +63,10 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
                 {
                     photonView.RPC("SpendShell", RpcTarget.All, null);
                     //photonView.RPC("ShotGunCount", RpcTarget.All, null);
-                    for (int i = 0; i < rays; i++)
+                    for (int i = 0; i < pellets; i++)
                     {
                         float dividedAngle = angle / 2;
-                        float offset = angle / rays * i;
+                        float offset = angle / pellets * i;
                         zRot = (Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg) - dividedAngle;
                         weapon.rotation = Quaternion.Euler(0f, 0f, zRot + offset);
                         RaycastHit2D hit = Physics2D.Raycast(weapon.transform.position, weapon.transform.right, 6f, enemyLayer);
@@ -61,11 +74,11 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
 
                         if (hit)
                         {
-                            hit.transform.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, damage);
+                            hit.transform.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (damage + bonusDamage));
                         }
                     }
 
-                    nextFireTime = Time.time + fireRate;
+                    nextFireTime = Time.time + shotgunFireRate;
                     photonView.RPC("ShotGunBlast", RpcTarget.Others, null);
                     blast.Play();
                     smoke.Play();
@@ -112,30 +125,80 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
         }     
     }
 
+    public float ShotgunFireRate
+    {
+        set { shotgunFireRate = value; }
+    }
+
+    public float GrenadeFireRate
+    {
+        set { grenadeFireRate = value; }
+    }
+
+    public float ReloadSpeed
+    {
+        set { reloadSpeed = value; }
+    }
+
+    public float Pellets
+    {
+        set { pellets = value; }
+    }
+
+    public float Angle
+    {
+        set { angle = value; }
+    }
+
+    public int Ammo
+    {
+        set { ammo = value; }
+    }
+
+    public int Grenade
+    {
+        set { grenade = value; }
+    }
+
+    public int MaxGrenades
+    {
+        set { maxGrenades = value; }
+    }
+
+    public float Damage
+    {
+        set { damage = value; }
+    }
+
+    public float BonusDamage
+    {
+        set { bonusDamage = value; }
+    }
+
     IEnumerator Reload()
     {
-        input.Speed = 4f;
-        while (ammo != 6)
+        input.Speed = input.BaseSpeed / input.SpeedDebuff;
+        while (ammo != maxAmmo)
         {
             foreach(GameObject shell in shells)
             {
                 if (!shell.activeInHierarchy)
                 {
                     shell.SetActive(true);
-                    yield return new WaitForSeconds(.3f);
+                    yield return new WaitForSeconds(reloadSpeed);
                     ammo++;
                 }
             }
         }
 
         reloading = false;
-        input.Speed = 8f;
+        input.Speed = input.BaseSpeed;
     }
 
     [PunRPC]
     public void RPCAddGrenade()
     {
-        grenade = 2;
+        grenade = maxGrenades;
         foreach(GameObject nade in grenades)
         {
             nade.SetActive(true);

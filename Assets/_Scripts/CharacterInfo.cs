@@ -5,18 +5,51 @@ using Photon.Pun;
 
 public class CharacterInfo : MonoBehaviourPunCallbacks
 {
-    //[Tooltip("The Player's GAME UI GameObject Prefab")]
-    //[SerializeField]
-    //private GameObject playerGameUIPrefab;
-
     public string characterName;
     public string characterInfo;
-    public bool playable;
+
+    public float health;
+    public float speed;
+    public float bonusSpeed;
+    public float speedDebuff;
+    public float damage;
+    public float bonusDamage;
+    public float shotgunFireRate;
+    public float grenadeFireRate;
+    public float reloadSpeed;
+    public float pellets;
+    public float angle;
+    public int ammo;
+    public int grenade;
+    public int maxGrenades;
+
+    PlayerCharacter pc;
+    PlayerInput input;
+    WeaponShotgun shotgun;
+
+    private bool playable;
+    
     public bool isSelectable;
 
     private void Awake()
     {
         CameraControl cameraControl = gameObject.GetComponent<CameraControl>();
+        pc = GetComponent<PlayerCharacter>();
+        input = GetComponent<PlayerInput>();
+        shotgun = GetComponent<WeaponShotgun>();
+
+        pc.MaxHealth = health;
+        input.Speed = speed;
+        input.SpeedDebuff = speedDebuff;
+        shotgun.Damage = damage;
+        shotgun.ShotgunFireRate = shotgunFireRate;
+        shotgun.GrenadeFireRate = grenadeFireRate;
+        shotgun.ReloadSpeed = reloadSpeed;
+        shotgun.Pellets = pellets;
+        shotgun.Angle = angle;
+        shotgun.Ammo = ammo;
+        shotgun.Grenade = grenade;
+        shotgun.MaxGrenades = maxGrenades;
         
         if (cameraControl != null)
         {
@@ -34,17 +67,6 @@ public class CharacterInfo : MonoBehaviourPunCallbacks
     public void WakeUp()
     {
         isSelectable = true;
-        if (name != "Default")
-        {
-            characterName = name + " Dude";
-            characterInfo = name + " Dude has a " + name + " weapon that does " + name + " damage. " + name + " Dude's favorite color is not " + name + ".";
-            Debug.Log(characterName + " Slectable? " + isSelectable);
-        }
-        else
-        {
-            characterName = "";
-            characterInfo = "Select a character!";
-        }
     }
 
     public void SelectChamp()

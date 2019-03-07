@@ -20,7 +20,7 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
     public GameObject waveIndicator;
     public Text waveText;
 
-    int waveNumber = 1;
+    public int waveNumber = 1;
 
     public enum SpawnerState { SPAWNING, IDLE, COUNTINGDOWN, WAITING, AIRDROP };
     public SpawnerState spawnerState = SpawnerState.IDLE;
@@ -134,12 +134,20 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
                 Vector2 selectedPos = new Vector2(randX, randY);
 
                 GameObject go = PhotonNetwork.Instantiate(enemy.name, selectedPos, Quaternion.identity);
-                go.GetComponent<Enemy>().damage = 1 + (waveNumber / 2);
+                go.GetComponent<Enemy>().damage = 1 + (waveNumber / 5);
                 go.transform.position = selectedPos;
 
                 yield return new WaitForSeconds(.5f);
             }
-            timer = numToSpawn;
+
+            if (numToSpawn < 5)
+            {
+                timer = 5;
+            }
+            else
+            {
+                timer = numToSpawn;
+            }
             spawnerState = SpawnerState.WAITING;
         }
     }
