@@ -11,11 +11,12 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
     public GameObject target;
     public Image healthBar;
     public GameObject healthBarHolder;
+    public GameObject targetHolder;
     float speed;
     int targetIndex;
     Rigidbody2D rb2d;
     public float health = 25f;
-    public float damage;
+    private float damage;
     private float deathTimer = 60f;
     private SpriteRenderer spr;
     private Color currentColor = Color.white;
@@ -29,17 +30,25 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
     public PlayerCharacter[] players;
     private EnemySpawner es;
     public Collider2D circleCol;
+    public Collider2D bodyCol;
+    public bool targeted;
+    private bool active;
+    private bool gameOver;
+    private bool wandering;
+    public float targetTimer;
+    private GameManager gm;
 
     public enum State { CHASING, STUNNED, SPAWNING, TAUNTED };
     public State state;
 
     private void Awake()
     {
+        gm = FindObjectOfType<GameManager>();
         es = FindObjectOfType<EnemySpawner>();
         spr = GetComponent<SpriteRenderer>();
-        speed = Random.Range(1f, 7f);
-        state = State.SPAWNING;
         rb2d = GetComponent<Rigidbody2D>();
+        state = State.SPAWNING;
+        speed = Random.Range(1f, 7f);
         StartCoroutine(Spawning());
         StartCoroutine(ColorLerp());
     }
@@ -47,20 +56,20 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
     private void Update()
     {
         healthBar.fillAmount = health / 25;
-        //deathTimer -= Time.deltaTime;
-        //if(deathTimer <= 0)
-        //{
-        //    EnemySpawner.deathCount += 1;
-        //    photonView.RPC("Die", RpcTarget.All, null);
-        //}
+
         if (!photonView.IsMine)
         {
             return;
         }
 
+        if (gm.gameOver)
+        {
+            gameOver = true;
+        }
+
         if (state != State.SPAWNING)
         {
-            
+
             if (health <= 0)
             {
                 EnemySpawner.deathCount += 1;
@@ -82,21 +91,25 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
                 StartCoroutine(Taunted());
             }
 
-            //if (knockBackTimer > 0)
-            //{
-            //    knockBackTimer -= Time.deltaTime;
-            //}
-            //
-            //if (knockBackTimer <= 0 && state == State.STUNNED)
-            //{
-            //    StartCoroutine(UpdatePath());
-            //}
+            if (gameOver && !wandering)
+            {
+                wandering = true;
+                StopAllCoroutines();
+                speed = 1f;
+                state = State.CHASING;
+                StartCoroutine(Wandering());
+            }
         }
     }
 
     public float Speed
     {
         set { speed = value; }
+    }
+
+    public float Damage
+    {
+        set { damage = value; }
     }
 
     IEnumerator Taunted()
@@ -169,6 +182,20 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    IEnumerator Wandering()
+    {
+        while (state == State.CHASING)
+        {
+            yield return new WaitForSeconds(5f);
+
+            float randX = Random.Range(-18, 18);
+            float randY = Random.Range(-9, 9);
+            targetDestination = new Vector2(randX, randY);
+            StopCoroutine(FollowPath());
+            StartCoroutine(FollowPath());
+        }
+    }
+
     IEnumerator FollowPath()
     {
         while (state == State.CHASING)
@@ -227,22 +254,40 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
         PhotonNetwork.Destroy(gameObject);
     }
 
+    [PunRPC]
+    void Activate()
+    {
+        targetHolder.SetActive(true);
+    }
+
+    [PunRPC]
+    void Deactivate()
+    {
+        targetHolder.SetActive(false);
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
             collision.gameObject.GetPhotonView().RPC("TakeZombieDamage", RpcTarget.All, damage * Time.deltaTime);
         }
+
+        if (collision.gameObject.tag == "Laser" && !targeted)
+        {
+            targeted = true;
+            photonView.RPC("Activate", RpcTarget.All, null);
+        }
     }
 
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    // play attack animation
-    //    if (collision.gameObject.tag == "Player")
-    //    {
-    //        collision.gameObject.GetPhotonView().RPC("TakeZombieDamage", RpcTarget.All, damage * Time.deltaTime);
-    //    }
-    //}
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Laser" && targeted)
+        {
+            targeted = false;
+            photonView.RPC("Deactivate", RpcTarget.All, null);
+        }
+    }
 
     #region IPunObservable implementation
 

@@ -13,6 +13,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     static public LobbyManager Instance;
     private LobbyManager instance;
 
+    public bool testing;
     //[Tooltip("UI Button used to start the game after a ready check.")]
     //[SerializeField]
     public GameObject startButton;
@@ -52,16 +53,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void CheckForReady()
     {
         // FOR TESTING
-        //startButton.GetComponent<Button>().interactable = true;
-        if (PhotonNetwork.IsMasterClient)
+        if (testing)
         {
-            if(PhotonNetwork.PlayerList.Length >= 2 && playersReady == PhotonNetwork.PlayerList.Length)
+            startButton.GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            if (PhotonNetwork.IsMasterClient)
             {
-                startButton.GetComponent<Button>().interactable = true;
-            }
-            else
-            {
-                startButton.GetComponent<Button>().interactable = false;
+                if (PhotonNetwork.PlayerList.Length >= 2 && playersReady == PhotonNetwork.PlayerList.Length)
+                {
+                    startButton.GetComponent<Button>().interactable = true;
+                }
+                else
+                {
+                    startButton.GetComponent<Button>().interactable = false;
+                }
             }
         }
     }

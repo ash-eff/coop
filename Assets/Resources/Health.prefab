@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7045665795655121286}
   m_Layer: 0
   m_Name: Health
-  m_TagString: Untagged
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164,8 +164,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 7045665795655121286}
-  viewIdField: 17
-  InstantiationId: 17
+  viewIdField: 2
+  InstantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &7045665795655121286
 MonoBehaviour:

@@ -31,4 +31,12 @@ public class HealthPickup : MonoBehaviourPunCallbacks
             PhotonNetwork.Destroy(gameObject);
         }
     }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.tag == "Pickup")
+        {
+            collision.transform.position = new Vector2(collision.transform.position.x + Random.Range(.1f,.5f), collision.transform.position.y + Random.Range(.1f, .5f));
+        }
+    }
 }

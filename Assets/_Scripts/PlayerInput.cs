@@ -7,10 +7,10 @@ public class PlayerInput : MonoBehaviourPunCallbacks, IPunObservable {
 
     [Tooltip("The gameobject for the cursor")]
     [SerializeField]
-    private GameObject cursor;
+    public GameObject cursor;
     private Vector3 velocity;
     private PlayerCharacter pc;
-    public float speed;
+    private float speed;
     private float baseSpeed;
     private float bonusSpeed;
     private float speedDebuff;

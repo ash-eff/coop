@@ -8,12 +8,13 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
 {
     public static EnemySpawner instance = null;
     public static int deathCount = 0;
-
+    ObjectPooler objectPooler;
     public GameObject chopper;
     public int deadCount;
     public GameObject enemy;
     public int numToSpawn;
     public int numberSpawned;
+    private float spawnBonus;
     public float spawnX;
     public float spawnY;
     public Text deathCounterText;
@@ -22,10 +23,11 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
 
     public int waveNumber = 1;
 
-    public enum SpawnerState { SPAWNING, IDLE, COUNTINGDOWN, WAITING, AIRDROP };
+    public enum SpawnerState { SPAWNING, IDLE, COUNTINGDOWN, WAITING, AIRDROP, GAMEOVER };
     public SpawnerState spawnerState = SpawnerState.IDLE;
 
     private float timer = 3;
+    private bool spawning = true;
 
     private void Awake()
     {
@@ -46,12 +48,17 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             StartCoroutine(UpdateCount());
-        }
+        }       
+    }
+
+    private void Start()
+    {
+        objectPooler = ObjectPooler.Instance;
     }
 
     private void Update()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && spawning)
         {
             if (spawnerState == SpawnerState.COUNTINGDOWN)
             {
@@ -67,6 +74,13 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
                     timer = 3;
                     StartCoroutine(SpawnEnemies());
                 }
+            }
+
+            if(spawnerState == SpawnerState.GAMEOVER)
+            {
+                StopAllCoroutines();
+                spawning = false;
+                photonView.RPC("SetWaveIndicator", RpcTarget.All, false, "");
             }
 
             if (spawnerState == SpawnerState.WAITING)
@@ -91,9 +105,14 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
     {
         int numOfPlayers = PhotonNetwork.PlayerList.Length;
         int baseNumber = n * numOfPlayers;
-
-        // TODO change to basenumber + basenumber * number of players
-        return Mathf.RoundToInt(baseNumber + baseNumber / 2);
+        int totalToSpawn = Mathf.RoundToInt(baseNumber + (baseNumber / 2));
+        if (totalToSpawn > 100)
+        {
+            totalToSpawn = 100;
+            spawnBonus += .5f;
+        }
+        
+        return totalToSpawn;
     }
 
     void PrepCountdown()
@@ -134,7 +153,8 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
                 Vector2 selectedPos = new Vector2(randX, randY);
 
                 GameObject go = PhotonNetwork.Instantiate(enemy.name, selectedPos, Quaternion.identity);
-                go.GetComponent<Enemy>().damage = 1 + (waveNumber / 5);
+                //GameObject go = objectPooler.SpawnFromPool("Enemy", selectedPos, Quaternion.identity);
+                go.GetComponent<Enemy>().Damage = 1 + spawnBonus + (waveNumber / 5);
                 go.transform.position = selectedPos;
 
                 yield return new WaitForSeconds(.5f);

@@ -43,9 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f0906b5479bb9c4b83d51e3083a0e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testing: 0
   startButton: {fileID: 0}
   characters:
-  - {fileID: 184, guid: 653c463d14e58a849912cfbd39e15d41, type: 3}
-  - {fileID: 185, guid: 771e92a2dedc80d438c8a14ca3202957, type: 3}
+  - {fileID: 1364686637355020, guid: 19d80afce339d7949a090f3779b1ea8d, type: 3}
+  - {fileID: 188, guid: 65bacb5fffe8d1b4690c9fd6412ccc85, type: 3}
   - {fileID: 181, guid: 89029583804cfcf42ae534cf7037fd7c, type: 3}
-  - {fileID: 182, guid: 65bacb5fffe8d1b4690c9fd6412ccc85, type: 3}
+  - {fileID: 185, guid: 771e92a2dedc80d438c8a14ca3202957, type: 3}
+  - {fileID: 185, guid: 653c463d14e58a849912cfbd39e15d41, type: 3}
+  - {fileID: 184, guid: 28e3b74cb3f4e8348a878cd2e32ec1be, type: 3}

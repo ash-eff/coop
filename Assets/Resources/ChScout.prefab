@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 984}
   - component: {fileID: 1555}
   - component: {fileID: 1558}
-  - component: {fileID: 1554}
-  - component: {fileID: 1556}
   - component: {fileID: 1557}
-  - component: {fileID: 1559}
+  - component: {fileID: 1554}
   - component: {fileID: 1577}
+  - component: {fileID: 1556}
+  - component: {fileID: 1559}
   m_Layer: 0
   m_Name: ChScout
   m_TagString: Player
@@ -142,8 +142,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 1557}
-  viewIdField: 0
-  InstantiationId: 3
+  viewIdField: 17
+  InstantiationId: 17
   isRuntimeInstantiated: 0
 --- !u!114 &1558
 MonoBehaviour:
@@ -168,6 +168,19 @@ MonoBehaviour:
   newPosition: {x: 0, y: 0, z: 0}
   clampedPosition: {x: 0, y: 0, z: 0}
   targetDead: 0
+--- !u!114 &1557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 023be214641997b4ca4eb681f7e5f7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursor: {fileID: 4012931750725486606}
 --- !u!114 &1554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,6 +197,20 @@ MonoBehaviour:
   redScreen: {fileID: 1823415384776617256}
   healthBar: {fileID: 984382711618119511}
   youDiedScreen: {fileID: 6126786897349775138}
+--- !u!114 &1577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49a4522b91f2eb64688a08523d333a5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityBar: {fileID: 684418725059195135}
+  abilityText: {fileID: 8800023392321915053}
 --- !u!114 &1556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,31 +230,18 @@ MonoBehaviour:
   speed: 8
   bonusSpeed: 2
   speedDebuff: 1
-  damage: 2.5
+  damage: 3
   bonusDamage: 0
   shotgunFireRate: 0.6
   grenadeFireRate: 1
   reloadSpeed: 0.3
-  pellets: 10
+  pellets: 15
   angle: 45
+  range: 6
   ammo: 4
   grenade: 0
   maxGrenades: 2
   isSelectable: 0
---- !u!114 &1557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 023be214641997b4ca4eb681f7e5f7fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cursor: {fileID: 4012931750725486606}
-  speed: 0
 --- !u!114 &1559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,20 +274,6 @@ MonoBehaviour:
   grenadeSmoke: {fileID: 5349419705978700829}
   grenadeFlare: {fileID: 7749010083959095641}
   grenadeExplosion: {fileID: 191, guid: 8c102f4d1d4e8804482b4ce18683d0f7, type: 3}
---- !u!114 &1577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49a4522b91f2eb64688a08523d333a5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityBar: {fileID: 684418725059195135}
-  abilityText: {fileID: 8800023392321915053}
 --- !u!1 &189
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,8 +327,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 1560}
-  viewIdField: 0
-  InstantiationId: 8
+  viewIdField: 4
+  InstantiationId: 4
   isRuntimeInstantiated: 0
 --- !u!114 &1560
 MonoBehaviour:
@@ -744,6 +744,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 201533326523048218, guid: 5d27008360d15254cba082b28ee59742,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3673053619443594742, guid: 5d27008360d15254cba082b28ee59742,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -798,11 +803,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 201533326523048218, guid: 5d27008360d15254cba082b28ee59742,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d27008360d15254cba082b28ee59742, type: 3}
@@ -1469,6 +1469,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6798788154718035243, guid: 4a29189cb95f7b94694ab50031784d1c,
+        type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3259014436603864441, guid: 4a29189cb95f7b94694ab50031784d1c,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3259014436603864441, guid: 4a29189cb95f7b94694ab50031784d1c,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 857887140238861216, guid: 4a29189cb95f7b94694ab50031784d1c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1573,21 +1588,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6798788154718035243, guid: 4a29189cb95f7b94694ab50031784d1c,
-        type: 3}
-      propertyPath: m_FillAmount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3259014436603864441, guid: 4a29189cb95f7b94694ab50031784d1c,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3259014436603864441, guid: 4a29189cb95f7b94694ab50031784d1c,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a29189cb95f7b94694ab50031784d1c, type: 3}

@@ -15,6 +15,7 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
     private float reloadSpeed;
     private float pellets;
     private float angle;
+    private float range;
     private int ammo;
     private int maxAmmo;
     private int grenade;
@@ -62,6 +63,7 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
                 if (Time.time > nextFireTime)
                 {
                     photonView.RPC("SpendShell", RpcTarget.All, null);
+                    pc.ShotsFired += 1;
                     //photonView.RPC("ShotGunCount", RpcTarget.All, null);
                     for (int i = 0; i < pellets; i++)
                     {
@@ -69,8 +71,8 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
                         float offset = angle / pellets * i;
                         zRot = (Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg) - dividedAngle;
                         weapon.rotation = Quaternion.Euler(0f, 0f, zRot + offset);
-                        RaycastHit2D hit = Physics2D.Raycast(weapon.transform.position, weapon.transform.right, 6f, enemyLayer);
-                        Debug.DrawRay(weapon.transform.position, weapon.transform.right * 6, Color.red, .1f);
+                        RaycastHit2D hit = Physics2D.Raycast(weapon.transform.position, weapon.transform.right, range, enemyLayer);
+                        Debug.DrawRay(weapon.transform.position, weapon.transform.right * range, Color.red, .1f);
 
                         if (hit)
                         {
@@ -120,6 +122,7 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
 
             if (Input.GetButtonDown("R") && !reloading && ammo < 6)
             {
+                pc.NumOfReloads += 1;
                 photonView.RPC("RPCReload", RpcTarget.All, null);        
             }
         }     
@@ -148,6 +151,11 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
     public float Angle
     {
         set { angle = value; }
+    }
+
+    public float Range
+    {
+        set { range = value; }
     }
 
     public int Ammo

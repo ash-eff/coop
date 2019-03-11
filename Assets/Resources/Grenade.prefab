@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6731819646791274140}
   m_Layer: 0
   m_Name: Grenade
-  m_TagString: Untagged
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -163,8 +163,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 6731819646791274140}
-  viewIdField: 18
-  InstantiationId: 18
+  viewIdField: 3
+  InstantiationId: 3
   isRuntimeInstantiated: 0
 --- !u!114 &6731819646791274140
 MonoBehaviour:

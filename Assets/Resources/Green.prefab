@@ -208,6 +208,7 @@ MonoBehaviour:
   reloadSpeed: 0
   pellets: 0
   angle: 0
+  range: 0
   ammo: 0
   grenade: 0
   maxGrenades: 0
@@ -225,7 +226,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursor: {fileID: 851699839707730883}
-  speed: 0
 --- !u!114 &781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1558,6 +1558,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 201533326523048218, guid: 5d27008360d15254cba082b28ee59742,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3673053619443594742, guid: 5d27008360d15254cba082b28ee59742,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -1592,11 +1597,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 201533326523048218, guid: 5d27008360d15254cba082b28ee59742,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d27008360d15254cba082b28ee59742, type: 3}

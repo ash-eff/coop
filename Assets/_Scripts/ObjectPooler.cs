@@ -1,108 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-[System.Serializable]
-public class ObjectPoolItem
+public class ObjectPooler : MonoBehaviourPunCallbacks
 {
-
-    public GameObject objectToPool;
-    public int amountToPool;
-    public bool shouldExpand = true;
-
-    public ObjectPoolItem(GameObject obj, int amt, bool exp = true)
+    [System.Serializable]
+    public class Pool
     {
-        objectToPool = obj;
-        amountToPool = Mathf.Max(amt, 2);
-        shouldExpand = exp;
-    }
-}
-
-public class ObjectPooler : MonoBehaviour
-{
-    public static ObjectPooler SharedInstance;
-    public List<ObjectPoolItem> itemsToPool;
-
-
-    public List<List<GameObject>> pooledObjectsList;
-    public List<GameObject> pooledObjects;
-    private List<int> positions;
-
-    void Awake()
-    {
-
-        SharedInstance = this;
-
-        pooledObjectsList = new List<List<GameObject>>();
-        pooledObjects = new List<GameObject>();
-        positions = new List<int>();
-
-
-        for (int i = 0; i < itemsToPool.Count; i++)
-        {
-            ObjectPoolItemToPooledObject(i);
-        }
-
+        public string tag;
+        public GameObject prefab;
+        public int size;
     }
 
+    public static ObjectPooler Instance;
 
-    public GameObject GetPooledObject(int index)
+    private void Awake()
     {
+        Instance = this;
+    }
 
-        int curSize = pooledObjectsList[index].Count;
-        for (int i = positions[index] + 1; i < positions[index] + pooledObjectsList[index].Count; i++)
+    public List<Pool> pools;
+    public Dictionary<string, Queue<GameObject>> poolDictionary;
+
+    void Start()
+    {
+        poolDictionary = new Dictionary<string, Queue<GameObject>>();
+
+        foreach (Pool pool in pools)
         {
+            Queue<GameObject> objectPool = new Queue<GameObject>();
 
-            if (!pooledObjectsList[index][i % curSize].activeInHierarchy)
+            for (int i = 0; i < pool.size; i++)
             {
-                positions[index] = i % curSize;
-                return pooledObjectsList[index][i % curSize];
+                GameObject obj = PhotonNetwork.Instantiate(pool.prefab.name, Vector3.zero, Quaternion.identity);
+                obj.SetActive(false);
+                objectPool.Enqueue(obj);
             }
-        }
 
-        if (itemsToPool[index].shouldExpand)
+            poolDictionary.Add(pool.tag, objectPool);
+        }
+    }
+
+    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    {
+        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+        objectToSpawn.SetActive(true);
+        objectToSpawn.transform.position = position;
+        objectToSpawn.transform.rotation = rotation;
+
+        IPooledObject pooledObj = objectToSpawn.GetComponent<IPooledObject>();
+        
+        if(pooledObj != null)
         {
-
-            GameObject obj = (GameObject)Instantiate(itemsToPool[index].objectToPool);
-            obj.SetActive(false);
-            obj.transform.parent = this.transform;
-            pooledObjectsList[index].Add(obj);
-            return obj;
-
+            pooledObj.OnObjectSpawn();
         }
-        return null;
+
+        poolDictionary[tag].Enqueue(objectToSpawn);
+
+        return objectToSpawn;
     }
 
-    public List<GameObject> GetAllPooledObjects(int index)
+    [PunRPC]
+    void SetObjectActive(GameObject obj, bool b)
     {
-        return pooledObjectsList[index];
-    }
-
-
-    public int AddObject(GameObject GO, int amt = 3, bool exp = true)
-    {
-        ObjectPoolItem item = new ObjectPoolItem(GO, amt, exp);
-        int currLen = itemsToPool.Count;
-        itemsToPool.Add(item);
-        ObjectPoolItemToPooledObject(currLen);
-        return currLen;
-    }
-
-
-    void ObjectPoolItemToPooledObject(int index)
-    {
-        ObjectPoolItem item = itemsToPool[index];
-
-        pooledObjects = new List<GameObject>();
-        for (int i = 0; i < item.amountToPool; i++)
-        {
-            GameObject obj = (GameObject)Instantiate(item.objectToPool);
-            obj.SetActive(false);
-            obj.transform.parent = this.transform;
-            pooledObjects.Add(obj);
-        }
-        pooledObjectsList.Add(pooledObjects);
-        positions.Add(0);
-
+        obj.SetActive(b);
     }
 }

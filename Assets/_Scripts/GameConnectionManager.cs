@@ -24,10 +24,6 @@ public class GameConnectionManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject playerConnectionPrefab;
 
-    [Tooltip("The UI Text to use for displaying ping")]
-    [SerializeField]
-    private Text pingText;
-
     private LobbyManager lobbyManager;
 
     private void Start()
@@ -88,19 +84,6 @@ public class GameConnectionManager : MonoBehaviourPunCallbacks
                 InstantiatePlayer();
             }
         }
-
-        StartCoroutine(UpdatePing());
-    }
-
-    IEnumerator UpdatePing()
-    {
-        while (true)
-        {
-            pingText.text = PhotonNetwork.GetPing().ToString();
-
-            yield return new WaitForSeconds(1f);
-        }
-
     }
 
     #region Photon CallBacks

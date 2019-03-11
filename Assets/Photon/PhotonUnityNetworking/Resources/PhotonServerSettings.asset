@@ -124,4 +124,12 @@ MonoBehaviour:
   - ResetSpeed
   - IncreaseDamage
   - ResetDamage
+  - SetObjectActive
+  - ShowTarget
+  - HideTarget
+  - ActivateTarget
+  - DeActivateTarget
+  - Deactivate
+  - SetInfoActive
+  - SendInfo
   DisableAutoOpenWizard: 1

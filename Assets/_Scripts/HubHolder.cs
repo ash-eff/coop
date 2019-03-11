@@ -132,6 +132,11 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
     }
 
+    private void SetReadyButton(bool b)
+    {
+        readyButton.interactable = b;
+    }
+
     // let other players know when you've left a hub
     [PunRPC]
     void ResetHub()
@@ -140,7 +145,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         joinUI.gameObject.SetActive(true);
         playerUi.gameObject.SetActive(false);
         playerInSlot = false;
-        readyButton.interactable = false;
+        SetReadyButton(false);
         nameText.text = "";
         hubPCM = null;
         readyButton.colors = notReadyColors;    
@@ -159,7 +164,6 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Debug.Log(photonView.Owner + " has been assign to " + photonView.name);
         requesting = false;
         playerInSlot = true;
-        readyButton.interactable = true;
         currentChar = lobbyManager.characters[currentCharacterIndex];
         AddPlayerConnectionManager();
         UpdateCharacter();
@@ -177,15 +181,17 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         while (checkingRight)
         {
+            SetReadyButton(false);
             if (currentCharacterIndex + 1 > lobbyManager.characters.Length - 1)
             {
-                currentCharacterIndex = -1;
+                currentCharacterIndex = 0;
             }
 
             //Debug.Log("Checking..." + lobbyManager.characters[currentCharacterIndex + 1].name);
 
             if (lobbyManager.characters[currentCharacterIndex + 1].GetComponent<CharacterInfo>().isSelectable)
             {
+                SetReadyButton(true);
                 checkingRight = false;
             }
             else
@@ -210,7 +216,8 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         while (checkingLeft)
         {
-            if (currentCharacterIndex - 1 < 0)
+            SetReadyButton(false);
+            if (currentCharacterIndex - 1 <= 0)
             {
                 currentCharacterIndex = lobbyManager.characters.Length;
             }
@@ -219,6 +226,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
             if (lobbyManager.characters[currentCharacterIndex - 1].GetComponent<CharacterInfo>().isSelectable)
             {
+                SetReadyButton(true);
                 checkingLeft = false;
             }
             else
@@ -276,6 +284,7 @@ public class HubHolder : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Debug.Log("OnReadyClick");
         // turn the button into a bool switch
         playerIsReady = !playerIsReady;
+
         // if ready, then change the button and set player as ready
         if (playerIsReady)
         {

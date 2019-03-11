@@ -10,9 +10,6 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     private float maxHealth;
     private float health;
 
-    //[Tooltip("The UI of our character")]
-    //public GameObject playerUI;
-
     public TextMeshProUGUI healthText;
     public GameObject redScreen;
     public Image healthBar;
@@ -25,8 +22,19 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
 
     bool dead;
 
+    // game stats
+    string playerName;
+    static float deathTime;
+    static int numOfZombiesKilled = 0;
+    static float accuracy = 0;
+    static int numOfReloads;
+    static int shotsFired;
+    static float dmgTaken;
+    static float dmgHealed;
+
     private void Start()
     {
+        playerName = photonView.Owner.NickName;
         health = maxHealth;
         cc = GetComponent<CameraControl>();
     }
@@ -50,11 +58,55 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
             }
         }
 
-        if (health <= 0f)
+        if (health <= 0f && !dead)
         {
             dead = true;
+            deathTime = Time.time;
+            GameManager.playersDead += 1;
             photonView.RPC("RPCDead", RpcTarget.All, null);
         }
+    }
+
+    public float DeathTime
+    {
+        get { return deathTime; }
+        set { deathTime = value; }
+    }
+
+    public int NumOfZombiesKilled
+    {
+        get { return numOfZombiesKilled; }
+        set { numOfZombiesKilled = value; }
+    }
+
+    public float Accuracy
+    {
+        get { return accuracy; }
+        set { accuracy = value; }
+    }
+
+    public int ShotsFired
+    {
+        get { return shotsFired; }
+        set { shotsFired = value; }
+    }
+
+    public int NumOfReloads
+    {
+        get { return numOfReloads; }
+        set { numOfReloads = value; }
+    }
+
+    public float DmgTaken
+    {
+        get { return dmgTaken; }
+        set { dmgTaken = value; }
+    }
+
+    public float DmgHealed
+    {
+        get { return dmgHealed; }
+        set { dmgHealed = value; }
     }
 
     public float MaxHealth
@@ -68,31 +120,43 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         set { dead = value; }
     }
 
-    //public void InstantiateUI()
-    //{
-    //    if (photonView.IsMine)
-    //    {
-    //        GameObject ui = Instantiate(playerUI, Vector2.zero, Quaternion.identity);
-    //        Debug.Log("INSTANTIATE " + ui + " FOR " + photonView.Owner.NickName);
-    //        ui.SendMessage("SetTarget", gameObject);
-    //    }
-    //}
-
     [PunRPC]
     public void RPCAddHealth(int amount)
     {
-        health += amount;
-        if (health > maxHealth)
+        float currentHealth = health;
+        float actual;
+        if (currentHealth + amount > maxHealth)
         {
-            health = maxHealth;
+            float over = currentHealth + amount - maxHealth;
+            actual = maxHealth - over;
+            health = actual;
+        }
+        actual = amount;
+        health += actual;
+
+        if (photonView.IsMine)
+        {
+            DmgHealed += actual;
         }
     }
 
     [PunRPC]
     public void TakeZombieDamage(float dmg)
     {
-        health -= dmg;
+        if(health > 0)
+        {
+            health -= dmg;
+        }
+        if(health - dmg <= 0)
+        {
+            health = 0;
+        }
+
         redTimer = .2f;
+        if (photonView.IsMine)
+        {
+            DmgTaken += dmg;
+        }
     }
 
     [PunRPC]
@@ -118,6 +182,8 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
             yield return null;
         }
 
+        GameManager.Instance.Stats(playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
+
         gameObject.SetActive(false);
 
         if (photonView.IsMine)
@@ -125,22 +191,6 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
             youDiedScreen.SetActive(false);
         }
     }
-
-    //private void OnTriggerStay2D(Collider2D collision)
-    //{
-    //    if(collision.tag == "Enemy" && photonView.IsMine)
-    //    {
-    //        red.SetActive(true);
-    //    }
-    //}
-
-    //private void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    if (collision.tag == "Enemy" && photonView.IsMine)
-    //    {
-    //        red.SetActive(false);
-    //    }
-    //}
 
     #region IPunObservable implementation
 

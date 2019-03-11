@@ -15,7 +15,7 @@ public class Explosion : MonoBehaviourPunCallbacks
 
         if(deathTimer < 0)
         {
-            PhotonNetwork.Destroy(gameObject);
+            Destroy(gameObject);
         }
 
     }

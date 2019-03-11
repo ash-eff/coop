@@ -19,6 +19,7 @@ public class CharacterInfo : MonoBehaviourPunCallbacks
     public float reloadSpeed;
     public float pellets;
     public float angle;
+    public float range;
     public int ammo;
     public int grenade;
     public int maxGrenades;
@@ -47,6 +48,7 @@ public class CharacterInfo : MonoBehaviourPunCallbacks
         shotgun.ReloadSpeed = reloadSpeed;
         shotgun.Pellets = pellets;
         shotgun.Angle = angle;
+        shotgun.Range = range;
         shotgun.Ammo = ammo;
         shotgun.Grenade = grenade;
         shotgun.MaxGrenades = maxGrenades;
