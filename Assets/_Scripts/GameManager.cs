@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public static int playersDead = 0;
     
     public GameObject infoScreen;
+    public int pDead;
 
     private EnemySpawner spawner;
     private int numberOfPlayers;
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        pDead = playersDead;
         if(playersDead == numberOfPlayers && !gameOver)
         {
             gameOver = true;
@@ -50,37 +52,45 @@ public class GameManager : MonoBehaviourPunCallbacks
         StartCoroutine(InformationScreen());
     }
 
-    public void Stats(string n, float _deathTime, int _zombiesKilled, float _accuracy, int _numOfReloads, int _shotsFired, float _damageTaken, float _damageHealed)
+    //[PunRPC]
+    public void UpdateStats(string n, float _deathTime, int _zombiesKilled, float _accuracy, int _numOfReloads, int _shotsFired, float _damageTaken, float _damageHealed)
     {
-        // get first available slot
-        PlayerEndStats workingSlot = null;
-        foreach(PlayerEndStats slot in playerStats)
+        foreach (PlayerEndStats slot in playerStats)
         {
             if (slot.available)
             {
-                // skip
-            }
-            else
-            {
-                slot.available = true;
-                workingSlot = slot;
+                slot.available = false;
+                slot.PlayerName = n;
+                slot.DeathTime = _deathTime;
+                slot.ZombiesKilled = _zombiesKilled;
+                slot.Accuracy = _accuracy;
+                slot.NumOfReloads = _numOfReloads;
+                slot.ShotsFired = _shotsFired;
+                slot.DamageTaken = _damageTaken;
+                slot.DamageHealed = _damageHealed;
+                slot.Populate();
                 break;
             }
         }
-        // populate stats
-        if(workingSlot != null)
-        {
-            workingSlot.PlayerName = n;
-            workingSlot.DeathTime = _deathTime;
-            workingSlot.ZombiesKilled = _zombiesKilled;
-            workingSlot.Accuracy = _accuracy;
-            workingSlot.NumOfReloads = _numOfReloads;
-            workingSlot.ShotsFired = _shotsFired;
-            workingSlot.DamageTaken = _damageTaken;
-            workingSlot.DamageHealed = _damageHealed;
-            workingSlot.Populate();
-        }
     }
+
+    //public PlayerEndStats Stats()
+    //{
+    //    foreach (PlayerEndStats slot in playerStats)
+    //    {
+    //        if (!slot.available)
+    //        {
+    //            // skip
+    //        }
+    //        else
+    //        {
+    //            slot.available = false;
+    //            return slot;
+    //        }
+    //    }
+    //
+    //    return null;
+    //}
 
     IEnumerator InformationScreen()
     {

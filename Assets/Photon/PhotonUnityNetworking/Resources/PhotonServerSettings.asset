@@ -132,4 +132,5 @@ MonoBehaviour:
   - Deactivate
   - SetInfoActive
   - SendInfo
+  - UpdateStats
   DisableAutoOpenWizard: 1

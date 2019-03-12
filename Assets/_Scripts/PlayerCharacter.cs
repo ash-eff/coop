@@ -23,14 +23,14 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     bool dead;
 
     // game stats
-    string playerName;
-    static float deathTime;
-    static int numOfZombiesKilled = 0;
-    static float accuracy = 0;
-    static int numOfReloads;
-    static int shotsFired;
-    static float dmgTaken;
-    static float dmgHealed;
+    public string playerName;
+    public float deathTime;
+    public int numOfZombiesKilled = 0;
+    public float accuracy = 0;
+    public int numOfReloads;
+    public int shotsFired;
+    public float dmgTaken;
+    public float dmgHealed;
 
     private void Start()
     {
@@ -41,29 +41,37 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
 
     private void Update()
     {
-        healthBar.fillAmount = health / maxHealth;
-        healthText.text = Mathf.RoundToInt(health).ToString() + "/" + maxHealth.ToString();
-
-        if (photonView.IsMine)
+        if (health > 0 && !dead)
         {
-            redTimer -= Time.deltaTime;
-
-            if (redTimer > 0)
-            {
-                redScreen.SetActive(true);
-            }
-            else
-            {
-                redScreen.SetActive(false);
-            }
+            healthBar.fillAmount = health / maxHealth;
+            healthText.text = Mathf.RoundToInt(health).ToString() + "/" + maxHealth.ToString();
         }
 
         if (health <= 0f && !dead)
         {
             dead = true;
             deathTime = Time.time;
-            GameManager.playersDead += 1;
-            photonView.RPC("RPCDead", RpcTarget.All, null);
+            GameManager.playersDead++;
+            //GameManager.Instance.gameObject.GetPhotonView().RPC("UpdateStats", RpcTarget.All, playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
+            GameManager.Instance.UpdateStats(playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
+            photonView.RPC("RPCDead", RpcTarget.AllViaServer, null);
+        }
+
+
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        redTimer -= Time.deltaTime;
+
+        if (redTimer > 0)
+        {
+            redScreen.SetActive(true);
+        }
+        else
+        {
+            redScreen.SetActive(false);
         }
     }
 
@@ -163,7 +171,6 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     void RPCDead()
     {
         cc.targetDead = true;
-        dead = true;
         StartCoroutine(DeadPhase());
         // change sprite to dead
     }
@@ -182,8 +189,6 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
             yield return null;
         }
 
-        GameManager.Instance.Stats(playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
-
         gameObject.SetActive(false);
 
         if (photonView.IsMine)
@@ -200,11 +205,19 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         {
             // We own this player: send the others our data
             stream.SendNext(this.health);
-        }
+            stream.SendNext(this.NumOfReloads);
+            stream.SendNext(this.ShotsFired);
+            stream.SendNext(this.DmgTaken);
+            stream.SendNext(this.DmgHealed);
+        } 
         else
         {
             // Network player, receive data
             this.health = (float)stream.ReceiveNext();
+            this.NumOfReloads = (int)stream.ReceiveNext();
+            this.ShotsFired = (int)stream.ReceiveNext();
+            this.DmgTaken = (float)stream.ReceiveNext();
+            this.DmgHealed = (float)stream.ReceiveNext();
         }
     }
     

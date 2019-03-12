@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using TMPro;
+using Photon.Pun;
 
-public class PlayerEndStats : MonoBehaviour
+public class PlayerEndStats : MonoBehaviourPunCallbacks, IPunObservable
 {
     public bool available;
     string playerName;
@@ -72,5 +73,19 @@ public class PlayerEndStats : MonoBehaviour
         shotsFiredText.text = shotsFired.ToString();
         damageTakenText.text = damageTaken.ToString();
         damageHealedText.text = damageHealed.ToString();
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // We own this player: send the others our data
+            stream.SendNext(this.available);
+        }
+        else
+        {
+            // Network player, receive data
+            this.available = (bool)stream.ReceiveNext();
+        }
     }
 }
