@@ -444,16 +444,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1302}
     m_Modifications:
-    - target: {fileID: 7222523733822771046, guid: 5c10e18e65fe40148ba0014d68104ec1,
-        type: 3}
-      propertyPath: m_Name
-      value: Red
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222523733822771046, guid: 5c10e18e65fe40148ba0014d68104ec1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1409958454523095682, guid: 5c10e18e65fe40148ba0014d68104ec1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -559,6 +549,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7222523733822771046, guid: 5c10e18e65fe40148ba0014d68104ec1,
+        type: 3}
+      propertyPath: m_Name
+      value: Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 7222523733822771046, guid: 5c10e18e65fe40148ba0014d68104ec1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c10e18e65fe40148ba0014d68104ec1, type: 3}
 --- !u!1 &8400162966468859414 stripped
@@ -661,11 +661,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 618}
     m_Modifications:
-    - target: {fileID: 5203755614443049032, guid: f621abded8d661e4f92dd7a19c8b8b85,
-        type: 3}
-      propertyPath: m_Name
-      value: HealthCanvas
-      objectReference: {fileID: 0}
     - target: {fileID: 3259014436603864441, guid: f621abded8d661e4f92dd7a19c8b8b85,
         type: 3}
       propertyPath: m_text
@@ -715,6 +710,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontColor.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203755614443049032, guid: f621abded8d661e4f92dd7a19c8b8b85,
+        type: 3}
+      propertyPath: m_Name
+      value: HealthCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 857887140238861216, guid: f621abded8d661e4f92dd7a19c8b8b85,
         type: 3}
@@ -1136,16 +1136,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 618}
     m_Modifications:
-    - target: {fileID: 7517368087947660833, guid: 5d27008360d15254cba082b28ee59742,
-        type: 3}
-      propertyPath: m_Name
-      value: HealthText
-      objectReference: {fileID: 0}
-    - target: {fileID: 7517368087947660833, guid: 5d27008360d15254cba082b28ee59742,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2993332202587881806, guid: 5d27008360d15254cba082b28ee59742,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1251,6 +1241,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7517368087947660833, guid: 5d27008360d15254cba082b28ee59742,
+        type: 3}
+      propertyPath: m_Name
+      value: HealthText
+      objectReference: {fileID: 0}
+    - target: {fileID: 7517368087947660833, guid: 5d27008360d15254cba082b28ee59742,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3673053619443594742, guid: 5d27008360d15254cba082b28ee59742,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -1326,11 +1326,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 618}
     m_Modifications:
-    - target: {fileID: 5975936499548990356, guid: 387a763a6f70095489a37b0080e66437,
-        type: 3}
-      propertyPath: m_Name
-      value: MinimapIcon
-      objectReference: {fileID: 0}
     - target: {fileID: 6945058938983601970, guid: 387a763a6f70095489a37b0080e66437,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1386,6 +1381,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5975936499548990356, guid: 387a763a6f70095489a37b0080e66437,
+        type: 3}
+      propertyPath: m_Name
+      value: MinimapIcon
+      objectReference: {fileID: 0}
     - target: {fileID: 2684481187019506604, guid: 387a763a6f70095489a37b0080e66437,
         type: 3}
       propertyPath: m_Sprite
@@ -1417,16 +1417,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 618}
     m_Modifications:
-    - target: {fileID: 5203755614443049032, guid: 4a29189cb95f7b94694ab50031784d1c,
-        type: 3}
-      propertyPath: m_Name
-      value: AbilityCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 5203755614443049032, guid: 4a29189cb95f7b94694ab50031784d1c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 857887140238861216, guid: 4a29189cb95f7b94694ab50031784d1c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1531,6 +1521,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203755614443049032, guid: 4a29189cb95f7b94694ab50031784d1c,
+        type: 3}
+      propertyPath: m_Name
+      value: AbilityCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203755614443049032, guid: 4a29189cb95f7b94694ab50031784d1c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3259014436603864441, guid: 4a29189cb95f7b94694ab50031784d1c,
         type: 3}
@@ -1694,11 +1694,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 618}
     m_Modifications:
-    - target: {fileID: 5203755614443049032, guid: 831ea101cb4a8df489fb73e715c7a43c,
-        type: 3}
-      propertyPath: m_Name
-      value: GrenadeCanvas3Rounds
-      objectReference: {fileID: 0}
     - target: {fileID: 857887140238861216, guid: 831ea101cb4a8df489fb73e715c7a43c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1804,6 +1799,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5203755614443049032, guid: 831ea101cb4a8df489fb73e715c7a43c,
+        type: 3}
+      propertyPath: m_Name
+      value: GrenadeCanvas3Rounds
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 831ea101cb4a8df489fb73e715c7a43c, type: 3}
 --- !u!224 &7397861179484303071 stripped
@@ -1837,16 +1837,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1302}
     m_Modifications:
-    - target: {fileID: 7109609662519805257, guid: f6dac13e2a823a244979cef34917a8c4,
-        type: 3}
-      propertyPath: m_Name
-      value: YouDied
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109609662519805257, guid: f6dac13e2a823a244979cef34917a8c4,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8501366966192332484, guid: f6dac13e2a823a244979cef34917a8c4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1951,6 +1941,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7109609662519805257, guid: f6dac13e2a823a244979cef34917a8c4,
+        type: 3}
+      propertyPath: m_Name
+      value: YouDied
+      objectReference: {fileID: 0}
+    - target: {fileID: 7109609662519805257, guid: f6dac13e2a823a244979cef34917a8c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2161646532129795192, guid: f6dac13e2a823a244979cef34917a8c4,
         type: 3}

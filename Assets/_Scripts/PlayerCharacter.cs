@@ -52,6 +52,10 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
             dead = true;
             deathTime = Time.time;
             GameManager.playersDead++;
+            if (photonView.IsMine)
+            {   
+                photonView.RPC("SendStats", RpcTarget.All, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
+            }
             //GameManager.Instance.gameObject.GetPhotonView().RPC("UpdateStats", RpcTarget.All, playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
             GameManager.Instance.UpdateStats(playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
             photonView.RPC("RPCDead", RpcTarget.AllViaServer, null);
@@ -175,6 +179,18 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         // change sprite to dead
     }
 
+    [PunRPC]
+    void SendStats(float _deathTime, int _numOfZombiesKilled, float _accuracy, int _numOfReloads, int _shotsFired, float _dmgTaken, float _dmgHealed)
+    {
+        DeathTime = _deathTime;
+        NumOfZombiesKilled = _numOfZombiesKilled;
+        Accuracy = _accuracy;
+        NumOfReloads = _numOfReloads;
+        ShotsFired = _shotsFired;
+        DmgTaken = _dmgTaken;
+        DmgHealed = _dmgHealed;
+    }
+
     IEnumerator DeadPhase()
     {
         if (photonView.IsMine)
@@ -205,19 +221,19 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         {
             // We own this player: send the others our data
             stream.SendNext(this.health);
-            stream.SendNext(this.NumOfReloads);
-            stream.SendNext(this.ShotsFired);
-            stream.SendNext(this.DmgTaken);
-            stream.SendNext(this.DmgHealed);
+            //stream.SendNext(this.NumOfReloads);
+            //stream.SendNext(this.ShotsFired);
+            //stream.SendNext(this.DmgTaken);
+            //stream.SendNext(this.DmgHealed);
         } 
         else
         {
             // Network player, receive data
             this.health = (float)stream.ReceiveNext();
-            this.NumOfReloads = (int)stream.ReceiveNext();
-            this.ShotsFired = (int)stream.ReceiveNext();
-            this.DmgTaken = (float)stream.ReceiveNext();
-            this.DmgHealed = (float)stream.ReceiveNext();
+            //this.NumOfReloads = (int)stream.ReceiveNext();
+            //this.ShotsFired = (int)stream.ReceiveNext();
+            //this.DmgTaken = (float)stream.ReceiveNext();
+            //this.DmgHealed = (float)stream.ReceiveNext();
         }
     }
     
