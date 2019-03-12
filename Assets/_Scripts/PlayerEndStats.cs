@@ -6,13 +6,15 @@ public class PlayerEndStats : MonoBehaviourPunCallbacks, IPunObservable
 {
     public bool available;
     string playerName;
-    float deathTime;
+    string deathTime;
     int zombiesKilled;
-    float accuracy;
+    string accuracy;
     int numOfReloads;
     int shotsFired;
-    float damageTaken;
-    float damageHealed;
+    int damageTaken;
+    int friendlyFireTaken;
+    int friendlyFireCaused;
+    int damageHealed;
 
     public TextMeshProUGUI playerNameText;
     public TextMeshProUGUI deathTimeText;
@@ -21,6 +23,8 @@ public class PlayerEndStats : MonoBehaviourPunCallbacks, IPunObservable
     public TextMeshProUGUI numOfReloadsText;
     public TextMeshProUGUI shotsFiredText;
     public TextMeshProUGUI damageTakenText;
+    public TextMeshProUGUI friendlyFireTakenText;
+    public TextMeshProUGUI friendlyFireCausedText;
     public TextMeshProUGUI damageHealedText;
 
     public string PlayerName
@@ -28,7 +32,7 @@ public class PlayerEndStats : MonoBehaviourPunCallbacks, IPunObservable
         set { playerName = value; }
     }
 
-    public float DeathTime
+    public string DeathTime
     {
         set { deathTime = value; }
     }
@@ -38,7 +42,7 @@ public class PlayerEndStats : MonoBehaviourPunCallbacks, IPunObservable
         set { zombiesKilled = value; }
     }
 
-    public float Accuracy
+    public string Accuracy
     {
         set { accuracy = value; }
     }
@@ -53,12 +57,22 @@ public class PlayerEndStats : MonoBehaviourPunCallbacks, IPunObservable
         set { shotsFired = value; }
     }
 
-    public float DamageTaken
+    public int DamageTaken
     {
         set { damageTaken = value; }
     }
 
-    public float DamageHealed
+    public int FriendlyFireTaken
+    {
+        set { friendlyFireTaken = value; }
+    }
+
+    public int FriendlyFireCaused
+    {
+        set { friendlyFireCaused = value; }
+    }
+
+    public int DamageHealed
     {
         set { damageHealed = value; }
     }
@@ -66,12 +80,14 @@ public class PlayerEndStats : MonoBehaviourPunCallbacks, IPunObservable
     public void Populate()
     {
         playerNameText.text = playerName;
-        deathTimeText.text = deathTime.ToString();
+        deathTimeText.text = deathTime;
         zombiesKilledText.text = zombiesKilled.ToString();
-        accuracyText.text = accuracy.ToString();
+        accuracyText.text = accuracy;
         numOfReloadsText.text = numOfReloads.ToString();
         shotsFiredText.text = shotsFired.ToString();
         damageTakenText.text = damageTaken.ToString();
+        friendlyFireTakenText.text = friendlyFireTaken.ToString();
+        friendlyFireCausedText.text = friendlyFireCaused.ToString();
         damageHealedText.text = damageHealed.ToString();
     }
 

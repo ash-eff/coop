@@ -1,14 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
     static public GameManager Instance;
     public static int playersDead = 0;
-    
+
+    public Button returnButton;
+    public GameObject minimap;
     public GameObject infoScreen;
     public int pDead;
 
@@ -47,50 +51,46 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void GameOver()
     {
+        minimap.SetActive(false);
         spawner.spawnerState = EnemySpawner.SpawnerState.GAMEOVER;
-        gameLengthInTime = Time.time;
+        gameLengthInTime = Time.deltaTime;
         StartCoroutine(InformationScreen());
     }
 
-    //[PunRPC]
-    public void UpdateStats(string n, float _deathTime, int _zombiesKilled, float _accuracy, int _numOfReloads, int _shotsFired, float _damageTaken, float _damageHealed)
+    [PunRPC]
+    public void UpdateStats(string n, float _deathTime, int _zombiesKilled, float _accuracy, int _numOfReloads, int _shotsFired, float _damageTaken, float _friendlyTaken, float _friendlyCaused, float _damageHealed)
     {
+        string convertedTime = ConvertTime(_deathTime);
         foreach (PlayerEndStats slot in playerStats)
         {
             if (slot.available)
             {
                 slot.available = false;
                 slot.PlayerName = n;
-                slot.DeathTime = _deathTime;
+                slot.DeathTime = convertedTime;
                 slot.ZombiesKilled = _zombiesKilled;
-                slot.Accuracy = _accuracy;
+                slot.Accuracy = _accuracy.ToString() + "%";
                 slot.NumOfReloads = _numOfReloads;
                 slot.ShotsFired = _shotsFired;
-                slot.DamageTaken = _damageTaken;
-                slot.DamageHealed = _damageHealed;
+                slot.DamageTaken = Mathf.RoundToInt(_damageTaken);
+                slot.FriendlyFireTaken = Mathf.RoundToInt(_friendlyTaken);
+                slot.FriendlyFireCaused = Mathf.RoundToInt(_friendlyCaused);
+                slot.DamageHealed = Mathf.RoundToInt(_damageHealed);
                 slot.Populate();
                 break;
             }
         }
     }
 
-    //public PlayerEndStats Stats()
-    //{
-    //    foreach (PlayerEndStats slot in playerStats)
-    //    {
-    //        if (!slot.available)
-    //        {
-    //            // skip
-    //        }
-    //        else
-    //        {
-    //            slot.available = false;
-    //            return slot;
-    //        }
-    //    }
-    //
-    //    return null;
-    //}
+    string ConvertTime(float t)
+    {
+        string hours = Mathf.Floor(t / 3600).ToString("00");
+        string minutes = Mathf.Floor(t / 60).ToString("00");
+        string seconds = Mathf.Floor(t % 60).ToString("00");
+        string convertedTime = hours + ":" + minutes + ":" + seconds;
+
+        return convertedTime;
+    }
 
     IEnumerator InformationScreen()
     {

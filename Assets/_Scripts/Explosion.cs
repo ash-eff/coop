@@ -8,6 +8,8 @@ public class Explosion : MonoBehaviourPunCallbacks
     float timer = 1f;
     float deathTimer = 2f;
     public ParticleSystem ps;
+    public PlayerCharacter pc;
+    bool zombieHit;
 
     private void Update()
     {
@@ -41,7 +43,17 @@ public class Explosion : MonoBehaviourPunCallbacks
     {
         if(collision.tag == "Enemy")
         {
-            collision.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, 25f);           
+            collision.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, 50f);
+            if (!zombieHit)
+            {
+                zombieHit = true;
+                pc.GetComponent<WeaponShotgun>().hit++;
+            }                
+        }
+        if (collision.tag == "Player")
+        {
+            pc.FriendlyDmgGiven += 25f * Time.deltaTime;
+            collision.gameObject.GetPhotonView().RPC("TakeFriendlyDamage", RpcTarget.All, 25f * Time.deltaTime);
         }
     }
 }

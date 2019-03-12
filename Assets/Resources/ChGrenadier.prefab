@@ -9,15 +9,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 618}
-  - component: {fileID: 1083}
-  - component: {fileID: 986}
-  - component: {fileID: 1537}
-  - component: {fileID: 1548}
-  - component: {fileID: 1540}
-  - component: {fileID: 1533}
+  - component: {fileID: 1088}
+  - component: {fileID: 991}
+  - component: {fileID: 1543}
+  - component: {fileID: 1557}
+  - component: {fileID: 1547}
   - component: {fileID: 1541}
-  - component: {fileID: 1553}
-  m_Layer: 0
+  - component: {fileID: 1549}
+  - component: {fileID: 1558}
+  - component: {fileID: 967}
+  m_Layer: 11
   m_Name: ChGrenadier
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -41,14 +42,14 @@ Transform:
   - {fileID: 2881992633768991063}
   - {fileID: 3611391194156019468}
   - {fileID: 3440546910281726774}
-  - {fileID: 1302}
+  - {fileID: 1309}
   - {fileID: 7809159706233867916}
   - {fileID: 7397861179484303071}
   - {fileID: 6244311877821577809}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1083
+--- !u!212 &1088
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,7 +97,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &986
+--- !u!61 &991
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,7 +123,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &1537
+--- !u!114 &1543
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,12 +141,12 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 1540}
-  - {fileID: 1533}
-  viewIdField: 17
-  InstantiationId: 17
+  - {fileID: 1547}
+  - {fileID: 1541}
+  viewIdField: 19
+  InstantiationId: 19
   isRuntimeInstantiated: 0
---- !u!114 &1548
+--- !u!114 &1557
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,7 +169,7 @@ MonoBehaviour:
   newPosition: {x: 0, y: 0, z: 0}
   clampedPosition: {x: 0, y: 0, z: 0}
   targetDead: 0
---- !u!114 &1540
+--- !u!114 &1547
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,7 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursor: {fileID: 3440785872502739995}
---- !u!114 &1533
+--- !u!114 &1541
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -204,8 +205,10 @@ MonoBehaviour:
   numOfReloads: 0
   shotsFired: 0
   dmgTaken: 0
+  friendlyDmgTaken: 0
+  friendlyDmgGiven: 0
   dmgHealed: 0
---- !u!114 &1541
+--- !u!114 &1549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Grenadier
   characterInfo: Grenadier gets an extra grenade. He has a double barrel shotgun
-  health: 5
+  health: 100
   speed: 8
   bonusSpeed: 0
   speedDebuff: 2
@@ -234,8 +237,8 @@ MonoBehaviour:
   ammo: 2
   grenade: 0
   maxGrenades: 3
-  isSelectable: 0
---- !u!114 &1553
+  isSelectable: 1
+--- !u!114 &1558
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -248,9 +251,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 622}
-  enemyLayer:
+  damageLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2560
   reloadIndicator: {fileID: 711649042120390092}
   startWithGrenade: 1
   shells:
@@ -265,7 +268,30 @@ MonoBehaviour:
   flare: {fileID: 2037985540442780103}
   grenadeSmoke: {fileID: 3829553660660281647}
   grenadeFlare: {fileID: 1482732933967737963}
-  grenadeExplosion: {fileID: 191, guid: 8c102f4d1d4e8804482b4ce18683d0f7, type: 3}
+  grenadeExplosion: {fileID: 192, guid: 8c102f4d1d4e8804482b4ce18683d0f7, type: 3}
+  hit: 0
+  shots: 0
+--- !u!50 &967
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &191
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,8 +301,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 622}
-  - component: {fileID: 1554}
-  - component: {fileID: 1555}
+  - component: {fileID: 1559}
+  - component: {fileID: 1560}
   m_Layer: 0
   m_Name: weapon
   m_TagString: Untagged
@@ -300,7 +326,7 @@ Transform:
   m_Father: {fileID: 618}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1554
+--- !u!114 &1559
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -318,11 +344,11 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 1555}
-  viewIdField: 1
-  InstantiationId: 1
+  - {fileID: 1560}
+  viewIdField: 21
+  InstantiationId: 21
   isRuntimeInstantiated: 0
---- !u!114 &1555
+--- !u!114 &1560
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -345,10 +371,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1302}
-  - component: {fileID: 1264}
-  - component: {fileID: 1561}
-  - component: {fileID: 1565}
+  - component: {fileID: 1309}
+  - component: {fileID: 1271}
+  - component: {fileID: 1567}
+  - component: {fileID: 1575}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -356,7 +382,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1302
+--- !u!224 &1309
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -377,7 +403,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!223 &1264
+--- !u!223 &1271
 Canvas:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -398,7 +424,7 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &1561
+--- !u!114 &1567
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -420,7 +446,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &1565
+--- !u!114 &1575
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -442,7 +468,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1302}
+    m_TransformParent: {fileID: 1309}
     m_Modifications:
     - target: {fileID: 1409958454523095682, guid: 5c10e18e65fe40148ba0014d68104ec1,
         type: 3}
@@ -922,12 +948,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77ca2f5f24eb03a45ac94f7197361308, type: 3}
---- !u!198 &4467173296590419075 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 1046590572139580640, guid: 77ca2f5f24eb03a45ac94f7197361308,
-    type: 3}
-  m_PrefabInstance: {fileID: 3708902195690141795}
-  m_PrefabAsset: {fileID: 0}
 --- !u!198 &1901675707664558876 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 2962437399215543167, guid: 77ca2f5f24eb03a45ac94f7197361308,
@@ -943,6 +963,12 @@ Transform:
 --- !u!198 &2037985540442780103 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 3400441917496854948, guid: 77ca2f5f24eb03a45ac94f7197361308,
+    type: 3}
+  m_PrefabInstance: {fileID: 3708902195690141795}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4467173296590419075 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1046590572139580640, guid: 77ca2f5f24eb03a45ac94f7197361308,
     type: 3}
   m_PrefabInstance: {fileID: 3708902195690141795}
   m_PrefabAsset: {fileID: 0}
@@ -1835,7 +1861,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1302}
+    m_TransformParent: {fileID: 1309}
     m_Modifications:
     - target: {fileID: 8501366966192332484, guid: f6dac13e2a823a244979cef34917a8c4,
         type: 3}

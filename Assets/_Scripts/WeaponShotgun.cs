@@ -7,7 +7,7 @@ using Photon.Pun;
 public class WeaponShotgun : MonoBehaviourPunCallbacks
 {
     public Transform weapon;
-    public LayerMask enemyLayer;
+    public LayerMask damageLayer;
     public GameObject reloadIndicator;
     public bool startWithGrenade;
     private float shotgunFireRate;
@@ -32,6 +32,9 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
     public GameObject grenadeExplosion;
     float zRot;
     private bool reloading;
+    bool didShotHit;
+    public int hit;
+    public int shots;
 
     private float nextFireTime;
     private float nextGrenadeTime;
@@ -62,6 +65,7 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
             {
                 if (Time.time > nextFireTime)
                 {
+                    didShotHit = false;
                     photonView.RPC("SpendShell", RpcTarget.All, null);
                     pc.ShotsFired += 1;
                     //photonView.RPC("ShotGunCount", RpcTarget.All, null);
@@ -71,16 +75,36 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
                         float offset = angle / pellets * i;
                         zRot = (Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg) - dividedAngle;
                         weapon.rotation = Quaternion.Euler(0f, 0f, zRot + offset);
-                        RaycastHit2D hit = Physics2D.Raycast(weapon.transform.position, weapon.transform.right, range, enemyLayer);
+                        RaycastHit2D hit = Physics2D.Raycast(weapon.transform.position, weapon.transform.right, range, damageLayer);
                         Debug.DrawRay(weapon.transform.position, weapon.transform.right * range, Color.red, .1f);
 
                         if (hit)
                         {
-                            hit.transform.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (damage + bonusDamage));
+                            if(hit.collider.gameObject.layer == 9)
+                            {
+                                didShotHit = true;
+                                hit.transform.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (damage + bonusDamage));
+                            }
+                            else if(hit.collider.gameObject.layer == 11)
+                            {
+                                pc.FriendlyDmgGiven += damage / 2;
+                                hit.transform.gameObject.GetPhotonView().RPC("TakeFriendlyDamage", RpcTarget.All, (damage / 2));
+                            }
                         }
                     }
 
                     nextFireTime = Time.time + shotgunFireRate;
+
+                    if (didShotHit)
+                    {
+                        hit++;
+                        shots++;
+                    }
+                    else
+                    {
+                        shots++;
+                    }
+
                     photonView.RPC("ShotGunBlast", RpcTarget.Others, null);
                     blast.Play();
                     smoke.Play();
@@ -92,14 +116,13 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
             {
                 if (Time.time > nextGrenadeTime)
                 {
+                    pc.ShotsFired += 1;
                     Vector2 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     photonView.RPC("SpendGrenade", RpcTarget.All, null);
                     zRot = (Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg);
                     weapon.rotation = Quaternion.Euler(0f, 0f, zRot);
-                    RaycastHit2D hit = Physics2D.Raycast(weapon.transform.position, weapon.transform.right, 6f, enemyLayer);
+                    RaycastHit2D hit = Physics2D.Raycast(weapon.transform.position, weapon.transform.right, 6f, damageLayer);
                     Debug.DrawRay(weapon.transform.position, weapon.transform.right * 6, Color.red, .1f);
-
-
 
                     nextGrenadeTime = Time.time + grenadeFireRate;
                     photonView.RPC("FireGrenade", RpcTarget.Others, null);
@@ -107,8 +130,15 @@ public class WeaponShotgun : MonoBehaviourPunCallbacks
                     grenadeSmoke.Play();
 
                     GameObject go = PhotonNetwork.Instantiate(grenadeExplosion.name, clickPos, Quaternion.identity);
+                    go.GetComponent<Explosion>().pc = pc;
                     go.SendMessage("Activate");
+                    shots++;
                 }
+            }
+
+            if (shots > 0)
+            {
+                pc.Accuracy = hit * 100 / shots;
             }
 
             if (ammo == 0)

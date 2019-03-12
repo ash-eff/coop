@@ -244,8 +244,11 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
     void RPCSelectTarget()
     {
         players = FindObjectsOfType<PlayerCharacter>();
-        int randomIndex = Random.Range(0, players.Length);
-        target = players[randomIndex].transform.gameObject;
+        if(!gm.gameOver)
+        {
+            int randomIndex = Random.Range(0, players.Length);
+            target = players[randomIndex].transform.gameObject;
+        }
     }
 
     [PunRPC]

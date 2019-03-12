@@ -134,4 +134,5 @@ MonoBehaviour:
   - SendInfo
   - UpdateStats
   - SendStats
+  - TakeFriendlyDamage
   DisableAutoOpenWizard: 1

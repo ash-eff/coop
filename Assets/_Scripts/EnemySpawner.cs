@@ -17,7 +17,7 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
     private float spawnBonus;
     public float spawnX;
     public float spawnY;
-    public Text deathCounterText;
+    //public Text deathCounterText;
     public GameObject waveIndicator;
     public Text waveText;
 
@@ -193,6 +193,5 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
     void UpdateCounter(int n)
     {
         deadCount = n;
-        deathCounterText.text = "Kill Count: " + deadCount.ToString();
     }
 }

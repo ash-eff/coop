@@ -15,6 +15,7 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     public Image healthBar;
     public GameObject youDiedScreen;
     float redTimer;
+    float lifeTimer;
 
     PlayerInput input;
     WeaponShotgun shotgun;
@@ -25,15 +26,18 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     // game stats
     public string playerName;
     public float deathTime;
-    public int numOfZombiesKilled = 0;
-    public float accuracy = 0;
+    public int numOfZombiesKilled;
+    public float accuracy;
     public int numOfReloads;
     public int shotsFired;
     public float dmgTaken;
+    public float friendlyDmgTaken;
+    public float friendlyDmgGiven;
     public float dmgHealed;
 
     private void Start()
     {
+        shotgun = GetComponent<WeaponShotgun>();
         playerName = photonView.Owner.NickName;
         health = maxHealth;
         cc = GetComponent<CameraControl>();
@@ -47,24 +51,22 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
             healthText.text = Mathf.RoundToInt(health).ToString() + "/" + maxHealth.ToString();
         }
 
-        if (health <= 0f && !dead)
-        {
-            dead = true;
-            deathTime = Time.time;
-            GameManager.playersDead++;
-            if (photonView.IsMine)
-            {   
-                photonView.RPC("SendStats", RpcTarget.All, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
-            }
-            //GameManager.Instance.gameObject.GetPhotonView().RPC("UpdateStats", RpcTarget.All, playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
-            GameManager.Instance.UpdateStats(playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
-            photonView.RPC("RPCDead", RpcTarget.AllViaServer, null);
-        }
-
+        lifeTimer += Time.deltaTime;
 
         if (!photonView.IsMine)
         {
             return;
+        }
+      
+        if (health <= 0f && !dead)
+        {
+            dead = true;
+            DeathTime = lifeTimer % 60;
+            NumOfZombiesKilled = EnemySpawner.instance.deadCount;
+            photonView.RPC("SendStats", RpcTarget.Others, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, FriendlyDmgTaken, FriendlyDmgGiven, DmgHealed);
+            photonView.RPC("RPCDead", RpcTarget.All, null);
+            //GameManager.Instance.UpdateStats(playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
+            GameManager.Instance.gameObject.GetPhotonView().RPC("UpdateStats", RpcTarget.All, playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, FriendlyDmgTaken, FriendlyDmgGiven, DmgHealed);
         }
 
         redTimer -= Time.deltaTime;
@@ -113,6 +115,18 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     {
         get { return dmgTaken; }
         set { dmgTaken = value; }
+    }
+
+    public float FriendlyDmgTaken
+    {
+        get { return friendlyDmgTaken; }
+        set { friendlyDmgTaken = value; }
+    }
+
+    public float FriendlyDmgGiven
+    {
+        get { return friendlyDmgGiven; }
+        set { friendlyDmgGiven = value; }
     }
 
     public float DmgHealed
@@ -172,15 +186,36 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     }
 
     [PunRPC]
+    public void TakeFriendlyDamage(float dmg)
+    {
+        if (health > 0)
+        {
+            health -= dmg;
+        }
+        if (health - dmg <= 0)
+        {
+            health = 0;
+        }
+
+        redTimer = .2f;
+        if (photonView.IsMine)
+        {
+            DmgTaken += dmg;
+            FriendlyDmgTaken += dmg;
+        }
+    }
+
+    [PunRPC]
     void RPCDead()
     {
+        GameManager.playersDead++;
         cc.targetDead = true;
         StartCoroutine(DeadPhase());
         // change sprite to dead
     }
 
     [PunRPC]
-    void SendStats(float _deathTime, int _numOfZombiesKilled, float _accuracy, int _numOfReloads, int _shotsFired, float _dmgTaken, float _dmgHealed)
+    void SendStats(float _deathTime, int _numOfZombiesKilled, float _accuracy, int _numOfReloads, int _shotsFired, float _dmgTaken, float _friendlyTaken, float _friendlyGiven, float _dmgHealed)
     {
         DeathTime = _deathTime;
         NumOfZombiesKilled = _numOfZombiesKilled;
@@ -188,6 +223,8 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         NumOfReloads = _numOfReloads;
         ShotsFired = _shotsFired;
         DmgTaken = _dmgTaken;
+        FriendlyDmgTaken = _friendlyTaken;
+        FriendlyDmgGiven = _friendlyGiven;
         DmgHealed = _dmgHealed;
     }
 

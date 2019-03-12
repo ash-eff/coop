@@ -182,6 +182,16 @@ MonoBehaviour:
   redScreen: {fileID: 0}
   healthBar: {fileID: 6831493765199858475}
   youDiedScreen: {fileID: 0}
+  playerName: 
+  deathTime: 0
+  numOfZombiesKilled: 0
+  accuracy: 0
+  numOfReloads: 0
+  shotsFired: 0
+  dmgTaken: 0
+  friendlyDmgTaken: 0
+  friendlyDmgGiven: 0
+  dmgHealed: 0
 --- !u!114 &697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,9 +249,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 495}
-  enemyLayer:
+  damageLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
   reloadIndicator: {fileID: 8652691549955508221}
   startWithGrenade: 0
   shells:
@@ -588,16 +598,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8573641382312484345}
     m_Modifications:
-    - target: {fileID: 7222523733822771046, guid: 5c10e18e65fe40148ba0014d68104ec1,
-        type: 3}
-      propertyPath: m_Name
-      value: Red
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222523733822771046, guid: 5c10e18e65fe40148ba0014d68104ec1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1409958454523095682, guid: 5c10e18e65fe40148ba0014d68104ec1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -703,6 +703,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7222523733822771046, guid: 5c10e18e65fe40148ba0014d68104ec1,
+        type: 3}
+      propertyPath: m_Name
+      value: Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 7222523733822771046, guid: 5c10e18e65fe40148ba0014d68104ec1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c10e18e65fe40148ba0014d68104ec1, type: 3}
 --- !u!224 &2124664275878003270 stripped
@@ -718,11 +728,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 336}
     m_Modifications:
-    - target: {fileID: 5203755614443049032, guid: 5495f6bda0b6ef849883904ae3f17c72,
-        type: 3}
-      propertyPath: m_Name
-      value: GrenadeCanvas
-      objectReference: {fileID: 0}
     - target: {fileID: 857887140238861216, guid: 5495f6bda0b6ef849883904ae3f17c72,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -828,6 +833,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5203755614443049032, guid: 5495f6bda0b6ef849883904ae3f17c72,
+        type: 3}
+      propertyPath: m_Name
+      value: GrenadeCanvas
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5495f6bda0b6ef849883904ae3f17c72, type: 3}
 --- !u!224 &2902304368054801402 stripped
@@ -855,11 +865,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 336}
     m_Modifications:
-    - target: {fileID: 5975936499548990356, guid: 387a763a6f70095489a37b0080e66437,
-        type: 3}
-      propertyPath: m_Name
-      value: MinimpaIcon
-      objectReference: {fileID: 0}
     - target: {fileID: 6945058938983601970, guid: 387a763a6f70095489a37b0080e66437,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -914,6 +919,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5975936499548990356, guid: 387a763a6f70095489a37b0080e66437,
+        type: 3}
+      propertyPath: m_Name
+      value: MinimpaIcon
       objectReference: {fileID: 0}
     - target: {fileID: 2684481187019506604, guid: 387a763a6f70095489a37b0080e66437,
         type: 3}
@@ -1120,16 +1130,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8573641382312484345}
     m_Modifications:
-    - target: {fileID: 7109609662519805257, guid: f6dac13e2a823a244979cef34917a8c4,
-        type: 3}
-      propertyPath: m_Name
-      value: YouDied
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109609662519805257, guid: f6dac13e2a823a244979cef34917a8c4,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8501366966192332484, guid: f6dac13e2a823a244979cef34917a8c4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1234,6 +1234,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7109609662519805257, guid: f6dac13e2a823a244979cef34917a8c4,
+        type: 3}
+      propertyPath: m_Name
+      value: YouDied
+      objectReference: {fileID: 0}
+    - target: {fileID: 7109609662519805257, guid: f6dac13e2a823a244979cef34917a8c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2161646532129795192, guid: f6dac13e2a823a244979cef34917a8c4,
         type: 3}
@@ -1443,16 +1453,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 336}
     m_Modifications:
-    - target: {fileID: 7517368087947660833, guid: 5d27008360d15254cba082b28ee59742,
-        type: 3}
-      propertyPath: m_Name
-      value: HealthText
-      objectReference: {fileID: 0}
-    - target: {fileID: 7517368087947660833, guid: 5d27008360d15254cba082b28ee59742,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2993332202587881806, guid: 5d27008360d15254cba082b28ee59742,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1558,10 +1558,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 201533326523048218, guid: 5d27008360d15254cba082b28ee59742,
+    - target: {fileID: 7517368087947660833, guid: 5d27008360d15254cba082b28ee59742,
         type: 3}
-      propertyPath: m_Mesh
-      value: 
+      propertyPath: m_Name
+      value: HealthText
+      objectReference: {fileID: 0}
+    - target: {fileID: 7517368087947660833, guid: 5d27008360d15254cba082b28ee59742,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3673053619443594742, guid: 5d27008360d15254cba082b28ee59742,
         type: 3}
@@ -1597,6 +1602,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 201533326523048218, guid: 5d27008360d15254cba082b28ee59742,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d27008360d15254cba082b28ee59742, type: 3}
