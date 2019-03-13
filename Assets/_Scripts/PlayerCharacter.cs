@@ -14,9 +14,15 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     public GameObject redScreen;
     public Image healthBar;
     public GameObject youDiedScreen;
+    public GameObject healthCanvas;
+    public GameObject bulletCanvas;
+    public GameObject grenadeCanvas;
+    public GameObject abilityCanvas;
+    public GameObject targetHolder;
+    bool targeted;
     float redTimer;
-    float lifeTimer;
-
+    public float lifeTimer;
+    SpriteRenderer spr;
     PlayerInput input;
     WeaponShotgun shotgun;
     CameraControl cc;
@@ -24,19 +30,21 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     bool dead;
 
     // game stats
-    public string playerName;
-    public float deathTime;
-    public int numOfZombiesKilled;
-    public float accuracy;
-    public int numOfReloads;
-    public int shotsFired;
-    public float dmgTaken;
-    public float friendlyDmgTaken;
-    public float friendlyDmgGiven;
-    public float dmgHealed;
+    string playerName;
+    float deathTime;
+    int numOfZombiesKilled;
+    int waveNumber;
+    float accuracy;
+    int numOfReloads;
+    int shotsFired;
+    float dmgTaken;
+    float friendlyDmgTaken;
+    float friendlyDmgGiven;
+    float dmgHealed;
 
     private void Start()
     {
+        spr = GetComponent<SpriteRenderer>();
         shotgun = GetComponent<WeaponShotgun>();
         playerName = photonView.Owner.NickName;
         health = maxHealth;
@@ -61,12 +69,13 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         if (health <= 0f && !dead)
         {
             dead = true;
-            DeathTime = lifeTimer % 60;
+            DeathTime = lifeTimer;
             NumOfZombiesKilled = EnemySpawner.instance.deadCount;
-            photonView.RPC("SendStats", RpcTarget.Others, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, FriendlyDmgTaken, FriendlyDmgGiven, DmgHealed);
+            WaveNumber = EnemySpawner.instance.waveCount;
+            photonView.RPC("SendStats", RpcTarget.Others, DeathTime, NumOfZombiesKilled, WaveNumber, Accuracy, NumOfReloads, ShotsFired, DmgTaken, FriendlyDmgTaken, FriendlyDmgGiven, DmgHealed);
             photonView.RPC("RPCDead", RpcTarget.All, null);
             //GameManager.Instance.UpdateStats(playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, DmgHealed);
-            GameManager.Instance.gameObject.GetPhotonView().RPC("UpdateStats", RpcTarget.All, playerName, DeathTime, NumOfZombiesKilled, Accuracy, NumOfReloads, ShotsFired, DmgTaken, FriendlyDmgTaken, FriendlyDmgGiven, DmgHealed);
+            GameManager.Instance.gameObject.GetPhotonView().RPC("UpdateStats", RpcTarget.All, playerName, DeathTime, NumOfZombiesKilled, WaveNumber, Accuracy, NumOfReloads, ShotsFired, DmgTaken, FriendlyDmgTaken, FriendlyDmgGiven, DmgHealed);
         }
 
         redTimer -= Time.deltaTime;
@@ -91,6 +100,12 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
     {
         get { return numOfZombiesKilled; }
         set { numOfZombiesKilled = value; }
+    }
+
+    public int WaveNumber
+    {
+        get { return waveNumber; }
+        set { waveNumber = value; }
     }
 
     public float Accuracy
@@ -212,13 +227,19 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         cc.targetDead = true;
         StartCoroutine(DeadPhase());
         // change sprite to dead
+        spr.enabled = false;
+        healthCanvas.SetActive(false);
+        bulletCanvas.SetActive(false);
+        grenadeCanvas.SetActive(false);
+        abilityCanvas.SetActive(false);
     }
 
     [PunRPC]
-    void SendStats(float _deathTime, int _numOfZombiesKilled, float _accuracy, int _numOfReloads, int _shotsFired, float _dmgTaken, float _friendlyTaken, float _friendlyGiven, float _dmgHealed)
+    void SendStats(float _deathTime, int _numOfZombiesKilled, int _waveNumber, float _accuracy, int _numOfReloads, int _shotsFired, float _dmgTaken, float _friendlyTaken, float _friendlyGiven, float _dmgHealed)
     {
         DeathTime = _deathTime;
         NumOfZombiesKilled = _numOfZombiesKilled;
+        WaveNumber = _waveNumber;
         Accuracy = _accuracy;
         NumOfReloads = _numOfReloads;
         ShotsFired = _shotsFired;
@@ -226,6 +247,18 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         FriendlyDmgTaken = _friendlyTaken;
         FriendlyDmgGiven = _friendlyGiven;
         DmgHealed = _dmgHealed;
+    }
+
+    [PunRPC]
+    void Activate()
+    {
+        targetHolder.SetActive(true);
+    }
+
+    [PunRPC]
+    void Deactivate()
+    {
+        targetHolder.SetActive(false);
     }
 
     IEnumerator DeadPhase()
@@ -247,6 +280,24 @@ public class PlayerCharacter : MonoBehaviourPunCallbacks, IPunObservable {
         if (photonView.IsMine)
         {
             youDiedScreen.SetActive(false);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Laser" && !targeted)
+        {
+            targeted = true;
+            photonView.RPC("Activate", RpcTarget.All, null);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Laser" && targeted)
+        {
+            targeted = false;
+            photonView.RPC("Deactivate", RpcTarget.All, null);
         }
     }
 

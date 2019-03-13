@@ -257,17 +257,6 @@ public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
         PhotonNetwork.Destroy(gameObject);
     }
 
-    [PunRPC]
-    void Activate()
-    {
-        targetHolder.SetActive(true);
-    }
-
-    [PunRPC]
-    void Deactivate()
-    {
-        targetHolder.SetActive(false);
-    }
 
     private void OnTriggerStay2D(Collider2D collision)
     {

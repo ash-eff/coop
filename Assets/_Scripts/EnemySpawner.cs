@@ -7,10 +7,12 @@ using Photon.Pun;
 public class EnemySpawner : MonoBehaviourPunCallbacks
 {
     public static EnemySpawner instance = null;
-    public static int deathCount = 0;
+    public static int deathCount;
+    public static int waveNumber;
     ObjectPooler objectPooler;
     public GameObject chopper;
     public int deadCount;
+    public int waveCount;
     public GameObject enemy;
     public int numToSpawn;
     public int numberSpawned;
@@ -21,7 +23,7 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
     public GameObject waveIndicator;
     public Text waveText;
 
-    public int waveNumber = 1;
+    
 
     public enum SpawnerState { SPAWNING, IDLE, COUNTINGDOWN, WAITING, AIRDROP, GAMEOVER };
     public SpawnerState spawnerState = SpawnerState.IDLE;
@@ -31,6 +33,8 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        deathCount = 0;
+        waveNumber = 1;
         //Check if instance already exists
         if (instance == null)
 
@@ -43,8 +47,6 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
             //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
             Destroy(gameObject);
 
-        //Sets this to not be destroyed when reloading scene
-        DontDestroyOnLoad(gameObject);
         if (PhotonNetwork.IsMasterClient)
         {
             StartCoroutine(UpdateCount());
@@ -52,7 +54,7 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
     }
 
     private void Start()
-    {
+    { 
         objectPooler = ObjectPooler.Instance;
     }
 
@@ -143,6 +145,7 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
     IEnumerator SpawnEnemies()
     {
         waveNumber++;
+        photonView.RPC("UpdateWave", RpcTarget.All, waveNumber);
         numberSpawned += numToSpawn;
         while (spawnerState == SpawnerState.SPAWNING)
         {
@@ -190,8 +193,14 @@ public class EnemySpawner : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void UpdateCounter(int n)
+    void UpdateCounter(int d)
     {
-        deadCount = n;
+        deadCount = d;;
+    }
+
+    [PunRPC]
+    void UpdateWave(int w)
+    {
+        waveCount = w;
     }
 }

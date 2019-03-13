@@ -8,13 +8,13 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 624}
-  - component: {fileID: 984}
-  - component: {fileID: 1012}
-  - component: {fileID: 1046}
-  - component: {fileID: 1582}
-  - component: {fileID: 1581}
-  - component: {fileID: 1579}
+  - component: {fileID: 639}
+  - component: {fileID: 1004}
+  - component: {fileID: 1032}
+  - component: {fileID: 1066}
+  - component: {fileID: 1626}
+  - component: {fileID: 1625}
+  - component: {fileID: 1623}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -22,7 +22,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &624
+--- !u!4 &639
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -36,7 +36,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &984
+--- !u!58 &1004
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52,7 +52,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 3
---- !u!198 &1012
+--- !u!198 &1032
 ParticleSystem:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4714,7 +4714,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!199 &1046
+--- !u!199 &1066
 ParticleSystemRenderer:
   serializedVersion: 6
   m_ObjectHideFlags: 2
@@ -4776,7 +4776,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &1582
+--- !u!114 &1626
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4788,9 +4788,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff60bbdd9096ec543ae743c7c06a3a85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ps: {fileID: 1012}
+  ps: {fileID: 1032}
   pc: {fileID: 0}
---- !u!114 &1581
+--- !u!114 &1625
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4808,11 +4808,11 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 1579}
+  - {fileID: 1623}
   viewIdField: 14
   InstantiationId: 14
   isRuntimeInstantiated: 0
---- !u!114 &1579
+--- !u!114 &1623
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

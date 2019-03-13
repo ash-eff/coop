@@ -8,6 +8,7 @@ public class PlayerEndStats : MonoBehaviourPunCallbacks, IPunObservable
     string playerName;
     string deathTime;
     int zombiesKilled;
+    int waveNumber;
     string accuracy;
     int numOfReloads;
     int shotsFired;
@@ -19,6 +20,7 @@ public class PlayerEndStats : MonoBehaviourPunCallbacks, IPunObservable
     public TextMeshProUGUI playerNameText;
     public TextMeshProUGUI deathTimeText;
     public TextMeshProUGUI zombiesKilledText;
+    public TextMeshProUGUI waveNumberText;
     public TextMeshProUGUI accuracyText;
     public TextMeshProUGUI numOfReloadsText;
     public TextMeshProUGUI shotsFiredText;
@@ -40,6 +42,11 @@ public class PlayerEndStats : MonoBehaviourPunCallbacks, IPunObservable
     public int ZombiesKilled
     {
         set { zombiesKilled = value; }
+    }
+
+    public int WaveNumber
+    {
+        set { waveNumber = value - 1; }
     }
 
     public string Accuracy
@@ -82,6 +89,7 @@ public class PlayerEndStats : MonoBehaviourPunCallbacks, IPunObservable
         playerNameText.text = playerName;
         deathTimeText.text = deathTime;
         zombiesKilledText.text = zombiesKilled.ToString();
+        waveNumberText.text = waveNumber.ToString();
         accuracyText.text = accuracy;
         numOfReloadsText.text = numOfReloads.ToString();
         shotsFiredText.text = shotsFired.ToString();

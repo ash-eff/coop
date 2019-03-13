@@ -179,8 +179,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 1986531656693581341}
-  viewIdField: 11
-  InstantiationId: 11
+  viewIdField: 8
+  InstantiationId: 8
   isRuntimeInstantiated: 0
 --- !u!114 &1986531656693581341
 MonoBehaviour:
@@ -331,6 +331,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1986531656693581336}
     m_Modifications:
+    - target: {fileID: 4272574566747109629, guid: fc171c74e0395c3448e994121f67f607,
+        type: 3}
+      propertyPath: m_Name
+      value: Cursor 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4272574566747109629, guid: fc171c74e0395c3448e994121f67f607,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2425673023104625101, guid: fc171c74e0395c3448e994121f67f607,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -386,16 +396,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4272574566747109629, guid: fc171c74e0395c3448e994121f67f607,
-        type: 3}
-      propertyPath: m_Name
-      value: Cursor 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4272574566747109629, guid: fc171c74e0395c3448e994121f67f607,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc171c74e0395c3448e994121f67f607, type: 3}
 --- !u!1 &1337820932643564083 stripped
@@ -425,6 +425,11 @@ PrefabInstance:
     - target: {fileID: 5203755614443049032, guid: f621abded8d661e4f92dd7a19c8b8b85,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6798788154718035243, guid: f621abded8d661e4f92dd7a19c8b8b85,
+        type: 3}
+      propertyPath: m_FillAmount
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 857887140238861216, guid: f621abded8d661e4f92dd7a19c8b8b85,
@@ -532,10 +537,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 6798788154718035243, guid: f621abded8d661e4f92dd7a19c8b8b85,
+    - target: {fileID: 2653849500383896175, guid: f621abded8d661e4f92dd7a19c8b8b85,
         type: 3}
-      propertyPath: m_FillAmount
-      value: 1
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8411897871718803910, guid: f621abded8d661e4f92dd7a19c8b8b85,
         type: 3}
@@ -581,11 +586,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2653849500383896175, guid: f621abded8d661e4f92dd7a19c8b8b85,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3720411848022153354, guid: f621abded8d661e4f92dd7a19c8b8b85,
         type: 3}

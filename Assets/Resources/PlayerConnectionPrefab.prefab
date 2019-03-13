@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 617}
-  - component: {fileID: 1556}
-  - component: {fileID: 1549}
+  - component: {fileID: 622}
+  - component: {fileID: 1570}
+  - component: {fileID: 1568}
   m_Layer: 0
   m_Name: PlayerConnectionPrefab
   m_TagString: Untagged
@@ -18,7 +18,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &617
+--- !u!4 &622
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1556
+--- !u!114 &1570
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
   viewIdField: 16
   InstantiationId: 16
   isRuntimeInstantiated: 0
---- !u!114 &1549
+--- !u!114 &1568
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

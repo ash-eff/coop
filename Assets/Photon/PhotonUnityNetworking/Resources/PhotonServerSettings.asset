@@ -135,4 +135,5 @@ MonoBehaviour:
   - UpdateStats
   - SendStats
   - TakeFriendlyDamage
+  - UpdateWave
   DisableAutoOpenWizard: 1
